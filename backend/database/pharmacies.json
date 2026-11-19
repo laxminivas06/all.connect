@@ -824,5 +824,81 @@
     ],
     "registered_at": "2026-11-19",
     "created_at": "2026-11-19T22:49:16.079976"
+  },
+  {
+    "id": "pharm-019",
+    "name": "Apollo Pharmacy - Clock Tower",
+    "organization_type": "pharmacy",
+    "rating": 4.8,
+    "reviews_count": 40,
+    "home_delivery_available": true,
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "license_number": "TS-HYD-DL-2026-8841",
+    "license_document_url": "",
+    "license_validity": "2028-11-18",
+    "phone": "+91 40 2770 8899",
+    "contact_phone": "+91 40 2770 8899",
+    "email": "apolloclocktower@example.com",
+    "address": "Station Road, Clock Tower Circle, Secunderabad, Telangana 500003",
+    "locality": "Secunderabad",
+    "area": "Secunderabad",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500003",
+    "country": "India",
+    "latitude": 17.4491,
+    "longitude": 78.5311,
+    "coordinates": {
+      "lat": 17.4491,
+      "lng": 78.5311
+    },
+    "subscription_plan": "pharmacy_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795111684.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T23:38:04.760149",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795111684.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795111684.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795111684.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T23:38:04.779931",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795111684.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795111684.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting State DCA drug licence verification",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T23:38:05.045916",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T23:38:05.045924"
   }
 ]

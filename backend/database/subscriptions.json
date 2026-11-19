@@ -20,7 +20,7 @@
     "storage_limit_bytes": 2147483648,
     "storage_limit_mb": 2048,
     "storage_alert_threshold": 80,
-    "updated_at": "2026-11-19T23:32:48.977463"
+    "updated_at": "2026-11-19T23:38:16.385024"
   },
   {
     "id": "sub-hosp-002",
@@ -643,6 +643,58 @@
   {
     "id": "sub-pharm-018",
     "organization_id": "pharm-018",
+    "organization_name": "Apollo Pharmacy - Clock Tower",
+    "organization_type": "pharmacy",
+    "plan_id": "pharmacy_pro",
+    "status": "active",
+    "billing_cycle": "monthly",
+    "started_at": "2026-11-19",
+    "expires_at": "2026-12-19",
+    "amount_paid": 2999.0,
+    "amount_due": 2999.0
+  },
+  {
+    "id": "sub-hosp-031",
+    "organization_id": "hosp-031",
+    "organization_name": "Pranaam Multi-Speciality Hospital",
+    "organization_type": "hospital",
+    "plan_id": "hospital_enterprise",
+    "status": "active",
+    "billing_cycle": "annual",
+    "started_at": "2026-11-19",
+    "expires_at": "2027-11-19",
+    "amount_paid": 299999.0,
+    "amount_due": 299999.0
+  },
+  {
+    "id": "sub-hosp-032",
+    "organization_id": "hosp-032",
+    "organization_name": "KIMS Sunshine Hospitals",
+    "organization_type": "hospital",
+    "plan_id": "hospital_enterprise",
+    "status": "active",
+    "billing_cycle": "annual",
+    "started_at": "2026-11-19",
+    "expires_at": "2027-11-19",
+    "amount_paid": 299999.0,
+    "amount_due": 299999.0
+  },
+  {
+    "id": "sub-clinic-018",
+    "organization_id": "clinic-018",
+    "organization_name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "plan_id": "clinic_pro",
+    "status": "active",
+    "billing_cycle": "monthly",
+    "started_at": "2026-11-19",
+    "expires_at": "2026-12-19",
+    "amount_paid": 4999.0,
+    "amount_due": 4999.0
+  },
+  {
+    "id": "sub-pharm-019",
+    "organization_id": "pharm-019",
     "organization_name": "Apollo Pharmacy - Clock Tower",
     "organization_type": "pharmacy",
     "plan_id": "pharmacy_pro",

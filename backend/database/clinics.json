@@ -878,5 +878,87 @@
     ],
     "registered_at": "2026-11-19",
     "created_at": "2026-11-19T22:49:15.839903"
+  },
+  {
+    "id": "clinic-018",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795111684.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T23:38:04.760149",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795111684.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795111684.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795111684.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T23:38:04.779931",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795111684.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795111684.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T23:38:05.008072",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T23:38:05.008095"
   }
 ]

@@ -1,0 +1,104 @@
+{
+  "backup_id": "backup_20261119_231252_pre_delete_cleanup",
+  "label": "pre_delete_cleanup",
+  "trigger_actor": "admin",
+  "created_at": "2026-11-19T23:12:52.799044",
+  "created_at_formatted": "19 Nov 2026, 11:12 PM",
+  "total_tables": 18,
+  "total_records": 935,
+  "total_bytes": 658557,
+  "verification_status": "verified",
+  "verification_errors": [],
+  "tables": {
+    "appointments.json": {
+      "size_bytes": 64903,
+      "record_count": 73,
+      "sha256": "f98f57ca34bfd27f0e2b87dfe3462ff125dc5e72da9198406f2f0f5589188dfb"
+    },
+    "audit_logs.json": {
+      "size_bytes": 91183,
+      "record_count": 240,
+      "sha256": "2b70d4d0cc8b5592edf835e2cbbb9c094929a04b03a1a30e871487ba3493de17"
+    },
+    "clinics.json": {
+      "size_bytes": 30635,
+      "record_count": 17,
+      "sha256": "3510ec537527f2cb71958709aa3473c14727250eab49b11dd0da56a836e269c6"
+    },
+    "doctors.json": {
+      "size_bytes": 36192,
+      "record_count": 34,
+      "sha256": "84ae3a8261558179f1861fa146ac5718cb32c311e4bc3331578e72174ff6ef6f"
+    },
+    "enquiries.json": {
+      "size_bytes": 3639,
+      "record_count": 6,
+      "sha256": "8f7d97bc52f6b80962f29167cb22db026f7bf54719ccca03821b011ab7d8483e"
+    },
+    "hospitals.json": {
+      "size_bytes": 87139,
+      "record_count": 30,
+      "sha256": "5a6b44ac294e85a9f737e5ed1b0422f797f37f77cea75ca1584b0fbc2b78163c"
+    },
+    "medical_records.json": {
+      "size_bytes": 1776,
+      "record_count": 3,
+      "sha256": "1c59689633ea67f242bdbd7416c7a9f15617c433c09d2d0bbf1b15e3706e312a"
+    },
+    "notifications.json": {
+      "size_bytes": 104536,
+      "record_count": 253,
+      "sha256": "a6b9bde41cbe8823d0bee023961ce5b53a98fbf9f39ea7154d819f3932f111a6"
+    },
+    "offers.json": {
+      "size_bytes": 22597,
+      "record_count": 29,
+      "sha256": "27f44f12a65ec8306bfcf3c7145b8b2e9e157867f7ea05e5f8e46d07b1587bf4"
+    },
+    "orders.json": {
+      "size_bytes": 35819,
+      "record_count": 34,
+      "sha256": "1eb5ce5a7bfcf4cc3a9786714fb99315b7f4de01cd9725167bb157eaf9e34795"
+    },
+    "patients.json": {
+      "size_bytes": 34130,
+      "record_count": 42,
+      "sha256": "13de76c748b7541e0f39723a78ecf10649636d4334b301cacdeca341322a0389"
+    },
+    "pharmacies.json": {
+      "size_bytes": 28347,
+      "record_count": 18,
+      "sha256": "554c0a289266a7cca37e3036ac0a8ca9c8e7113d397d8abf1ba34da70e48e35e"
+    },
+    "plans.json": {
+      "size_bytes": 1923,
+      "record_count": 3,
+      "sha256": "2a8b3ac3f49bc2b7c1d9167f2c012c5df4311f87cb62d7c00bd829f819263a3a"
+    },
+    "prescriptions.json": {
+      "size_bytes": 73385,
+      "record_count": 53,
+      "sha256": "6e7d6f8ba2c8613f4d3f187e6efd012a5a3ebf3186386dc7815f740d8b9dff21"
+    },
+    "sample_medicines.json": {
+      "size_bytes": 2445,
+      "record_count": 10,
+      "sha256": "0715d85571d7fb414d435c9f181894ef197651d17ca354bab69e37cc71defa5c"
+    },
+    "services.json": {
+      "size_bytes": 3640,
+      "record_count": 5,
+      "sha256": "accd8efed64367f15b1d2673f284f23cb06b28559bee201fa09f29e4bd376be9"
+    },
+    "subscriptions.json": {
+      "size_bytes": 19544,
+      "record_count": 48,
+      "sha256": "e03543cc340a88496b79431afd1c235976e3dae9dffd11e55dc49100010289c2"
+    },
+    "users.json": {
+      "size_bytes": 16724,
+      "record_count": 37,
+      "sha256": "bd43170e8fbe7ac5f8ac1fbf1a22a25ea393a9991e54795ce276cc3866f1cb84"
+    }
+  }
+}

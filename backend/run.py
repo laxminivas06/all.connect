@@ -7,6 +7,9 @@ backend_dir = Path(__file__).resolve().parent
 if str(backend_dir) not in sys.path:
     sys.path.insert(0, str(backend_dir))
 
+# Expose app object so importing from run or main works seamlessly
+from main import app
+
 if __name__ == "__main__":
     print("Starting Centralized Healthcare Ecosystem FastAPI backend on http://127.0.0.1:8000...")
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

@@ -1,9 +1,10 @@
 import os
 import sys
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 # Setup import path
 backend_dir = Path(__file__).resolve().parent
@@ -59,6 +60,13 @@ app.add_middleware(
 # Mount uploads directory
 app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 
+# Mount built frontend assets if available
+FRONTEND_DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+if FRONTEND_DIST.exists():
+    assets_dir = FRONTEND_DIST / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="static_assets")
+
 # Include Routers
 app.include_router(auth.router)
 app.include_router(patients.router)
@@ -76,8 +84,9 @@ app.include_router(admin.router)
 app.include_router(services.router)
 app.include_router(data_management.router)
 
-@app.get("/")
-def root():
+@app.get("/api")
+@app.get("/api/status")
+def api_status():
     return {
         "status": "online",
         "platform": "Centralized Multi-Hospital Healthcare Ecosystem",
@@ -92,6 +101,30 @@ def root():
             "Super Admin"
         ]
     }
+
+@app.get("/")
+async def root():
+    index_file = FRONTEND_DIST / "index.html"
+    if FRONTEND_DIST.exists() and index_file.exists():
+        return FileResponse(str(index_file))
+    return api_status()
+
+# Catch-all route to serve the React SPA for client-side routing (e.g. /login, /book-opd, /dashboard/*)
+@app.get("/{full_path:path}")
+async def serve_spa(full_path: str = ""):
+    # Pass through API, Swagger docs, OpenAPI schema, and static uploads
+    if full_path.startswith(("api", "docs", "openapi.json", "uploads")):
+        raise HTTPException(status_code=404, detail="Not Found")
+    
+    if FRONTEND_DIST.exists():
+        file_path = FRONTEND_DIST / full_path
+        if full_path and file_path.exists() and file_path.is_file():
+            return FileResponse(str(file_path))
+        index_file = FRONTEND_DIST / "index.html"
+        if index_file.exists():
+            return FileResponse(str(index_file))
+    
+    return api_status()
 
 if __name__ == "__main__":
     import uvicorn

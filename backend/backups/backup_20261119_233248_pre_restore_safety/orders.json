@@ -1,0 +1,1207 @@
+[
+  {
+    "id": "MED-2026-000141",
+    "order_id": "MED-2026-000141",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "pharmacy_id": "pharm-001",
+    "pharmacy_name": "Apollo Pharmacy - Malkajgiri",
+    "prescription_id": "PRE-2026-000101",
+    "items": [
+      {
+        "medicine_name": "Telmisartan 40mg",
+        "quantity": 2,
+        "unit_price": 78.5,
+        "total": 157.0
+      },
+      {
+        "medicine_name": "Pantoprazole 40mg",
+        "quantity": 1,
+        "unit_price": 85.0,
+        "total": 85.0
+      }
+    ],
+    "subtotal": 242.0,
+    "delivery_charge": 0.0,
+    "total_amount": 242.0,
+    "fulfillment_type": "Store Pickup",
+    "pickup_code": "PICK-48291",
+    "status": "Ready for Pickup",
+    "payment_status": "Paid Online",
+    "notes": "Patient requested evening counter pickup after 6:00 PM.",
+    "created_at": "2026-01-18T11:00:00",
+    "updated_at": "2026-01-18T11:45:00"
+  },
+  {
+    "id": "MED-2026-000142",
+    "order_id": "MED-2026-000142",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "pharmacy_id": "pharm-009",
+    "pharmacy_name": "LifeCare Drugs - Malkajgiri",
+    "prescription_id": "PRE-2026-000102",
+    "items": [
+      {
+        "medicine_name": "Metformin 500mg SR",
+        "quantity": 3,
+        "unit_price": 42.0,
+        "total": 126.0
+      },
+      {
+        "medicine_name": "Glimepiride 1mg",
+        "quantity": 2,
+        "unit_price": 54.0,
+        "total": 108.0
+      }
+    ],
+    "subtotal": 234.0,
+    "delivery_charge": 20.0,
+    "total_amount": 254.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "Plot 42, Vani Nagar, Malkajgiri, Hyderabad 500047",
+    "pickup_code": "PICK-71239",
+    "status": "Out for Delivery",
+    "payment_status": "Cash on Delivery",
+    "notes": "Please deliver between 4 PM and 7 PM.",
+    "created_at": "2026-01-17T14:00:00",
+    "updated_at": "2026-01-17T16:30:00"
+  },
+  {
+    "id": "MED-2026-000143",
+    "order_id": "MED-2026-000143",
+    "patient_id": "PAT-2026-000002",
+    "patient_name": "Ananya Krishna Murthy",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000103",
+    "items": [
+      {
+        "medicine_name": "Montelukast & Levocetirizine",
+        "quantity": 2,
+        "unit_price": 120.0,
+        "total": 240.0
+      }
+    ],
+    "subtotal": 240.0,
+    "delivery_charge": 0.0,
+    "total_amount": 240.0,
+    "fulfillment_type": "Store Pickup",
+    "pickup_code": "PICK-39184",
+    "status": "Collected",
+    "payment_status": "Paid (UPI Counter)",
+    "notes": "Order successfully verified and handed over.",
+    "created_at": "2026-01-16T10:00:00",
+    "updated_at": "2026-01-16T12:00:00"
+  },
+  {
+    "id": "MED-2026-000144",
+    "order_id": "MED-2026-000144",
+    "patient_id": "PAT-2026-000004",
+    "patient_name": "Priyanka S. Varma",
+    "pharmacy_id": "pharm-004",
+    "pharmacy_name": "MedCity Pharmacy - Begumpet",
+    "prescription_id": "PRE-2026-000104",
+    "items": [
+      {
+        "medicine_name": "Paracetamol 650mg (Dolo)",
+        "quantity": 1,
+        "unit_price": 32.0,
+        "total": 32.0
+      },
+      {
+        "medicine_name": "Vitamin D3 60,000 IU Capsule",
+        "quantity": 2,
+        "unit_price": 110.0,
+        "total": 220.0
+      }
+    ],
+    "subtotal": 252.0,
+    "delivery_charge": 25.0,
+    "total_amount": 277.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "B-44, Indian Airlines Colony, Begumpet, Hyderabad",
+    "pickup_code": "PICK-25284",
+    "status": "Ready for Pickup",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-14T10:00:00",
+    "updated_at": "2026-01-14T11:30:00"
+  },
+  {
+    "id": "MED-2026-000145",
+    "order_id": "MED-2026-000145",
+    "patient_id": "PAT-2026-000005",
+    "patient_name": "Mohammad Rizwan Khan",
+    "pharmacy_id": "pharm-005",
+    "pharmacy_name": "Royal Chemist & Druggists",
+    "prescription_id": "PRE-2026-000105",
+    "items": [
+      {
+        "medicine_name": "Montelukast & Levocetirizine",
+        "quantity": 1,
+        "unit_price": 120.0,
+        "total": 120.0
+      },
+      {
+        "medicine_name": "Azithromycin 500mg",
+        "quantity": 2,
+        "unit_price": 115.0,
+        "total": 230.0
+      }
+    ],
+    "subtotal": 350.0,
+    "delivery_charge": 0.0,
+    "total_amount": 350.0,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-29105",
+    "status": "Collected",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-15T10:00:00",
+    "updated_at": "2026-01-15T11:30:00"
+  },
+  {
+    "id": "MED-2026-000146",
+    "order_id": "MED-2026-000146",
+    "patient_id": "PAT-2026-000006",
+    "patient_name": "Kavitha Rao",
+    "pharmacy_id": "pharm-006",
+    "pharmacy_name": "Sri Sai Pharmacy & Generic Stores",
+    "prescription_id": "PRE-2026-000106",
+    "items": [
+      {
+        "medicine_name": "Amoxicillin & Potassium Clavulanate 625mg",
+        "quantity": 1,
+        "unit_price": 185.0,
+        "total": 185.0
+      },
+      {
+        "medicine_name": "Glimepiride 1mg",
+        "quantity": 2,
+        "unit_price": 54.0,
+        "total": 108.0
+      }
+    ],
+    "subtotal": 293.0,
+    "delivery_charge": 25.0,
+    "total_amount": 318.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "Door No 42-18, Begumpet, Hyderabad",
+    "pickup_code": "PICK-32926",
+    "status": "Out for Delivery",
+    "payment_status": "Pending",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-16T10:00:00",
+    "updated_at": "2026-01-16T11:30:00"
+  },
+  {
+    "id": "MED-2026-000147",
+    "order_id": "MED-2026-000147",
+    "patient_id": "PAT-2026-000007",
+    "patient_name": "Srinivas Reddy",
+    "pharmacy_id": "pharm-007",
+    "pharmacy_name": "HealthFirst Chemist - Begumpet",
+    "prescription_id": "PRE-2026-000107",
+    "items": [
+      {
+        "medicine_name": "Vitamin D3 60,000 IU Capsule",
+        "quantity": 1,
+        "unit_price": 110.0,
+        "total": 110.0
+      },
+      {
+        "medicine_name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 42.0,
+        "total": 84.0
+      }
+    ],
+    "subtotal": 194.0,
+    "delivery_charge": 0.0,
+    "total_amount": 194.0,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-36747",
+    "status": "Delivered",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-17T10:00:00",
+    "updated_at": "2026-01-17T11:30:00"
+  },
+  {
+    "id": "MED-2026-000148",
+    "order_id": "MED-2026-000148",
+    "patient_id": "PAT-2026-000008",
+    "patient_name": "Bhavani Patel",
+    "pharmacy_id": "pharm-008",
+    "pharmacy_name": "CityPharma Express - Uppal",
+    "prescription_id": "PRE-2026-000108",
+    "items": [
+      {
+        "medicine_name": "Azithromycin 500mg",
+        "quantity": 1,
+        "unit_price": 115.0,
+        "total": 115.0
+      },
+      {
+        "medicine_name": "Telmisartan 40mg",
+        "quantity": 2,
+        "unit_price": 78.5,
+        "total": 157.0
+      }
+    ],
+    "subtotal": 272.0,
+    "delivery_charge": 25.0,
+    "total_amount": 297.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "Door No 56-24, Secunderabad, Hyderabad",
+    "pickup_code": "PICK-40568",
+    "status": "New Order",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-10T10:00:00",
+    "updated_at": "2026-01-10T11:30:00"
+  },
+  {
+    "id": "MED-2026-000149",
+    "order_id": "MED-2026-000149",
+    "patient_id": "PAT-2026-000009",
+    "patient_name": "Karthik Naidu",
+    "pharmacy_id": "pharm-009",
+    "pharmacy_name": "LifeCare Drugs - Malkajgiri",
+    "prescription_id": "PRE-2026-000109",
+    "items": [
+      {
+        "medicine_name": "Glimepiride 1mg",
+        "quantity": 1,
+        "unit_price": 54.0,
+        "total": 54.0
+      },
+      {
+        "medicine_name": "Atorvastatin 10mg",
+        "quantity": 2,
+        "unit_price": 95.0,
+        "total": 190.0
+      }
+    ],
+    "subtotal": 244.0,
+    "delivery_charge": 0.0,
+    "total_amount": 244.0,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-44389",
+    "status": "Pharmacy Verification",
+    "payment_status": "Pending",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-11T10:00:00",
+    "updated_at": "2026-01-11T11:30:00"
+  },
+  {
+    "id": "MED-2026-000150",
+    "order_id": "MED-2026-000150",
+    "patient_id": "PAT-2026-000010",
+    "patient_name": "Padmaja Chowdary",
+    "pharmacy_id": "pharm-010",
+    "pharmacy_name": "Genesis Meds & Surgical Store",
+    "prescription_id": "PRE-2026-000110",
+    "items": [
+      {
+        "medicine_name": "Metformin 500mg SR",
+        "quantity": 1,
+        "unit_price": 42.0,
+        "total": 42.0
+      },
+      {
+        "medicine_name": "Pantoprazole 40mg",
+        "quantity": 2,
+        "unit_price": 85.0,
+        "total": 170.0
+      }
+    ],
+    "subtotal": 212.0,
+    "delivery_charge": 25.0,
+    "total_amount": 237.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "Door No 70-30, Tarnaka, Hyderabad",
+    "pickup_code": "PICK-48210",
+    "status": "Accepted",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-12T10:00:00",
+    "updated_at": "2026-01-12T11:30:00"
+  },
+  {
+    "id": "MED-2026-000151",
+    "order_id": "MED-2026-000151",
+    "patient_id": "PAT-2026-000011",
+    "patient_name": "Ramesh Gupta",
+    "pharmacy_id": "pharm-001",
+    "pharmacy_name": "Apollo Pharmacy - Malkajgiri",
+    "prescription_id": "PRE-2026-000111",
+    "items": [
+      {
+        "medicine_name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 78.5,
+        "total": 78.5
+      },
+      {
+        "medicine_name": "Paracetamol 650mg (Dolo)",
+        "quantity": 2,
+        "unit_price": 32.0,
+        "total": 64.0
+      }
+    ],
+    "subtotal": 142.5,
+    "delivery_charge": 0.0,
+    "total_amount": 142.5,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-52031",
+    "status": "Preparing",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-13T10:00:00",
+    "updated_at": "2026-01-13T11:30:00"
+  },
+  {
+    "id": "MED-2026-000152",
+    "order_id": "MED-2026-000152",
+    "patient_id": "PAT-2026-000012",
+    "patient_name": "Deepika Deshpande",
+    "pharmacy_id": "pharm-002",
+    "pharmacy_name": "MedPlus Pharmacy - Uppal",
+    "prescription_id": "PRE-2026-000112",
+    "items": [
+      {
+        "medicine_name": "Atorvastatin 10mg",
+        "quantity": 1,
+        "unit_price": 95.0,
+        "total": 95.0
+      },
+      {
+        "medicine_name": "Montelukast & Levocetirizine",
+        "quantity": 2,
+        "unit_price": 120.0,
+        "total": 240.0
+      }
+    ],
+    "subtotal": 335.0,
+    "delivery_charge": 25.0,
+    "total_amount": 360.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "Door No 84-36, Begumpet, Hyderabad",
+    "pickup_code": "PICK-55852",
+    "status": "Ready for Pickup",
+    "payment_status": "Pending",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-14T10:00:00",
+    "updated_at": "2026-01-14T11:30:00"
+  },
+  {
+    "id": "MED-2026-000153",
+    "order_id": "MED-2026-000153",
+    "patient_id": "PAT-2026-000013",
+    "patient_name": "Mahesh Kumar",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000113",
+    "items": [
+      {
+        "medicine_name": "Pantoprazole 40mg",
+        "quantity": 1,
+        "unit_price": 85.0,
+        "total": 85.0
+      },
+      {
+        "medicine_name": "Amoxicillin & Potassium Clavulanate 625mg",
+        "quantity": 2,
+        "unit_price": 185.0,
+        "total": 370.0
+      }
+    ],
+    "subtotal": 455.0,
+    "delivery_charge": 0.0,
+    "total_amount": 455.0,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-59673",
+    "status": "Collected",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-15T10:00:00",
+    "updated_at": "2026-01-15T11:30:00"
+  },
+  {
+    "id": "MED-2026-000154",
+    "order_id": "MED-2026-000154",
+    "patient_id": "PAT-2026-000014",
+    "patient_name": "Sowmya Iyer",
+    "pharmacy_id": "pharm-004",
+    "pharmacy_name": "MedCity Pharmacy - Begumpet",
+    "prescription_id": "PRE-2026-000114",
+    "items": [
+      {
+        "medicine_name": "Paracetamol 650mg (Dolo)",
+        "quantity": 1,
+        "unit_price": 32.0,
+        "total": 32.0
+      },
+      {
+        "medicine_name": "Vitamin D3 60,000 IU Capsule",
+        "quantity": 2,
+        "unit_price": 110.0,
+        "total": 220.0
+      }
+    ],
+    "subtotal": 252.0,
+    "delivery_charge": 25.0,
+    "total_amount": 277.0,
+    "fulfillment_type": "Home Delivery",
+    "delivery_address": "Door No 98-42, Secunderabad, Hyderabad",
+    "pickup_code": "PICK-63494",
+    "status": "Out for Delivery",
+    "payment_status": "Paid Online",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-16T10:00:00",
+    "updated_at": "2026-01-16T11:30:00"
+  },
+  {
+    "id": "MED-2026-000155",
+    "order_id": "MED-2026-000155",
+    "patient_id": "PAT-2026-000015",
+    "patient_name": "Harish Chary",
+    "pharmacy_id": "pharm-005",
+    "pharmacy_name": "Royal Chemist & Druggists",
+    "prescription_id": "PRE-2026-000115",
+    "items": [
+      {
+        "medicine_name": "Montelukast & Levocetirizine",
+        "quantity": 1,
+        "unit_price": 120.0,
+        "total": 120.0
+      },
+      {
+        "medicine_name": "Azithromycin 500mg",
+        "quantity": 2,
+        "unit_price": 115.0,
+        "total": 230.0
+      }
+    ],
+    "subtotal": 350.0,
+    "delivery_charge": 0.0,
+    "total_amount": 350.0,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-67315",
+    "status": "Delivered",
+    "payment_status": "Pending",
+    "notes": "Standard prescription medicine order.",
+    "created_at": "2026-01-17T10:00:00",
+    "updated_at": "2026-01-17T11:30:00"
+  },
+  {
+    "id": "MED-2026-000156",
+    "order_id": "MED-2026-000156",
+    "patient_id": "PAT-2026-000021",
+    "patient_name": "Aditya V. Sharma 6662",
+    "patient_mobile": "+91 98480 06662",
+    "pharmacy_id": "pharm-006",
+    "pharmacy_name": "Sri Sai Pharmacy & Generic Stores",
+    "prescription_id": "PRE-2026-000116",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 42.84,
+        "total": 85.68,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 160.26,
+    "delivery_charge": 0.0,
+    "total_amount": 160.26,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-62747",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T14:29:05.048343",
+    "updated_at": "2026-11-19T14:29:05.134759"
+  },
+  {
+    "id": "MED-2026-000157",
+    "order_id": "MED-2026-000157",
+    "patient_id": "PAT-2026-000023",
+    "patient_name": "Aditya V. Sharma 4250",
+    "patient_mobile": "+91 98480 04250",
+    "pharmacy_id": "pharm-005",
+    "pharmacy_name": "Royal Chemist & Druggists",
+    "prescription_id": "PRE-2026-000118",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 78.5,
+        "total": 78.5,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 158.3,
+    "delivery_charge": 0.0,
+    "total_amount": 158.3,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-32497",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T14:58:33.873173",
+    "updated_at": "2026-11-19T14:58:33.977915"
+  },
+  {
+    "id": "MED-2026-000158",
+    "order_id": "MED-2026-000158",
+    "patient_id": "PAT-2026-000024",
+    "patient_name": "Aditya V. Sharma 7165",
+    "patient_mobile": "+91 98480 07165",
+    "pharmacy_id": "pharm-004",
+    "pharmacy_name": "MedCity Pharmacy - Begumpet",
+    "prescription_id": "PRE-2026-000120",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 42.0,
+        "total": 84.0,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 158.58,
+    "delivery_charge": 0.0,
+    "total_amount": 158.58,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-92187",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:01:16.130436",
+    "updated_at": "2026-11-19T15:01:16.224466"
+  },
+  {
+    "id": "MED-2026-000159",
+    "order_id": "MED-2026-000159",
+    "patient_id": "PAT-2026-000025",
+    "patient_name": "Aditya V. Sharma 7969",
+    "patient_mobile": "+91 98480 07969",
+    "pharmacy_id": "pharm-004",
+    "pharmacy_name": "MedCity Pharmacy - Begumpet",
+    "prescription_id": "PRE-2026-000122",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 80.07,
+        "total": 80.07,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 159.87,
+    "delivery_charge": 0.0,
+    "total_amount": 159.87,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-61727",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:01:40.235279",
+    "updated_at": "2026-11-19T15:01:40.337785"
+  },
+  {
+    "id": "MED-2026-000160",
+    "order_id": "MED-2026-000160",
+    "patient_id": "PAT-2026-000027",
+    "patient_name": "Aditya V. Sharma 8944",
+    "patient_mobile": "+91 98480 08944",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000124",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 76.93,
+        "total": 76.93,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 41.16,
+        "total": 82.32,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 159.25,
+    "delivery_charge": 0.0,
+    "total_amount": 159.25,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-56023",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:10:31.258295",
+    "updated_at": "2026-11-19T15:10:31.351166"
+  },
+  {
+    "id": "MED-2026-000161",
+    "order_id": "MED-2026-000161",
+    "patient_id": "PAT-2026-000028",
+    "patient_name": "Aditya V. Sharma 2107",
+    "patient_mobile": "+91 98480 02107",
+    "pharmacy_id": "pharm-001",
+    "pharmacy_name": "Apollo Pharmacy - Malkajgiri",
+    "prescription_id": "PRE-2026-000126",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 76.93,
+        "total": 76.93,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 42.84,
+        "total": 85.68,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 162.61,
+    "delivery_charge": 0.0,
+    "total_amount": 162.61,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-55076",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:13:34.547353",
+    "updated_at": "2026-11-19T15:13:34.637313"
+  },
+  {
+    "id": "MED-2026-000162",
+    "order_id": "MED-2026-000162",
+    "patient_id": "PAT-2026-000029",
+    "patient_name": "Aditya V. Sharma 4502",
+    "patient_mobile": "+91 98480 04502",
+    "pharmacy_id": "pharm-001",
+    "pharmacy_name": "Apollo Pharmacy - Malkajgiri",
+    "prescription_id": "PRE-2026-000128",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 76.93,
+        "total": 76.93,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 156.73,
+    "delivery_charge": 0.0,
+    "total_amount": 156.73,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-54763",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:36:56.837931",
+    "updated_at": "2026-11-19T15:36:56.969920"
+  },
+  {
+    "id": "MED-2026-000163",
+    "order_id": "MED-2026-000163",
+    "patient_id": "PAT-2026-000030",
+    "patient_name": "Aditya V. Sharma 7595",
+    "patient_mobile": "+91 98480 07595",
+    "pharmacy_id": "pharm-001",
+    "pharmacy_name": "Apollo Pharmacy - Malkajgiri",
+    "prescription_id": "PRE-2026-000130",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 41.16,
+        "total": 82.32,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 156.9,
+    "delivery_charge": 0.0,
+    "total_amount": 156.9,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-12703",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:37:54.093632",
+    "updated_at": "2026-11-19T15:37:54.190016"
+  },
+  {
+    "id": "MED-2026-000164",
+    "order_id": "MED-2026-000164",
+    "patient_id": "PAT-2026-000031",
+    "patient_name": "Aditya V. Sharma 7127",
+    "patient_mobile": "+91 98480 07127",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000132",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 42.0,
+        "total": 84.0,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 158.58,
+    "delivery_charge": 0.0,
+    "total_amount": 158.58,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-80599",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T15:39:04.188329",
+    "updated_at": "2026-11-19T15:39:04.328540"
+  },
+  {
+    "id": "MED-2026-000165",
+    "order_id": "MED-2026-000165",
+    "patient_id": "PAT-2026-000032",
+    "patient_name": "Aditya V. Sharma 0711",
+    "patient_mobile": "+91 98480 00711",
+    "pharmacy_id": "pharm-002",
+    "pharmacy_name": "MedPlus Pharmacy - Uppal",
+    "prescription_id": "PRE-2026-000134",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 41.16,
+        "total": 82.32,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 156.9,
+    "delivery_charge": 0.0,
+    "total_amount": 156.9,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-80406",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T16:14:48.554261",
+    "updated_at": "2026-11-19T16:14:48.657425"
+  },
+  {
+    "id": "MED-2026-000166",
+    "order_id": "MED-2026-000166",
+    "patient_id": "PAT-2026-000033",
+    "patient_name": "Aditya V. Sharma 3571",
+    "patient_mobile": "+91 98480 03571",
+    "pharmacy_id": "pharm-004",
+    "pharmacy_name": "MedCity Pharmacy - Begumpet",
+    "prescription_id": "PRE-2026-000136",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 41.16,
+        "total": 82.32,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 156.9,
+    "delivery_charge": 0.0,
+    "total_amount": 156.9,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-45678",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T16:27:31.904537",
+    "updated_at": "2026-11-19T16:27:32.232592"
+  },
+  {
+    "id": "MED-2026-000167",
+    "order_id": "MED-2026-000167",
+    "patient_id": "PAT-2026-000034",
+    "patient_name": "Aditya V. Sharma 3016",
+    "patient_mobile": "+91 98480 03016",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000138",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 76.93,
+        "total": 76.93,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 41.16,
+        "total": 82.32,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 159.25,
+    "delivery_charge": 0.0,
+    "total_amount": 159.25,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-27937",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T16:28:17.821376",
+    "updated_at": "2026-11-19T16:28:17.939007"
+  },
+  {
+    "id": "MED-2026-000168",
+    "order_id": "MED-2026-000168",
+    "patient_id": "PAT-2026-000035",
+    "patient_name": "Aditya V. Sharma 9528",
+    "patient_mobile": "+91 98480 09528",
+    "pharmacy_id": "pharm-002",
+    "pharmacy_name": "MedPlus Pharmacy - Uppal",
+    "prescription_id": "PRE-2026-000140",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 154.38,
+    "delivery_charge": 0.0,
+    "total_amount": 154.38,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-98193",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T16:30:19.367509",
+    "updated_at": "2026-11-19T16:30:19.457976"
+  },
+  {
+    "id": "MED-2026-000169",
+    "order_id": "MED-2026-000169",
+    "patient_id": "PAT-2026-000036",
+    "patient_name": "Aditya V. Sharma 0751",
+    "patient_mobile": "+91 98480 00751",
+    "pharmacy_id": "pharm-001",
+    "pharmacy_name": "Apollo Pharmacy - Malkajgiri",
+    "prescription_id": "PRE-2026-000142",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 154.38,
+    "delivery_charge": 0.0,
+    "total_amount": 154.38,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-51262",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T17:15:15.488972",
+    "updated_at": "2026-11-19T17:15:15.579587"
+  },
+  {
+    "id": "MED-2026-000170",
+    "order_id": "MED-2026-000170",
+    "patient_id": "PAT-2026-000037",
+    "patient_name": "Aditya V. Sharma 1780",
+    "patient_mobile": "+91 98480 01780",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000144",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 154.38,
+    "delivery_charge": 0.0,
+    "total_amount": 154.38,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-46811",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T17:20:45.554689",
+    "updated_at": "2026-11-19T17:20:45.650916"
+  },
+  {
+    "id": "MED-2026-000171",
+    "order_id": "MED-2026-000171",
+    "patient_id": "PAT-2026-000038",
+    "patient_name": "Aditya V. Sharma 0654",
+    "patient_mobile": "+91 98480 00654",
+    "pharmacy_id": "pharm-006",
+    "pharmacy_name": "Sri Sai Pharmacy & Generic Stores",
+    "prescription_id": "PRE-2026-000146",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 154.38,
+    "delivery_charge": 0.0,
+    "total_amount": 154.38,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-71784",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T17:40:08.671739",
+    "updated_at": "2026-11-19T17:40:08.806490"
+  },
+  {
+    "id": "MED-2026-000172",
+    "order_id": "MED-2026-000172",
+    "patient_id": "PAT-2026-000040",
+    "patient_name": "Aditya V. Sharma 6440",
+    "patient_mobile": "+91 98480 06440",
+    "pharmacy_id": "pharm-002",
+    "pharmacy_name": "MedPlus Pharmacy - Uppal",
+    "prescription_id": "PRE-2026-000148",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 42.0,
+        "total": 84.0,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 158.58,
+    "delivery_charge": 0.0,
+    "total_amount": 158.58,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-52357",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T18:30:01.133900",
+    "updated_at": "2026-11-19T18:30:01.239987"
+  },
+  {
+    "id": "MED-2026-000173",
+    "order_id": "MED-2026-000173",
+    "patient_id": "PAT-2026-000041",
+    "patient_name": "Aditya V. Sharma 2175",
+    "patient_mobile": "+91 98480 02175",
+    "pharmacy_id": "pharm-003",
+    "pharmacy_name": "Care Medicals & Surgicals - Tarnaka",
+    "prescription_id": "PRE-2026-000150",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 76.93,
+        "total": 76.93,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 39.9,
+        "total": 79.8,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 156.73,
+    "delivery_charge": 0.0,
+    "total_amount": 156.73,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-21583",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T18:30:31.717070",
+    "updated_at": "2026-11-19T18:30:31.841819"
+  },
+  {
+    "id": "MED-2026-000174",
+    "order_id": "MED-2026-000174",
+    "patient_id": "PAT-2026-000042",
+    "patient_name": "Aditya V. Sharma 8686",
+    "patient_mobile": "+91 98480 08686",
+    "pharmacy_id": "pharm-004",
+    "pharmacy_name": "MedCity Pharmacy - Begumpet",
+    "prescription_id": "PRE-2026-000152",
+    "items": [
+      {
+        "name": "Telmisartan 40mg",
+        "quantity": 1,
+        "unit_price": 74.58,
+        "total": 74.58,
+        "in_stock": true
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "quantity": 2,
+        "unit_price": 41.16,
+        "total": 82.32,
+        "in_stock": true
+      }
+    ],
+    "subtotal": 156.9,
+    "delivery_charge": 0.0,
+    "total_amount": 156.9,
+    "fulfillment_type": "Store Pickup",
+    "delivery_address": null,
+    "pickup_code": "PICK-36332",
+    "status": "Collected",
+    "payment_status": "Paid Online (Escrow)",
+    "notes": "Testing store pickup verification",
+    "created_at": "2026-11-19T19:18:04.454861",
+    "updated_at": "2026-11-19T19:18:04.608879"
+  }
+]

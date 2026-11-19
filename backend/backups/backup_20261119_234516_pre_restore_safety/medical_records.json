@@ -1,0 +1,41 @@
+[
+  {
+    "id": "rec-001",
+    "patient_id": "PAT-2026-000001",
+    "health_id": "HC-2026-000001",
+    "title": "Lipid Profile & Liver Function Panel",
+    "record_type": "Diagnostic Lab Report",
+    "organization_name": "Yashoda Diagnostics, Secunderabad",
+    "record_date": "2026-01-15",
+    "summary": "Total Cholesterol 210 mg/dL (Borderline High), Triglycerides 175 mg/dL, HDL 42 mg/dL. LFT parameters within normal limits.",
+    "doctor_notes": "Advised lifestyle modifications and dietary control.",
+    "file_url": "/uploads/reports/sample_lipid_report.pdf",
+    "created_at": "2026-01-15T16:00:00"
+  },
+  {
+    "id": "rec-002",
+    "patient_id": "PAT-2026-000001",
+    "health_id": "HC-2026-000001",
+    "title": "HbA1c Glycated Hemoglobin Test",
+    "record_type": "Pathology Report",
+    "organization_name": "MedPlus Pathology Lab, Malkajgiri",
+    "record_date": "2026-01-11",
+    "summary": "HbA1c Result: 7.9% (Average Estimated Blood Glucose: 180 mg/dL). Fasting Glucose: 142 mg/dL.",
+    "doctor_notes": "Dose optimization for Metformin prescribed.",
+    "file_url": "/uploads/reports/sample_hba1c_report.pdf",
+    "created_at": "2026-01-11T14:30:00"
+  },
+  {
+    "id": "rec-003",
+    "patient_id": "PAT-2026-000001",
+    "health_id": "HC-2026-000001",
+    "title": "Digital 12-Lead Electrocardiogram (ECG)",
+    "record_type": "Cardiac Diagnostic",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "record_date": "2026-01-18",
+    "summary": "Normal Sinus Rhythm, Rate 76 bpm, PR interval 0.16s, QTc 410ms. No acute ST-T wave abnormalities.",
+    "doctor_notes": "Normal baseline cardiac study.",
+    "file_url": "/uploads/reports/sample_ecg_report.pdf",
+    "created_at": "2026-01-18T10:15:00"
+  }
+]

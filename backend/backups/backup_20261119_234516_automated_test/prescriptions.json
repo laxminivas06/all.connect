@@ -1,0 +1,2167 @@
+[
+  {
+    "id": "PRE-2026-000101",
+    "prescription_id": "PRE-2026-000101",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "health_id": "HC-2026-000001",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD, DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-01-18",
+    "diagnosis": "Essential Systemic Hypertension with Mild Palpitations",
+    "symptoms": "Occasional exertional breathlessness, headache in the mornings",
+    "vitals": {
+      "blood_pressure": "144/92 mmHg",
+      "pulse": "78 bpm",
+      "weight": "74 kg"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning after food)",
+        "duration": "30 Days",
+        "instructions": "Take at fixed hour. Monitor BP weekly."
+      },
+      {
+        "name": "Metoprolol Succinate 25mg",
+        "dosage": "25mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "30 Days",
+        "instructions": "Do not skip dosage suddenly."
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Empty stomach)",
+        "duration": "15 Days",
+        "instructions": "Take 30 mins before breakfast."
+      }
+    ],
+    "advice": "Low sodium diet (<3g salt/day), 30 minutes brisk walking daily. Avoid strenuous weightlifting.",
+    "follow_up_date": "2026-02-18",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-18T10:30:00"
+  },
+  {
+    "id": "PRE-2026-000102",
+    "prescription_id": "PRE-2026-000102",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "health_id": "HC-2026-000001",
+    "doctor_id": "doc-005",
+    "doctor_name": "Dr. P. Venkat Rao",
+    "doctor_qualifications": "MBBS, MD (General Medicine)",
+    "organization_id": "clinic-001",
+    "organization_name": "MedPlus Care Family Clinic",
+    "consultation_date": "2026-01-12",
+    "diagnosis": "Type 2 Diabetes Mellitus (Uncontrolled HbA1c 7.9%)",
+    "symptoms": "Increased thirst, postprandial fatigue",
+    "vitals": {
+      "blood_pressure": "130/84 mmHg",
+      "pulse": "74 bpm",
+      "weight": "74.5 kg"
+    },
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning and Dinner)",
+        "duration": "60 Days",
+        "instructions": "Take with meals to minimize GI distress."
+      },
+      {
+        "name": "Glimepiride 1mg",
+        "dosage": "1mg",
+        "frequency": "Once Daily (Before breakfast)",
+        "duration": "30 Days",
+        "instructions": "Watch for hypoglycemic signs (sweating/tremors)."
+      }
+    ],
+    "advice": "Strict glycemic control, avoid refined carbohydrates and sweets. Retest fasting blood glucose in 4 weeks.",
+    "follow_up_date": "2026-02-12",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-12T11:15:00"
+  },
+  {
+    "id": "PRE-2026-000103",
+    "prescription_id": "PRE-2026-000103",
+    "patient_id": "PAT-2026-000002",
+    "patient_name": "Ananya Krishna Murthy",
+    "health_id": "HC-2026-000002",
+    "doctor_id": "doc-011",
+    "doctor_name": "Dr. S. K. Nageshwar",
+    "doctor_qualifications": "MBBS, MD",
+    "organization_id": "clinic-003",
+    "organization_name": "Tarnaka Diagnostic & Family Clinic",
+    "consultation_date": "2026-01-15",
+    "diagnosis": "Acute Bronchospasm & Seasonal Allergic Rhinitis",
+    "symptoms": "Dry cough, wheezing on exertion, sneezing",
+    "vitals": {
+      "blood_pressure": "118/76 mmHg",
+      "pulse": "82 bpm",
+      "weight": "58 kg"
+    },
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "Take at bedtime."
+      },
+      {
+        "name": "Budesonide Inhaler 200mcg",
+        "dosage": "2 Puffs",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "Rinse mouth thoroughly with water after inhalation."
+      }
+    ],
+    "advice": "Steam inhalation twice daily. Avoid cold beverages and air pollutants.",
+    "follow_up_date": "2026-01-30",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-15T12:00:00"
+  },
+  {
+    "id": "PRE-2026-000104",
+    "prescription_id": "PRE-2026-000104",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "health_id": "HC-2026-000001",
+    "doctor_id": null,
+    "doctor_name": "External Physician (Dr. K. Srinivas Rao)",
+    "doctor_qualifications": "MBBS, DNB",
+    "organization_id": null,
+    "organization_name": "Sai Ram Heart & Chest Clinic (External Upload)",
+    "consultation_date": "2026-01-05",
+    "diagnosis": "Seasonal Upper Respiratory Tract Infection",
+    "symptoms": "Fever, sore throat, myalgia",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "Thrice Daily (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever above 100 F"
+      },
+      {
+        "name": "Amoxicillin & Potassium Clavulanate 625mg",
+        "dosage": "625mg",
+        "frequency": "Twice Daily",
+        "duration": "5 Days",
+        "instructions": "Complete full course"
+      }
+    ],
+    "advice": "Rest and plenty of warm oral fluids.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "ocr_extracted_text": "Rx:\n1. Tab Dolo 650mg TID x 5d\n2. Tab Augmentin 625mg BD x 5d\nAdvice: Warm saline gargle",
+    "created_at": "2026-01-06T14:30:00"
+  },
+  {
+    "id": "PRE-2026-000105",
+    "prescription_id": "PRE-2026-000105",
+    "patient_id": "PAT-2026-000005",
+    "patient_name": "Mohammad Rizwan Khan",
+    "health_id": "HC-2026-000005",
+    "doctor_id": "doc-005",
+    "doctor_name": "Dr. P. Venkat Rao",
+    "doctor_qualifications": "MBBS, MD (General Medicine)",
+    "organization_id": "clinic-001",
+    "organization_name": "MedPlus Care Family Clinic",
+    "consultation_date": "2026-01-15",
+    "diagnosis": "Clinical Evaluation for General Medicine",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-15",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-15T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000106",
+    "prescription_id": "PRE-2026-000106",
+    "patient_id": "PAT-2026-000006",
+    "patient_name": "Kavitha Rao",
+    "health_id": "HC-2026-000006",
+    "doctor_id": "doc-006",
+    "doctor_name": "Dr. Kavita Deshmukh",
+    "doctor_qualifications": "MBBS, MD, Fellowship in Diabetology (UK)",
+    "organization_id": "clinic-004",
+    "organization_name": "Begumpet Diabetes & Heart Care Centre",
+    "consultation_date": "2026-01-16",
+    "diagnosis": "Clinical Evaluation for Endocrinology",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Atorvastatin 10mg",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Azithromycin 500mg",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-16",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-16T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000107",
+    "prescription_id": "PRE-2026-000107",
+    "patient_id": "PAT-2026-000007",
+    "patient_name": "Srinivas Reddy",
+    "health_id": "HC-2026-000007",
+    "doctor_id": "doc-007",
+    "doctor_name": "Dr. Pradeep Chander",
+    "doctor_qualifications": "MBBS, MS (Ortho), Fellowship in Arthroscopy",
+    "organization_id": "hosp-004",
+    "organization_name": "Sunshine Bone & Joint Institute",
+    "consultation_date": "2026-01-17",
+    "diagnosis": "Clinical Evaluation for Orthopedics",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-17",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-17T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000108",
+    "prescription_id": "PRE-2026-000108",
+    "patient_id": "PAT-2026-000008",
+    "patient_name": "Bhavani Patel",
+    "health_id": "HC-2026-000008",
+    "doctor_id": "doc-008",
+    "doctor_name": "Dr. Fatima Zahra",
+    "doctor_qualifications": "MBBS, MD (DVL - Dermatology & Venereology)",
+    "organization_id": "clinic-006",
+    "organization_name": "Osmania Wellness & Skin Clinic",
+    "consultation_date": "2026-01-18",
+    "diagnosis": "Clinical Evaluation for Dermatology",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Amoxicillin & Potassium Clavulanate 625mg",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-18",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-18T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000109",
+    "prescription_id": "PRE-2026-000109",
+    "patient_id": "PAT-2026-000009",
+    "patient_name": "Karthik Naidu",
+    "health_id": "HC-2026-000009",
+    "doctor_id": "doc-009",
+    "doctor_name": "Dr. T. Harinath",
+    "doctor_qualifications": "MBBS, MD (Pulmonology), FCCP",
+    "organization_id": "hosp-005",
+    "organization_name": "LifeLine MedCity Multi-Speciality",
+    "consultation_date": "2026-01-19",
+    "diagnosis": "Clinical Evaluation for Pulmonology",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Azithromycin 500mg",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Vitamin D3 60,000 IU Capsule",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-19T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000110",
+    "prescription_id": "PRE-2026-000110",
+    "patient_id": "PAT-2026-000010",
+    "patient_name": "Padmaja Chowdary",
+    "health_id": "HC-2026-000010",
+    "doctor_id": "doc-010",
+    "doctor_name": "Dr. Madhavi Latha",
+    "doctor_qualifications": "MBBS, MS (Obstetrics & Gynecology)",
+    "organization_id": "clinic-002",
+    "organization_name": "Sri Balaji Polyclinic & Daycare",
+    "consultation_date": "2026-01-10",
+    "diagnosis": "Clinical Evaluation for Gynecology",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-10",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-10T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000111",
+    "prescription_id": "PRE-2026-000111",
+    "patient_id": "PAT-2026-000011",
+    "patient_name": "Ramesh Gupta",
+    "health_id": "HC-2026-000011",
+    "doctor_id": "doc-011",
+    "doctor_name": "Dr. S. K. Nageshwar",
+    "doctor_qualifications": "MBBS, MD (General Medicine)",
+    "organization_id": "clinic-003",
+    "organization_name": "Tarnaka Diagnostic & Family Clinic",
+    "consultation_date": "2026-01-11",
+    "diagnosis": "Clinical Evaluation for General Medicine",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Atorvastatin 10mg",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-11",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-11T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000112",
+    "prescription_id": "PRE-2026-000112",
+    "patient_id": "PAT-2026-000012",
+    "patient_name": "Deepika Deshpande",
+    "health_id": "HC-2026-000012",
+    "doctor_id": "doc-012",
+    "doctor_name": "Dr. Vinay Kumar",
+    "doctor_qualifications": "MBBS, MS (ENT), DLO",
+    "organization_id": "clinic-007",
+    "organization_name": "Metro Chest & ENT Clinic",
+    "consultation_date": "2026-01-12",
+    "diagnosis": "Clinical Evaluation for ENT",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Amoxicillin & Potassium Clavulanate 625mg",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-12",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-12T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000113",
+    "prescription_id": "PRE-2026-000113",
+    "patient_id": "PAT-2026-000013",
+    "patient_name": "Mahesh Kumar",
+    "health_id": "HC-2026-000013",
+    "doctor_id": "doc-013",
+    "doctor_name": "Dr. Rohit Agarwal",
+    "doctor_qualifications": "MBBS, MD (Pediatrics)",
+    "organization_id": "clinic-005",
+    "organization_name": "Nacharam Polyclinic & Child Care",
+    "consultation_date": "2026-01-13",
+    "diagnosis": "Clinical Evaluation for Pediatrics",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Amoxicillin & Potassium Clavulanate 625mg",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Glimepiride 1mg",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-13",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-13T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000114",
+    "prescription_id": "PRE-2026-000114",
+    "patient_id": "PAT-2026-000014",
+    "patient_name": "Sowmya Iyer",
+    "health_id": "HC-2026-000014",
+    "doctor_id": "doc-014",
+    "doctor_name": "Dr. Kiranmai V.",
+    "doctor_qualifications": "MBBS, DNB (General Medicine), DNB (Cardiology)",
+    "organization_id": "hosp-002",
+    "organization_name": "Apollo Reach Multi-Speciality Hospital",
+    "consultation_date": "2026-01-14",
+    "diagnosis": "Clinical Evaluation for Cardiology",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Azithromycin 500mg",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Atorvastatin 10mg",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-14",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-14T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000115",
+    "prescription_id": "PRE-2026-000115",
+    "patient_id": "PAT-2026-000015",
+    "patient_name": "Harish Chary",
+    "health_id": "HC-2026-000015",
+    "doctor_id": "doc-015",
+    "doctor_name": "Dr. Anand Swaroop",
+    "doctor_qualifications": "MBBS, MS (Ortho), Fellowship in Joint Reconstruction",
+    "organization_id": "clinic-008",
+    "organization_name": "Anand Ortho & Physiotherapy Clinic",
+    "consultation_date": "2026-01-15",
+    "diagnosis": "Clinical Evaluation for Orthopedics",
+    "symptoms": "Mild symptoms reported during routine consultation",
+    "vitals": {
+      "blood_pressure": "120/80 mmHg",
+      "pulse": "72 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "Standard",
+        "frequency": "Once Daily",
+        "duration": "15 Days",
+        "instructions": "Take after meals."
+      },
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "Standard",
+        "frequency": "Twice Daily",
+        "duration": "10 Days",
+        "instructions": "With water."
+      }
+    ],
+    "advice": "Routine clinical follow-up as advised.",
+    "follow_up_date": "2026-02-15",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-01-15T11:00:00"
+  },
+  {
+    "id": "PRE-2026-000116",
+    "prescription_id": "PRE-2026-000116",
+    "appointment_id": "APT-2026-000031",
+    "patient_id": "PAT-2026-000021",
+    "patient_name": "Aditya V. Sharma 6662",
+    "health_id": "HC-2026-000021",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T14:29:04.983157"
+  },
+  {
+    "id": "PRE-2026-000117",
+    "prescription_id": "PRE-2026-000117",
+    "patient_id": "PAT-2026-000021",
+    "patient_name": "Aditya V. Sharma 6662",
+    "health_id": "HC-2026-000021",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T14:29:05.017234"
+  },
+  {
+    "id": "PRE-2026-000118",
+    "prescription_id": "PRE-2026-000118",
+    "appointment_id": "APT-2026-000032",
+    "patient_id": "PAT-2026-000023",
+    "patient_name": "Aditya V. Sharma 4250",
+    "health_id": "HC-2026-000023",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T14:58:33.801109"
+  },
+  {
+    "id": "PRE-2026-000119",
+    "prescription_id": "PRE-2026-000119",
+    "patient_id": "PAT-2026-000023",
+    "patient_name": "Aditya V. Sharma 4250",
+    "health_id": "HC-2026-000023",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T14:58:33.849292"
+  },
+  {
+    "id": "PRE-2026-000120",
+    "prescription_id": "PRE-2026-000120",
+    "appointment_id": "APT-2026-000033",
+    "patient_id": "PAT-2026-000024",
+    "patient_name": "Aditya V. Sharma 7165",
+    "health_id": "HC-2026-000024",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:01:16.076404"
+  },
+  {
+    "id": "PRE-2026-000121",
+    "prescription_id": "PRE-2026-000121",
+    "patient_id": "PAT-2026-000024",
+    "patient_name": "Aditya V. Sharma 7165",
+    "health_id": "HC-2026-000024",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:01:16.111018"
+  },
+  {
+    "id": "PRE-2026-000122",
+    "prescription_id": "PRE-2026-000122",
+    "appointment_id": "APT-2026-000034",
+    "patient_id": "PAT-2026-000025",
+    "patient_name": "Aditya V. Sharma 7969",
+    "health_id": "HC-2026-000025",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:01:40.162667"
+  },
+  {
+    "id": "PRE-2026-000123",
+    "prescription_id": "PRE-2026-000123",
+    "patient_id": "PAT-2026-000025",
+    "patient_name": "Aditya V. Sharma 7969",
+    "health_id": "HC-2026-000025",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:01:40.202298"
+  },
+  {
+    "id": "PRE-2026-000124",
+    "prescription_id": "PRE-2026-000124",
+    "appointment_id": "APT-2026-000035",
+    "patient_id": "PAT-2026-000027",
+    "patient_name": "Aditya V. Sharma 8944",
+    "health_id": "HC-2026-000027",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:10:31.196536"
+  },
+  {
+    "id": "PRE-2026-000125",
+    "prescription_id": "PRE-2026-000125",
+    "patient_id": "PAT-2026-000027",
+    "patient_name": "Aditya V. Sharma 8944",
+    "health_id": "HC-2026-000027",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:10:31.239027"
+  },
+  {
+    "id": "PRE-2026-000126",
+    "prescription_id": "PRE-2026-000126",
+    "appointment_id": "APT-2026-000036",
+    "patient_id": "PAT-2026-000028",
+    "patient_name": "Aditya V. Sharma 2107",
+    "health_id": "HC-2026-000028",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:13:34.486962"
+  },
+  {
+    "id": "PRE-2026-000127",
+    "prescription_id": "PRE-2026-000127",
+    "patient_id": "PAT-2026-000028",
+    "patient_name": "Aditya V. Sharma 2107",
+    "health_id": "HC-2026-000028",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:13:34.525250"
+  },
+  {
+    "id": "PRE-2026-000128",
+    "prescription_id": "PRE-2026-000128",
+    "appointment_id": "APT-2026-000037",
+    "patient_id": "PAT-2026-000029",
+    "patient_name": "Aditya V. Sharma 4502",
+    "health_id": "HC-2026-000029",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:36:56.778089"
+  },
+  {
+    "id": "PRE-2026-000129",
+    "prescription_id": "PRE-2026-000129",
+    "patient_id": "PAT-2026-000029",
+    "patient_name": "Aditya V. Sharma 4502",
+    "health_id": "HC-2026-000029",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:36:56.813740"
+  },
+  {
+    "id": "PRE-2026-000130",
+    "prescription_id": "PRE-2026-000130",
+    "appointment_id": "APT-2026-000038",
+    "patient_id": "PAT-2026-000030",
+    "patient_name": "Aditya V. Sharma 7595",
+    "health_id": "HC-2026-000030",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:37:54.041739"
+  },
+  {
+    "id": "PRE-2026-000131",
+    "prescription_id": "PRE-2026-000131",
+    "patient_id": "PAT-2026-000030",
+    "patient_name": "Aditya V. Sharma 7595",
+    "health_id": "HC-2026-000030",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:37:54.075009"
+  },
+  {
+    "id": "PRE-2026-000132",
+    "prescription_id": "PRE-2026-000132",
+    "appointment_id": "APT-2026-000039",
+    "patient_id": "PAT-2026-000031",
+    "patient_name": "Aditya V. Sharma 7127",
+    "health_id": "HC-2026-000031",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T15:39:04.111624"
+  },
+  {
+    "id": "PRE-2026-000133",
+    "prescription_id": "PRE-2026-000133",
+    "patient_id": "PAT-2026-000031",
+    "patient_name": "Aditya V. Sharma 7127",
+    "health_id": "HC-2026-000031",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T15:39:04.162453"
+  },
+  {
+    "id": "PRE-2026-000134",
+    "prescription_id": "PRE-2026-000134",
+    "appointment_id": "APT-2026-000040",
+    "patient_id": "PAT-2026-000032",
+    "patient_name": "Aditya V. Sharma 0711",
+    "health_id": "HC-2026-000032",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T16:14:48.485520"
+  },
+  {
+    "id": "PRE-2026-000135",
+    "prescription_id": "PRE-2026-000135",
+    "patient_id": "PAT-2026-000032",
+    "patient_name": "Aditya V. Sharma 0711",
+    "health_id": "HC-2026-000032",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T16:14:48.529121"
+  },
+  {
+    "id": "PRE-2026-000136",
+    "prescription_id": "PRE-2026-000136",
+    "appointment_id": "APT-2026-000041",
+    "patient_id": "PAT-2026-000033",
+    "patient_name": "Aditya V. Sharma 3571",
+    "health_id": "HC-2026-000033",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T16:27:31.760604"
+  },
+  {
+    "id": "PRE-2026-000137",
+    "prescription_id": "PRE-2026-000137",
+    "patient_id": "PAT-2026-000033",
+    "patient_name": "Aditya V. Sharma 3571",
+    "health_id": "HC-2026-000033",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T16:27:31.847076"
+  },
+  {
+    "id": "PRE-2026-000138",
+    "prescription_id": "PRE-2026-000138",
+    "appointment_id": "APT-2026-000042",
+    "patient_id": "PAT-2026-000034",
+    "patient_name": "Aditya V. Sharma 3016",
+    "health_id": "HC-2026-000034",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T16:28:17.750214"
+  },
+  {
+    "id": "PRE-2026-000139",
+    "prescription_id": "PRE-2026-000139",
+    "patient_id": "PAT-2026-000034",
+    "patient_name": "Aditya V. Sharma 3016",
+    "health_id": "HC-2026-000034",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T16:28:17.795519"
+  },
+  {
+    "id": "PRE-2026-000140",
+    "prescription_id": "PRE-2026-000140",
+    "appointment_id": "APT-2026-000043",
+    "patient_id": "PAT-2026-000035",
+    "patient_name": "Aditya V. Sharma 9528",
+    "health_id": "HC-2026-000035",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T16:30:19.303210"
+  },
+  {
+    "id": "PRE-2026-000141",
+    "prescription_id": "PRE-2026-000141",
+    "patient_id": "PAT-2026-000035",
+    "patient_name": "Aditya V. Sharma 9528",
+    "health_id": "HC-2026-000035",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T16:30:19.347582"
+  },
+  {
+    "id": "PRE-2026-000142",
+    "prescription_id": "PRE-2026-000142",
+    "appointment_id": "APT-2026-000044",
+    "patient_id": "PAT-2026-000036",
+    "patient_name": "Aditya V. Sharma 0751",
+    "health_id": "HC-2026-000036",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T17:15:15.412611"
+  },
+  {
+    "id": "PRE-2026-000143",
+    "prescription_id": "PRE-2026-000143",
+    "patient_id": "PAT-2026-000036",
+    "patient_name": "Aditya V. Sharma 0751",
+    "health_id": "HC-2026-000036",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T17:15:15.464873"
+  },
+  {
+    "id": "PRE-2026-000144",
+    "prescription_id": "PRE-2026-000144",
+    "appointment_id": "APT-2026-000048",
+    "patient_id": "PAT-2026-000037",
+    "patient_name": "Aditya V. Sharma 1780",
+    "health_id": "HC-2026-000037",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T17:20:45.497628"
+  },
+  {
+    "id": "PRE-2026-000145",
+    "prescription_id": "PRE-2026-000145",
+    "patient_id": "PAT-2026-000037",
+    "patient_name": "Aditya V. Sharma 1780",
+    "health_id": "HC-2026-000037",
+    "doctor_id": null,
+    "doctor_name": "Dr. Ramesh Babu, MD (Medicine)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Sri Venkateshwara Medical Center, Tarnaka",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily (Morning & Night)",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      },
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed time"
+      },
+      {
+        "name": "Pantoprazole 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "15 Days",
+        "instructions": "Empty stomach"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T17:20:45.533511"
+  },
+  {
+    "id": "PRE-2026-000146",
+    "prescription_id": "PRE-2026-000146",
+    "appointment_id": "APT-2026-000050",
+    "patient_id": "PAT-2026-000038",
+    "patient_name": "Aditya V. Sharma 0654",
+    "health_id": "HC-2026-000038",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T17:40:08.567803"
+  },
+  {
+    "id": "PRE-2026-000147",
+    "prescription_id": "PRE-2026-000147",
+    "patient_id": "PAT-2026-000038",
+    "patient_name": "Aditya V. Sharma 0654",
+    "health_id": "HC-2026-000038",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T17:40:08.635995"
+  },
+  {
+    "id": "PRE-2026-000148",
+    "prescription_id": "PRE-2026-000148",
+    "appointment_id": "APT-2026-000051",
+    "patient_id": "PAT-2026-000040",
+    "patient_name": "Aditya V. Sharma 6440",
+    "health_id": "HC-2026-000040",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T18:30:01.053528"
+  },
+  {
+    "id": "PRE-2026-000149",
+    "prescription_id": "PRE-2026-000149",
+    "patient_id": "PAT-2026-000040",
+    "patient_name": "Aditya V. Sharma 6440",
+    "health_id": "HC-2026-000040",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T18:30:01.105573"
+  },
+  {
+    "id": "PRE-2026-000150",
+    "prescription_id": "PRE-2026-000150",
+    "appointment_id": "APT-2026-000052",
+    "patient_id": "PAT-2026-000041",
+    "patient_name": "Aditya V. Sharma 2175",
+    "health_id": "HC-2026-000041",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T18:30:31.620744"
+  },
+  {
+    "id": "PRE-2026-000151",
+    "prescription_id": "PRE-2026-000151",
+    "patient_id": "PAT-2026-000041",
+    "patient_name": "Aditya V. Sharma 2175",
+    "health_id": "HC-2026-000041",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T18:30:31.671636"
+  },
+  {
+    "id": "PRE-2026-000152",
+    "prescription_id": "PRE-2026-000152",
+    "appointment_id": "APT-2026-000060",
+    "patient_id": "PAT-2026-000042",
+    "patient_name": "Aditya V. Sharma 8686",
+    "health_id": "HC-2026-000042",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Mild Essential Hypertension (Stage 1)",
+    "symptoms": "Occasional exertional breathlessness",
+    "vitals": {
+      "blood_pressure": "142/90 mmHg",
+      "pulse": "76 bpm"
+    },
+    "medicines": [
+      {
+        "name": "Telmisartan 40mg",
+        "dosage": "40mg",
+        "frequency": "Once Daily (Morning)",
+        "duration": "30 Days",
+        "instructions": "Fixed hour"
+      },
+      {
+        "name": "Metformin 500mg SR",
+        "dosage": "500mg",
+        "frequency": "Twice Daily",
+        "duration": "30 Days",
+        "instructions": "After meals"
+      }
+    ],
+    "advice": "Low salt diet, brisk walk 30 mins daily",
+    "follow_up_date": "2026-12-19",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-19T19:18:04.357374"
+  },
+  {
+    "id": "PRE-2026-000153",
+    "prescription_id": "PRE-2026-000153",
+    "patient_id": "PAT-2026-000042",
+    "patient_name": "Aditya V. Sharma 8686",
+    "health_id": "HC-2026-000042",
+    "doctor_id": null,
+    "doctor_name": "Dr. Geetha S., MBBS, DNB (Chest)",
+    "doctor_qualifications": "MBBS",
+    "organization_id": null,
+    "organization_name": "Secunderabad Respiratory Clinic",
+    "consultation_date": "2026-11-19",
+    "diagnosis": "Prescription Uploaded by Patient (OCR Verified)",
+    "symptoms": "Prescription from previous consultation",
+    "vitals": {},
+    "medicines": [
+      {
+        "name": "Montelukast & Levocetirizine",
+        "dosage": "10mg + 5mg",
+        "frequency": "Once Daily (Night)",
+        "duration": "14 Days",
+        "instructions": "At bedtime"
+      },
+      {
+        "name": "Paracetamol 650mg (Dolo)",
+        "dosage": "650mg",
+        "frequency": "When Required (SOS)",
+        "duration": "5 Days",
+        "instructions": "For fever or body pain"
+      }
+    ],
+    "advice": "Patient verified OCR extracted medicines.",
+    "follow_up_date": null,
+    "status": "Patient Uploaded (OCR Verified)",
+    "type": "uploaded_ocr",
+    "file_image": "prescription_sample_scan.jpg",
+    "created_at": "2026-11-19T19:18:04.416476"
+  }
+]

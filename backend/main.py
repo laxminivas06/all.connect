@@ -12,6 +12,14 @@ if str(backend_dir) not in sys.path:
 
 from config import UPLOADS_DIR
 from database.seed import seed_database
+
+# Prevent route registration crash on hosts with conflicting multipart package
+try:
+    import fastapi.dependencies.utils as _fdu
+    _fdu.ensure_multipart_is_installed = lambda: None
+except Exception:
+    pass
+
 from routes import (
     auth,
     patients,

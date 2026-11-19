@@ -1,5 +1,5 @@
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 # AUTH
 class LoginRequest(BaseModel):
@@ -8,7 +8,7 @@ class LoginRequest(BaseModel):
 
 class PatientRegisterRequest(BaseModel):
     full_name: str
-    email: EmailStr
+    email: str
     mobile: str
     dob: str
     gender: str
@@ -24,7 +24,7 @@ class PatientRegisterRequest(BaseModel):
 class OrgRegisterRequest(BaseModel):
     organization_name: str
     organization_type: str  # hospital or clinic
-    email: EmailStr
+    email: str
     phone: str
     address: str
     area: str

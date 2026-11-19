@@ -1,0 +1,92 @@
+[
+  {
+    "id": "med-01",
+    "name": "Metformin 500mg SR",
+    "generic_name": "Metformin Hydrochloride",
+    "category": "Diabetes",
+    "unit_price": 42.0,
+    "strip_size": "10 Tablets",
+    "requires_prescription": true
+  },
+  {
+    "id": "med-02",
+    "name": "Telmisartan 40mg",
+    "generic_name": "Telmisartan",
+    "category": "Cardiology / BP",
+    "unit_price": 78.5,
+    "strip_size": "15 Tablets",
+    "requires_prescription": true
+  },
+  {
+    "id": "med-03",
+    "name": "Atorvastatin 10mg",
+    "generic_name": "Atorvastatin Calcium",
+    "category": "Cholesterol",
+    "unit_price": 95.0,
+    "strip_size": "10 Tablets",
+    "requires_prescription": true
+  },
+  {
+    "id": "med-04",
+    "name": "Pantoprazole 40mg",
+    "generic_name": "Pantoprazole Sodium",
+    "category": "Gastroenterology",
+    "unit_price": 85.0,
+    "strip_size": "15 Tablets",
+    "requires_prescription": false
+  },
+  {
+    "id": "med-05",
+    "name": "Paracetamol 650mg (Dolo)",
+    "generic_name": "Paracetamol",
+    "category": "Analgesic / Antipyretic",
+    "unit_price": 32.0,
+    "strip_size": "15 Tablets",
+    "requires_prescription": false
+  },
+  {
+    "id": "med-06",
+    "name": "Montelukast & Levocetirizine",
+    "generic_name": "Montelukast 10mg + Levocetirizine 5mg",
+    "category": "Allergy / Respiratory",
+    "unit_price": 120.0,
+    "strip_size": "10 Tablets",
+    "requires_prescription": true
+  },
+  {
+    "id": "med-07",
+    "name": "Amoxicillin & Potassium Clavulanate 625mg",
+    "generic_name": "Augmentin / Amoxyclav",
+    "category": "Antibiotic",
+    "unit_price": 185.0,
+    "strip_size": "10 Tablets",
+    "requires_prescription": true
+  },
+  {
+    "id": "med-08",
+    "name": "Vitamin D3 60,000 IU Capsule",
+    "generic_name": "Cholecalciferol",
+    "category": "Vitamins / Supplements",
+    "unit_price": 110.0,
+    "strip_size": "4 Capsules",
+    "requires_prescription": false
+  },
+  {
+    "id": "med-09",
+    "name": "Azithromycin 500mg",
+    "generic_name": "Azithromycin Dihydrate",
+    "category": "Antibiotic",
+    "unit_price": 115.0,
+    "strip_size": "5 Tablets",
+    "requires_prescription": true
+  },
+  {
+    "id": "med-10",
+    "name": "Glimepiride 1mg",
+    "generic_name": "Glimepiride",
+    "category": "Diabetes",
+    "unit_price": 54.0,
+    "strip_size": "10 Tablets",
+    "requires_prescription": true
+  }
+]

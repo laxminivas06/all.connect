@@ -1,0 +1,58 @@
+[
+  {
+    "id": "plan-starter",
+    "name": "Starter Plan",
+    "type": "starter",
+    "monthly_price": 4999,
+    "annual_price": 49999,
+    "doctor_limit": 5,
+    "staff_limit": 5,
+    "appointment_limit": 500,
+    "features": [
+      "Basic Organization Profile & Marketplace Listing",
+      "Appointment Management & Queue Display",
+      "Patient Registration & Records Access",
+      "Daily Revenue Reports",
+      "Standard Email/Chat Support"
+    ],
+    "description": "Designed for independent clinics and small polyclinics."
+  },
+  {
+    "id": "plan-professional",
+    "name": "Professional Plan",
+    "type": "professional",
+    "monthly_price": 12999,
+    "annual_price": 129999,
+    "doctor_limit": 20,
+    "staff_limit": 25,
+    "appointment_limit": 3000,
+    "features": [
+      "Everything in Starter Plan",
+      "Digital Prescriptions Editor with Drug Interaction alerts",
+      "Full Billing & Invoice Generation",
+      "Promotional Packages & Offer Publishing Workflow",
+      "Detailed Monthly Financial Analytics",
+      "Priority Support (12 Hour SLA)"
+    ],
+    "description": "Ideal for mid-sized multi-speciality hospitals and busy medical centres."
+  },
+  {
+    "id": "plan-enterprise",
+    "name": "Enterprise Plan",
+    "type": "enterprise",
+    "monthly_price": 29999,
+    "annual_price": 299999,
+    "doctor_limit": 100,
+    "staff_limit": 150,
+    "appointment_limit": 50000,
+    "features": [
+      "Everything in Professional Plan",
+      "Multiple Branches / Campus Coordination",
+      "Advanced Custom Revenue & Operational BI Analytics",
+      "EHR / EMR Interoperability & Consent Audit Logs",
+      "Custom Roles and Granular Department Permissions",
+      "24x7 Dedicated Account Manager & Telephony Support"
+    ],
+    "description": "Comprehensive SaaS for major hospital chains and multi-campus tertiary hospitals."
+  }
+]

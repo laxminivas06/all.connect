@@ -1,0 +1,800 @@
+[
+  {
+    "id": "clinic-001",
+    "name": "MedPlus Care Family Clinic",
+    "organization_type": "clinic",
+    "tagline": "Your Trusted Neighborhood Family Physician",
+    "address": "Anandbagh Main Road, Malkajgiri, Hyderabad 500047",
+    "area": "Malkajgiri",
+    "city": "Hyderabad",
+    "pincode": "500047",
+    "coordinates": {
+      "lat": 17.4521,
+      "lng": 78.5302
+    },
+    "contact_phone": "+91 40 2724 9911",
+    "email": "malkajgiri@medplusclinic.in",
+    "rating": 4.6,
+    "reviews_count": 310,
+    "departments": [
+      "General Medicine",
+      "Diabetology",
+      "Pediatrics"
+    ],
+    "operating_hours": "08:00 AM - 01:00 PM | 05:00 PM - 09:30 PM",
+    "subscription_plan": "starter",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-10T10:00:00"
+  },
+  {
+    "id": "clinic-002",
+    "name": "Sri Balaji Polyclinic & Daycare",
+    "organization_type": "clinic",
+    "tagline": "Holistic Healthcare for All Generations",
+    "address": "Near Survey of India, Uppal, Hyderabad 500039",
+    "area": "Uppal",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "coordinates": {
+      "lat": 17.4012,
+      "lng": 78.5621
+    },
+    "contact_phone": "+91 40 2720 1234",
+    "email": "info@sribalajiclinic.com",
+    "rating": 4.5,
+    "reviews_count": 240,
+    "departments": [
+      "General Medicine",
+      "Pediatrics",
+      "Gynecology"
+    ],
+    "operating_hours": "09:00 AM - 01:30 PM | 05:30 PM - 09:00 PM",
+    "subscription_plan": "starter",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-11T12:00:00"
+  },
+  {
+    "id": "clinic-003",
+    "name": "Tarnaka Diagnostic & Family Clinic",
+    "organization_type": "clinic",
+    "tagline": "Fast Diagnostics with Compassionate Clinical Care",
+    "address": "Street No. 1, Near Metro Station, Tarnaka, Secunderabad 500017",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5358
+    },
+    "contact_phone": "+91 40 2701 4455",
+    "email": "tarnakaclinic@healthcorp.in",
+    "rating": 4.7,
+    "reviews_count": 420,
+    "departments": [
+      "General Medicine",
+      "Pathology",
+      "Cardiology"
+    ],
+    "operating_hours": "07:30 AM - 08:30 PM",
+    "subscription_plan": "professional",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-12T14:00:00"
+  },
+  {
+    "id": "clinic-004",
+    "name": "Begumpet Diabetes & Heart Care Centre",
+    "organization_type": "clinic",
+    "tagline": "Specialized Metabolic & Cardiac Preventative Clinic",
+    "address": "Prakash Nagar, Begumpet, Hyderabad 500016",
+    "area": "Begumpet",
+    "city": "Hyderabad",
+    "pincode": "500016",
+    "coordinates": {
+      "lat": 17.4429,
+      "lng": 78.4721
+    },
+    "contact_phone": "+91 40 2776 8811",
+    "email": "diabetes@begumpetclinic.com",
+    "rating": 4.9,
+    "reviews_count": 510,
+    "departments": [
+      "Endocrinology",
+      "Cardiology",
+      "Dietetics"
+    ],
+    "operating_hours": "09:00 AM - 02:00 PM | 04:30 PM - 08:30 PM",
+    "subscription_plan": "professional",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-13T10:00:00"
+  },
+  {
+    "id": "clinic-005",
+    "name": "Nacharam Polyclinic & Child Care",
+    "organization_type": "clinic",
+    "tagline": "Expert Pediatric, Vaccination and Family Health Care",
+    "address": "Industrial Area Road, Nacharam, Hyderabad 500076",
+    "area": "Nacharam",
+    "city": "Hyderabad",
+    "pincode": "500076",
+    "coordinates": {
+      "lat": 17.4362,
+      "lng": 78.5684
+    },
+    "contact_phone": "+91 40 2717 3344",
+    "email": "care@nacharampolyclinic.org",
+    "rating": 4.4,
+    "reviews_count": 180,
+    "departments": [
+      "Pediatrics",
+      "General Medicine",
+      "Immunization"
+    ],
+    "operating_hours": "09:30 AM - 01:00 PM | 05:00 PM - 09:00 PM",
+    "subscription_plan": "starter",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-14T11:30:00"
+  },
+  {
+    "id": "clinic-006",
+    "name": "Osmania Wellness & Skin Clinic",
+    "organization_type": "clinic",
+    "tagline": "Advanced Clinical Dermatology and Aesthetic Care",
+    "address": "Opp. University Campus Gate, Tarnaka, Hyderabad 500007",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500007",
+    "coordinates": {
+      "lat": 17.4241,
+      "lng": 78.5309
+    },
+    "contact_phone": "+91 40 2700 7788",
+    "email": "dermat@osmaniawellness.in",
+    "rating": 4.8,
+    "reviews_count": 390,
+    "departments": [
+      "Dermatology",
+      "Trichology",
+      "Cosmetology"
+    ],
+    "operating_hours": "10:00 AM - 07:00 PM",
+    "subscription_plan": "starter",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-15T15:00:00"
+  },
+  {
+    "id": "clinic-007",
+    "name": "Metro Chest & ENT Clinic",
+    "organization_type": "clinic",
+    "tagline": "Respiratory Wellness, Allergy & Hearing Clinic",
+    "address": "Regimental Bazaar, Secunderabad 500025",
+    "area": "Secunderabad",
+    "city": "Hyderabad",
+    "pincode": "500025",
+    "coordinates": {
+      "lat": 17.4371,
+      "lng": 78.5029
+    },
+    "contact_phone": "+91 40 2780 1199",
+    "email": "metrochest@entclinic.in",
+    "rating": 4.5,
+    "reviews_count": 215,
+    "departments": [
+      "Pulmonology",
+      "ENT",
+      "Allergy Testing"
+    ],
+    "operating_hours": "09:00 AM - 01:00 PM | 05:00 PM - 08:30 PM",
+    "subscription_plan": "starter",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-16T10:00:00"
+  },
+  {
+    "id": "clinic-008",
+    "name": "Anand Ortho & Physiotherapy Clinic",
+    "organization_type": "clinic",
+    "tagline": "Mobility Restored Through Evidence-based Rehabilitation",
+    "address": "Peerzadiguda Main Road, Uppal, Hyderabad 500039",
+    "area": "Uppal",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "coordinates": {
+      "lat": 17.4089,
+      "lng": 78.5812
+    },
+    "contact_phone": "+91 40 2721 5566",
+    "email": "anand.ortho@physiocare.in",
+    "rating": 4.7,
+    "reviews_count": 290,
+    "departments": [
+      "Orthopedics",
+      "Physiotherapy",
+      "Sports Injury"
+    ],
+    "operating_hours": "08:30 AM - 01:00 PM | 04:30 PM - 09:00 PM",
+    "subscription_plan": "starter",
+    "subscription_status": "active",
+    "verification_status": "verified",
+    "publishing_status": "published",
+    "created_at": "2026-01-17T12:00:00"
+  },
+  {
+    "id": "clinic-009",
+    "name": "Gachibowli Pediatric & Child Care",
+    "organization_type": "clinic",
+    "specialty": "Pediatrics",
+    "logo_url": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=400&q=80",
+    "cover_image_url": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80",
+    "website": "https://www.clinic-009.health",
+    "registration_number": "TS-CLN-2026-8811",
+    "contact_phone": "+91 40 2311 4455",
+    "phone": "+91 40 2311 4455",
+    "email": "care@gachibowlipediatrics.in",
+    "address": "Main Road",
+    "locality": "Gachibowli",
+    "area": "Gachibowli",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500032",
+    "latitude": 17.4401,
+    "longitude": 78.3489,
+    "coordinates": {
+      "lat": 17.4401,
+      "lng": 78.3489
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "verification_status": "verified",
+    "account_status": "active",
+    "publishing_status": "published",
+    "verification_documents": [
+      "Clinic-Establishment-Licence.pdf"
+    ],
+    "admin_remarks": "Registered and vetted by Super Admin",
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T16:28:04.767959"
+  },
+  {
+    "id": "clinic-010",
+    "name": "ng",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Family Medicine",
+    "logo_url": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=400&q=80",
+    "cover_image_url": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80",
+    "website": "https://www.clinic-010.health",
+    "registration_number": "dggdgdgdgdgd",
+    "contact_phone": "+919059160424",
+    "phone": "+919059160424",
+    "email": "morishettylaxminivas@gmail.com",
+    "address": "Suraj Nagar Colony, Turka Yamjal",
+    "locality": "Jubilee Hills",
+    "area": "Jubilee Hills",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "501510",
+    "latitude": 17.4319,
+    "longitude": 78.4073,
+    "coordinates": {
+      "lat": 17.4319,
+      "lng": 78.4073
+    },
+    "subscription_plan": "clinic_starter",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "verification_status": "verified",
+    "account_status": "active",
+    "publishing_status": "published",
+    "verification_documents": [
+      "Clinic-Establishment-Registration.pdf"
+    ],
+    "admin_remarks": "Accredited clinic",
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T16:40:47.934393"
+  },
+  {
+    "id": "clinic-011",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795097020.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T19:33:40.565247",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795097020.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795097020.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795097020.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T19:33:40.582284",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795097020.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795097020.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T19:33:40.787771",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T19:33:40.787792"
+  },
+  {
+    "id": "clinic-012",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795097147.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T19:35:47.188574",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795097147.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795097147.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795097147.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T19:35:47.203798",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795097147.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795097147.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T19:35:47.406587",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T19:35:47.406608"
+  },
+  {
+    "id": "clinic-013",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795099941.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T20:22:21.002249",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795099941.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795099941.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795099941.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T20:22:21.021813",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795099941.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795099941.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T20:22:21.235452",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T20:22:21.235474"
+  },
+  {
+    "id": "clinic-014",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795107030.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T22:20:30.131790",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795107030.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795107030.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795107030.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T22:20:30.159883",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795107030.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795107030.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T22:20:30.522982",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T22:20:30.523010"
+  },
+  {
+    "id": "clinic-015",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795107165.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T22:22:45.630205",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795107165.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795107165.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795107165.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T22:22:45.662857",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795107165.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795107165.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T22:22:46.139808",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T22:22:46.140028"
+  },
+  {
+    "id": "clinic-016",
+    "name": "MedLife Family Health Clinic",
+    "organization_type": "clinic",
+    "specialty": "Primary Care & Preventive Medicine",
+    "tagline": "Excellence in Outpatient Healthcare",
+    "rating": 4.7,
+    "reviews_count": 35,
+    "operating_hours": "09:00 AM - 08:00 PM",
+    "departments": [
+      "General Practice",
+      "Family Medicine",
+      "Preventive Health"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-CLN-2026-9041",
+    "contact_phone": "+91 40 2339 1234",
+    "phone": "+91 40 2339 1234",
+    "email": "medlife.clinic@example.com",
+    "address": "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+    "locality": "Somajiguda",
+    "area": "Somajiguda",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500082",
+    "country": "India",
+    "latitude": 17.4285,
+    "longitude": 78.5382,
+    "coordinates": {
+      "lat": 17.4285,
+      "lng": 78.5382
+    },
+    "subscription_plan": "clinic_pro",
+    "billing_cycle": "monthly",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "pending_verification",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "unpublished",
+    "appointment_availability_status": "disabled",
+    "verification_documents": [
+      {
+        "document_name": "Clinical Establishment Registration",
+        "file_name": "hospital_doc_doc_1_1795107954.pdf",
+        "original_name": "doc_1.pdf",
+        "file_type": "pdf",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "application/pdf",
+        "uploaded_at": "2026-11-19T22:35:54.175973",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_1_1795107954.pdf",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_1_1795107954.pdf",
+        "status": "pending_verification"
+      },
+      {
+        "document_name": "Trade Licence Certificate",
+        "file_name": "hospital_doc_doc_2_1795107954.jpg",
+        "original_name": "doc_2.jpg",
+        "file_type": "jpg",
+        "size_bytes": 35840,
+        "size_formatted": "35.0 KB",
+        "content_type": "image/jpeg",
+        "uploaded_at": "2026-11-19T22:35:54.210672",
+        "view_url": "/api/admin/documents/view/hospital_doc_doc_2_1795107954.jpg",
+        "download_url": "/api/admin/documents/download/hospital_doc_doc_2_1795107954.jpg",
+        "status": "pending_verification"
+      }
+    ],
+    "admin_remarks": "Awaiting accreditation review by Super Admin",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-19T22:35:54.692801",
+        "remarks": "Registration submitted for verification"
+      }
+    ],
+    "registered_at": "2026-11-19",
+    "created_at": "2026-11-19T22:35:54.692880"
+  }
+]

@@ -1,0 +1,1324 @@
+[
+  {
+    "id": "PAT-2026-000001",
+    "patient_id": "PAT-2026-000001",
+    "health_id": "HC-2026-000001",
+    "user_id": "usr-patient-01",
+    "full_name": "Laxmi Narayana Sharma",
+    "email": "laxmi.narayana@gmail.com",
+    "mobile": "+91 98480 11001",
+    "dob": "1982-05-14",
+    "age": 44,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 402, Srinidhi Nilayam, Yemjal, Hyderabad",
+    "area": "Malkajgiri",
+    "city": "Hyderabad",
+    "pincode": "500047",
+    "emergency_contact": "+91 98490 88888",
+    "allergies": [
+      "Dust",
+      "Pollen"
+    ],
+    "chronic_conditions": [
+      "Type 2 Diabetes Mellitus",
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001",
+      "hosp-002",
+      null
+    ],
+    "created_at": "2026-01-10T10:00:00",
+    "phone": "+91 98490 99999"
+  },
+  {
+    "id": "PAT-2026-000002",
+    "patient_id": "PAT-2026-000002",
+    "health_id": "HC-2026-000002",
+    "user_id": null,
+    "full_name": "Ananya Krishna Murthy",
+    "email": "ananya.km@outlook.com",
+    "mobile": "+91 98480 11002",
+    "dob": "1994-11-22",
+    "age": 31,
+    "gender": "Female",
+    "blood_group": "O+",
+    "address": "Flat 302, Green Meadows, Tarnaka, Secunderabad",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Raghav Murthy (Brother)",
+      "phone": "+91 98480 11003"
+    },
+    "allergies": [
+      "Dust Mites",
+      "NSAIDs"
+    ],
+    "chronic_conditions": [
+      "Mild Bronchial Asthma"
+    ],
+    "permitted_organizations": [
+      "clinic-003",
+      "hosp-001"
+    ],
+    "created_at": "2026-01-10T11:00:00"
+  },
+  {
+    "id": "PAT-2026-000003",
+    "patient_id": "PAT-2026-000003",
+    "health_id": "HC-2026-000003",
+    "user_id": null,
+    "full_name": "Venkat R. Goud",
+    "email": "venkat.goud@yahoo.com",
+    "mobile": "+91 98480 11003",
+    "dob": "1975-03-09",
+    "age": 51,
+    "gender": "Male",
+    "blood_group": "A+",
+    "address": "H.No 12-88/1, Uppal Main Road, Hyderabad",
+    "area": "Uppal",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Lakshmi Goud (Spouse)",
+      "phone": "+91 98480 11004"
+    },
+    "allergies": [],
+    "chronic_conditions": [
+      "Dyslipidemia",
+      "Osteoarthritis"
+    ],
+    "permitted_organizations": [
+      "hosp-005",
+      "clinic-002"
+    ],
+    "created_at": "2026-01-10T12:00:00"
+  },
+  {
+    "id": "PAT-2026-000004",
+    "patient_id": "PAT-2026-000004",
+    "health_id": "HC-2026-000004",
+    "user_id": null,
+    "full_name": "Priyanka S. Varma",
+    "email": "priyanka.varma@gmail.com",
+    "mobile": "+91 98480 11004",
+    "dob": "1998-08-17",
+    "age": 27,
+    "gender": "Female",
+    "blood_group": "AB+",
+    "address": "B-44, Indian Airlines Colony, Begumpet, Hyderabad",
+    "area": "Begumpet",
+    "city": "Hyderabad",
+    "pincode": "500016",
+    "emergency_contact": {
+      "name": "Sanjay Varma (Father)",
+      "phone": "+91 98480 11005"
+    },
+    "allergies": [
+      "Shellfish"
+    ],
+    "chronic_conditions": [
+      "Migraine"
+    ],
+    "permitted_organizations": [
+      "hosp-003",
+      "clinic-004"
+    ],
+    "created_at": "2026-01-10T13:00:00"
+  },
+  {
+    "id": "PAT-2026-000005",
+    "patient_id": "PAT-2026-000005",
+    "health_id": "HC-2026-000005",
+    "user_id": null,
+    "full_name": "Mohammad Rizwan Khan",
+    "email": "rizwan.khan786@gmail.com",
+    "mobile": "+91 98480 11005",
+    "dob": "1988-12-05",
+    "age": 37,
+    "gender": "Male",
+    "blood_group": "O-",
+    "address": "Near Station Road, Secunderabad",
+    "area": "Secunderabad",
+    "city": "Hyderabad",
+    "pincode": "500003",
+    "emergency_contact": {
+      "name": "Ayesha Khan (Spouse)",
+      "phone": "+91 98480 11006"
+    },
+    "allergies": [
+      "Aspirin"
+    ],
+    "chronic_conditions": [
+      "Acid Peptic Disease"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-007"
+    ],
+    "created_at": "2026-01-10T14:00:00"
+  },
+  {
+    "id": "PAT-2026-000006",
+    "patient_id": "PAT-2026-000006",
+    "health_id": "HC-2026-000006",
+    "user_id": null,
+    "full_name": "Kavitha Rao",
+    "email": "kavitha.rao@example.com",
+    "mobile": "+91 98480 11006",
+    "dob": "1977-007-19",
+    "age": 49,
+    "gender": "Female",
+    "blood_group": "B-",
+    "address": "Door No 42-18, Begumpet, Hyderabad",
+    "area": "Begumpet",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Kavitha",
+      "phone": "+91 98480 12006"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T16:00:00"
+  },
+  {
+    "id": "PAT-2026-000007",
+    "patient_id": "PAT-2026-000007",
+    "health_id": "HC-2026-000007",
+    "user_id": null,
+    "full_name": "Srinivas Reddy",
+    "email": "srinivas.reddy@example.com",
+    "mobile": "+91 98480 11007",
+    "dob": "1979-008-22",
+    "age": 47,
+    "gender": "Male",
+    "blood_group": "AB-",
+    "address": "Door No 49-21, Malkajgiri, Hyderabad",
+    "area": "Malkajgiri",
+    "city": "Hyderabad",
+    "pincode": "500047",
+    "emergency_contact": {
+      "name": "Relative of Srinivas",
+      "phone": "+91 98480 12007"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T17:00:00"
+  },
+  {
+    "id": "PAT-2026-000008",
+    "patient_id": "PAT-2026-000008",
+    "health_id": "HC-2026-000008",
+    "user_id": null,
+    "full_name": "Bhavani Patel",
+    "email": "bhavani.patel@example.com",
+    "mobile": "+91 98480 11008",
+    "dob": "1981-009-25",
+    "age": 45,
+    "gender": "Female",
+    "blood_group": "A+",
+    "address": "Door No 56-24, Secunderabad, Hyderabad",
+    "area": "Secunderabad",
+    "city": "Hyderabad",
+    "pincode": "500003",
+    "emergency_contact": {
+      "name": "Relative of Bhavani",
+      "phone": "+91 98480 12008"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [
+      "Diabetes"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T10:00:00"
+  },
+  {
+    "id": "PAT-2026-000009",
+    "patient_id": "PAT-2026-000009",
+    "health_id": "HC-2026-000009",
+    "user_id": null,
+    "full_name": "Karthik Naidu",
+    "email": "karthik.naidu@example.com",
+    "mobile": "+91 98480 11009",
+    "dob": "1983-001-28",
+    "age": 43,
+    "gender": "Male",
+    "blood_group": "B+",
+    "address": "Door No 63-27, Uppal, Hyderabad",
+    "area": "Uppal",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Karthik",
+      "phone": "+91 98480 12009"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T11:00:00"
+  },
+  {
+    "id": "PAT-2026-000010",
+    "patient_id": "PAT-2026-000010",
+    "health_id": "HC-2026-000010",
+    "user_id": null,
+    "full_name": "Padmaja Chowdary",
+    "email": "padmaja.chowdary@example.com",
+    "mobile": "+91 98480 11010",
+    "dob": "1985-002-03",
+    "age": 41,
+    "gender": "Female",
+    "blood_group": "O+",
+    "address": "Door No 70-30, Tarnaka, Hyderabad",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Padmaja",
+      "phone": "+91 98480 12010"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T12:00:00"
+  },
+  {
+    "id": "PAT-2026-000011",
+    "patient_id": "PAT-2026-000011",
+    "health_id": "HC-2026-000011",
+    "user_id": null,
+    "full_name": "Ramesh Gupta",
+    "email": "ramesh.gupta@example.com",
+    "mobile": "+91 98480 11011",
+    "dob": "1987-003-06",
+    "age": 39,
+    "gender": "Male",
+    "blood_group": "AB+",
+    "address": "Door No 77-33, Nacharam, Hyderabad",
+    "area": "Nacharam",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Ramesh",
+      "phone": "+91 98480 12011"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T13:00:00"
+  },
+  {
+    "id": "PAT-2026-000012",
+    "patient_id": "PAT-2026-000012",
+    "health_id": "HC-2026-000012",
+    "user_id": null,
+    "full_name": "Deepika Deshpande",
+    "email": "deepika.deshpande@example.com",
+    "mobile": "+91 98480 11012",
+    "dob": "1989-004-09",
+    "age": 37,
+    "gender": "Female",
+    "blood_group": "O-",
+    "address": "Door No 84-36, Begumpet, Hyderabad",
+    "area": "Begumpet",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Deepika",
+      "phone": "+91 98480 12012"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T14:00:00"
+  },
+  {
+    "id": "PAT-2026-000013",
+    "patient_id": "PAT-2026-000013",
+    "health_id": "HC-2026-000013",
+    "user_id": null,
+    "full_name": "Mahesh Kumar",
+    "email": "mahesh.kumar@example.com",
+    "mobile": "+91 98480 11013",
+    "dob": "1991-005-12",
+    "age": 35,
+    "gender": "Male",
+    "blood_group": "A-",
+    "address": "Door No 91-39, Malkajgiri, Hyderabad",
+    "area": "Malkajgiri",
+    "city": "Hyderabad",
+    "pincode": "500047",
+    "emergency_contact": {
+      "name": "Relative of Mahesh",
+      "phone": "+91 98480 12013"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T15:00:00"
+  },
+  {
+    "id": "PAT-2026-000014",
+    "patient_id": "PAT-2026-000014",
+    "health_id": "HC-2026-000014",
+    "user_id": null,
+    "full_name": "Sowmya Iyer",
+    "email": "sowmya.iyer@example.com",
+    "mobile": "+91 98480 11014",
+    "dob": "1993-006-15",
+    "age": 33,
+    "gender": "Female",
+    "blood_group": "B-",
+    "address": "Door No 98-42, Secunderabad, Hyderabad",
+    "area": "Secunderabad",
+    "city": "Hyderabad",
+    "pincode": "500003",
+    "emergency_contact": {
+      "name": "Relative of Sowmya",
+      "phone": "+91 98480 12014"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T16:00:00"
+  },
+  {
+    "id": "PAT-2026-000015",
+    "patient_id": "PAT-2026-000015",
+    "health_id": "HC-2026-000015",
+    "user_id": null,
+    "full_name": "Harish Chary",
+    "email": "harish.chary@example.com",
+    "mobile": "+91 98480 11015",
+    "dob": "1995-007-18",
+    "age": 31,
+    "gender": "Male",
+    "blood_group": "AB-",
+    "address": "Door No 105-45, Uppal, Hyderabad",
+    "area": "Uppal",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Harish",
+      "phone": "+91 98480 12015"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T17:00:00"
+  },
+  {
+    "id": "PAT-2026-000016",
+    "patient_id": "PAT-2026-000016",
+    "health_id": "HC-2026-000016",
+    "user_id": null,
+    "full_name": "Archana Prasad",
+    "email": "archana.prasad@example.com",
+    "mobile": "+91 98480 11016",
+    "dob": "1997-008-21",
+    "age": 29,
+    "gender": "Female",
+    "blood_group": "A+",
+    "address": "Door No 112-48, Tarnaka, Hyderabad",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Archana",
+      "phone": "+91 98480 12016"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [
+      "Diabetes"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T10:00:00"
+  },
+  {
+    "id": "PAT-2026-000017",
+    "patient_id": "PAT-2026-000017",
+    "health_id": "HC-2026-000017",
+    "user_id": null,
+    "full_name": "Naveen Menon",
+    "email": "naveen.menon@example.com",
+    "mobile": "+91 98480 11017",
+    "dob": "1999-009-24",
+    "age": 27,
+    "gender": "Male",
+    "blood_group": "B+",
+    "address": "Door No 119-51, Nacharam, Hyderabad",
+    "area": "Nacharam",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Naveen",
+      "phone": "+91 98480 12017"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T11:00:00"
+  },
+  {
+    "id": "PAT-2026-000018",
+    "patient_id": "PAT-2026-000018",
+    "health_id": "HC-2026-000018",
+    "user_id": null,
+    "full_name": "Geetha Joshi",
+    "email": "geetha.joshi@example.com",
+    "mobile": "+91 98480 11018",
+    "dob": "2001-001-27",
+    "age": 25,
+    "gender": "Female",
+    "blood_group": "O+",
+    "address": "Door No 126-54, Begumpet, Hyderabad",
+    "area": "Begumpet",
+    "city": "Hyderabad",
+    "pincode": "500039",
+    "emergency_contact": {
+      "name": "Relative of Geetha",
+      "phone": "+91 98480 12018"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T12:00:00"
+  },
+  {
+    "id": "PAT-2026-000019",
+    "patient_id": "PAT-2026-000019",
+    "health_id": "HC-2026-000019",
+    "user_id": null,
+    "full_name": "Vikram Aggarwal",
+    "email": "vikram.aggarwal@example.com",
+    "mobile": "+91 98480 11019",
+    "dob": "2003-002-02",
+    "age": 23,
+    "gender": "Male",
+    "blood_group": "AB+",
+    "address": "Door No 133-57, Malkajgiri, Hyderabad",
+    "area": "Malkajgiri",
+    "city": "Hyderabad",
+    "pincode": "500047",
+    "emergency_contact": {
+      "name": "Relative of Vikram",
+      "phone": "+91 98480 12019"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T13:00:00"
+  },
+  {
+    "id": "PAT-2026-000020",
+    "patient_id": "PAT-2026-000020",
+    "health_id": "HC-2026-000020",
+    "user_id": null,
+    "full_name": "Shanti Kulkarni",
+    "email": "shanti.kulkarni@example.com",
+    "mobile": "+91 98480 11020",
+    "dob": "1965-003-05",
+    "age": 61,
+    "gender": "Female",
+    "blood_group": "O-",
+    "address": "Door No 140-60, Secunderabad, Hyderabad",
+    "area": "Secunderabad",
+    "city": "Hyderabad",
+    "pincode": "500003",
+    "emergency_contact": {
+      "name": "Relative of Shanti",
+      "phone": "+91 98480 12020"
+    },
+    "allergies": [
+      "None"
+    ],
+    "chronic_conditions": [
+      "Diabetes"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-01-11T14:00:00"
+  },
+  {
+    "id": "PAT-2026-000021",
+    "patient_id": "PAT-2026-000021",
+    "health_id": "HC-2026-000021",
+    "user_id": "usr-patient-21",
+    "full_name": "Aditya V. Sharma 6662",
+    "email": "aditya.sharma6662@example.com",
+    "mobile": "+91 98480 06662",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 06662"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T14:29:04.797589"
+  },
+  {
+    "id": "PAT-2026-000022",
+    "patient_id": "PAT-2026-000022",
+    "health_id": "HC-2026-000022",
+    "user_id": "usr-patient-22",
+    "full_name": "Aditya V. Sharma 5761",
+    "email": "aditya.sharma5761@example.com",
+    "mobile": "+91 98480 05761",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 05761"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [],
+    "created_at": "2026-11-19T14:57:58.754314"
+  },
+  {
+    "id": "PAT-2026-000023",
+    "patient_id": "PAT-2026-000023",
+    "health_id": "HC-2026-000023",
+    "user_id": "usr-patient-23",
+    "full_name": "Aditya V. Sharma 4250",
+    "email": "aditya.sharma4250@example.com",
+    "mobile": "+91 98480 04250",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 04250"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T14:58:33.573969"
+  },
+  {
+    "id": "PAT-2026-000024",
+    "patient_id": "PAT-2026-000024",
+    "health_id": "HC-2026-000024",
+    "user_id": "usr-patient-24",
+    "full_name": "Aditya V. Sharma 7165",
+    "email": "aditya.sharma7165@example.com",
+    "mobile": "+91 98480 07165",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 07165"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001"
+    ],
+    "created_at": "2026-11-19T15:01:15.891175"
+  },
+  {
+    "id": "PAT-2026-000025",
+    "patient_id": "PAT-2026-000025",
+    "health_id": "HC-2026-000025",
+    "user_id": "usr-patient-25",
+    "full_name": "Aditya V. Sharma 7969",
+    "email": "aditya.sharma7969@example.com",
+    "mobile": "+91 98480 07969",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 07969"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T15:01:39.945455"
+  },
+  {
+    "id": "PAT-2026-000026",
+    "patient_id": "PAT-2026-000026",
+    "health_id": "HC-2026-000026",
+    "user_id": "usr-patient-26",
+    "full_name": "Aditya V. Sharma 9997",
+    "email": "aditya.sharma9997@example.com",
+    "mobile": "+91 98480 09997",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 09997"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [],
+    "created_at": "2026-11-19T15:06:16.130322"
+  },
+  {
+    "id": "PAT-2026-000027",
+    "patient_id": "PAT-2026-000027",
+    "health_id": "HC-2026-000027",
+    "user_id": "usr-patient-27",
+    "full_name": "Aditya V. Sharma 8944",
+    "email": "aditya.sharma8944@example.com",
+    "mobile": "+91 98480 08944",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 08944"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T15:10:31.028202"
+  },
+  {
+    "id": "PAT-2026-000028",
+    "patient_id": "PAT-2026-000028",
+    "health_id": "HC-2026-000028",
+    "user_id": "usr-patient-28",
+    "full_name": "Aditya V. Sharma 2107",
+    "email": "aditya.sharma2107@example.com",
+    "mobile": "+91 98480 02107",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 02107"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T15:13:34.322920"
+  },
+  {
+    "id": "PAT-2026-000029",
+    "patient_id": "PAT-2026-000029",
+    "health_id": "HC-2026-000029",
+    "user_id": "usr-patient-29",
+    "full_name": "Aditya V. Sharma 4502",
+    "email": "aditya.sharma4502@example.com",
+    "mobile": "+91 98480 04502",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 04502"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T15:36:56.606183"
+  },
+  {
+    "id": "PAT-2026-000030",
+    "patient_id": "PAT-2026-000030",
+    "health_id": "HC-2026-000030",
+    "user_id": "usr-patient-30",
+    "full_name": "Aditya V. Sharma 7595",
+    "email": "aditya.sharma7595@example.com",
+    "mobile": "+91 98480 07595",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 07595"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T15:37:53.884475"
+  },
+  {
+    "id": "PAT-2026-000031",
+    "patient_id": "PAT-2026-000031",
+    "health_id": "HC-2026-000031",
+    "user_id": "usr-patient-31",
+    "full_name": "Aditya V. Sharma 7127",
+    "email": "aditya.sharma7127@example.com",
+    "mobile": "+91 98480 07127",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 07127"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T15:39:03.863175"
+  },
+  {
+    "id": "PAT-2026-000032",
+    "patient_id": "PAT-2026-000032",
+    "health_id": "HC-2026-000032",
+    "user_id": "usr-patient-32",
+    "full_name": "Aditya V. Sharma 0711",
+    "email": "aditya.sharma0711@example.com",
+    "mobile": "+91 98480 00711",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 00711"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T16:14:48.251440"
+  },
+  {
+    "id": "PAT-2026-000033",
+    "patient_id": "PAT-2026-000033",
+    "health_id": "HC-2026-000033",
+    "user_id": "usr-patient-33",
+    "full_name": "Aditya V. Sharma 3571",
+    "email": "aditya.sharma3571@example.com",
+    "mobile": "+91 98480 03571",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 03571"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T16:27:31.529715"
+  },
+  {
+    "id": "PAT-2026-000034",
+    "patient_id": "PAT-2026-000034",
+    "health_id": "HC-2026-000034",
+    "user_id": "usr-patient-34",
+    "full_name": "Aditya V. Sharma 3016",
+    "email": "aditya.sharma3016@example.com",
+    "mobile": "+91 98480 03016",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 03016"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T16:28:17.435044"
+  },
+  {
+    "id": "PAT-2026-000035",
+    "patient_id": "PAT-2026-000035",
+    "health_id": "HC-2026-000035",
+    "user_id": "usr-patient-35",
+    "full_name": "Aditya V. Sharma 9528",
+    "email": "aditya.sharma9528@example.com",
+    "mobile": "+91 98480 09528",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 09528"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T16:30:19.100155"
+  },
+  {
+    "id": "PAT-2026-000036",
+    "patient_id": "PAT-2026-000036",
+    "health_id": "HC-2026-000036",
+    "user_id": "usr-patient-36",
+    "full_name": "Aditya V. Sharma 0751",
+    "email": "aditya.sharma0751@example.com",
+    "mobile": "+91 98480 00751",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 00751"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T17:15:15.201486"
+  },
+  {
+    "id": "PAT-2026-000037",
+    "patient_id": "PAT-2026-000037",
+    "health_id": "HC-2026-000037",
+    "user_id": "usr-patient-37",
+    "full_name": "Aditya V. Sharma 1780",
+    "email": "aditya.sharma1780@example.com",
+    "mobile": "+91 98480 01780",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 01780"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T17:20:45.293394"
+  },
+  {
+    "id": "PAT-2026-000038",
+    "patient_id": "PAT-2026-000038",
+    "health_id": "HC-2026-000038",
+    "user_id": "usr-patient-38",
+    "full_name": "Aditya V. Sharma 0654",
+    "email": "aditya.sharma0654@example.com",
+    "mobile": "+91 98480 00654",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 00654"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T17:40:08.250693"
+  },
+  {
+    "id": "PAT-2026-000039",
+    "patient_id": "PAT-2026-000039",
+    "health_id": "HC-2026-000039",
+    "user_id": "usr-patient-39",
+    "full_name": "Aditya V. Sharma 7811",
+    "email": "aditya.sharma7811@example.com",
+    "mobile": "+91 98480 07811",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 07811"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [],
+    "created_at": "2026-11-19T18:29:07.916587"
+  },
+  {
+    "id": "PAT-2026-000040",
+    "patient_id": "PAT-2026-000040",
+    "health_id": "HC-2026-000040",
+    "user_id": "usr-patient-40",
+    "full_name": "Aditya V. Sharma 6440",
+    "email": "aditya.sharma6440@example.com",
+    "mobile": "+91 98480 06440",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 06440"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T18:30:00.807393"
+  },
+  {
+    "id": "PAT-2026-000041",
+    "patient_id": "PAT-2026-000041",
+    "health_id": "HC-2026-000041",
+    "user_id": "usr-patient-41",
+    "full_name": "Aditya V. Sharma 2175",
+    "email": "aditya.sharma2175@example.com",
+    "mobile": "+91 98480 02175",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 02175"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T18:30:31.357035"
+  },
+  {
+    "id": "PAT-2026-000042",
+    "patient_id": "PAT-2026-000042",
+    "health_id": "HC-2026-000042",
+    "user_id": "usr-patient-42",
+    "full_name": "Aditya V. Sharma 8686",
+    "email": "aditya.sharma8686@example.com",
+    "mobile": "+91 98480 08686",
+    "dob": "1992-04-12",
+    "age": 34,
+    "gender": "Male",
+    "blood_group": "O+",
+    "address": "Flat 401, Sai Residency, Tarnaka",
+    "area": "Tarnaka",
+    "city": "Hyderabad",
+    "pincode": "500017",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 98480 08686"
+    },
+    "allergies": [
+      "Sulfa"
+    ],
+    "chronic_conditions": [
+      "Hypertension"
+    ],
+    "permitted_organizations": [
+      "hosp-001",
+      "clinic-001"
+    ],
+    "created_at": "2026-11-19T19:18:04.035188"
+  }
+]

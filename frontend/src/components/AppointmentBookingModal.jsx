@@ -195,9 +195,9 @@ const AppointmentBookingModalContent = ({
       setError('');
       setSuccessData(null);
       setPaymentComplete(false);
-      setSelectedSlot('');
+      setSelectedSlot(initialTime || '');
       setPriceQuote(null);
-      setSelectedDate('');
+      setSelectedDate(initialDate || '');
       
       // Pre-fill patient details if logged in
       if (user) {

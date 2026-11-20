@@ -4373,5 +4373,192 @@
     "severity": "info",
     "ip_address": "127.0.0.1",
     "detail": "Patient PAT-2026-000001 rotated their digital ID verification QR token"
+  },
+  {
+    "id": "aud-1795155722-399",
+    "timestamp": "2026-11-20 11:52:02",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795155722-400",
+    "timestamp": "2026-11-20 11:52:02",
+    "actor": "hospital",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-hospital-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User hospital (hospital) logged in successfully"
+  },
+  {
+    "id": "aud-1795155791-401",
+    "timestamp": "2026-11-20 11:53:11",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795155950-402",
+    "timestamp": "2026-11-20 11:55:50",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795156014-403",
+    "timestamp": "2026-11-20 11:56:54",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795156052-404",
+    "timestamp": "2026-11-20 11:57:32",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795156068-405",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "Super Admin",
+    "action": "DOCUMENT_UPLOADED",
+    "target": "hospital_TS-Clinical-Licence_1795156068.pdf",
+    "category": "Compliance Documents",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Uploaded clinical_licence (TS-Clinical-Licence.pdf, 0.1 KB)"
+  },
+  {
+    "id": "aud-1795156068-406",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "Super Admin",
+    "action": "ORGANIZATION_REGISTERED",
+    "target": "hosp-037 (MaxCure Super Speciality Hospital)",
+    "category": "Organization Registration",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Registered hospital category: Multi-Speciality Hospital (Pending verification)"
+  },
+  {
+    "id": "aud-1795156068-407",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "Super Admin",
+    "action": "ORGANIZATION_APPROVED",
+    "target": "hosp-037",
+    "category": "Regulatory Compliance",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Organization approved with remarks: Verified state clinical establishment licence TS-2026"
+  },
+  {
+    "id": "aud-1795156068-408",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "Super Admin",
+    "action": "PLAN_DELETED",
+    "target": "plan-custom-4",
+    "category": "SaaS Plan Governance",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Deleted subscription plan plan-custom-4"
+  },
+  {
+    "id": "aud-1795156068-409",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "Super Admin",
+    "action": "CAMPAIGN_SUSPEND",
+    "target": "off-001",
+    "category": "Marketplace Promotions",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Campaign suspendd (Status: expired)"
+  },
+  {
+    "id": "aud-1795156068-410",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "Super Admin",
+    "action": "CAMPAIGN_REACTIVATE",
+    "target": "off-001",
+    "category": "Marketplace Promotions",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Campaign reactivated (Status: published)"
+  },
+  {
+    "id": "aud-1795156068-411",
+    "timestamp": "2026-11-20 11:57:48",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795156069-412",
+    "timestamp": "2026-11-20 11:57:49",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795156069-413",
+    "timestamp": "2026-11-20 11:57:49",
+    "actor": "hospital",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-hospital-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User hospital (hospital) logged in successfully"
+  },
+  {
+    "id": "aud-1795156072-414",
+    "timestamp": "2026-11-20 11:57:52",
+    "actor": "dr_venkat_rao",
+    "action": "PATIENT_EHR_QR_VERIFIED_AND_ACCESSED",
+    "target": "PAT-2026-000001",
+    "category": "Patient Identity & EHR Access",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Provider dr_venkat_rao scanned and accessed authorized records for patient PAT-2026-000001 (Laxmi Narayana Sharma)"
+  },
+  {
+    "id": "aud-1795156072-415",
+    "timestamp": "2026-11-20 11:57:52",
+    "actor": "rahul_sharma",
+    "action": "PATIENT_QR_TOKEN_ROTATED",
+    "target": "PAT-2026-000001",
+    "category": "Patient Identity Security",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Patient PAT-2026-000001 rotated their digital ID verification QR token"
   }
 ]

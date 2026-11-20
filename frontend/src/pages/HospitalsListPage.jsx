@@ -350,19 +350,14 @@ export const HospitalsListPage = () => {
                     <span className="font-bold text-slate-800">{h.doctors_count || 3} Doctors</span>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  <div>
                     <Link
-                      to={`/hospitals/${h.id}`}
-                      className="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition"
+                      to={`/hospitals/${h.id}${searchQuery ? `?search=${encodeURIComponent(searchQuery)}` : ''}`}
+                      className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow-sm shadow-blue-600/20 transition flex items-center gap-1.5"
                     >
-                      View Details
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>Book OPD</span>
                     </Link>
-                    <button
-                      onClick={() => handleBookHospitalOpd(h)}
-                      className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition"
-                    >
-                      Book OPD
-                    </button>
                   </div>
                 </div>
               </div>

@@ -138,8 +138,42 @@ export const DoctorDetailPage = () => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column: Organization & Schedule (2 cols) */}
+          {/* Left Column: Doctor Profile & Schedule (2 cols) */}
           <div className="lg:col-span-2 space-y-6">
+            {/* About the Doctor */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <Stethoscope className="w-4 h-4 text-blue-600" />
+                <span>About {doctor.name}</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {doctor.bio || `${doctor.name} is a verified senior specialist in ${doctor.specialization || 'Clinical Medicine'} with over ${doctor.experience_years || 5} years of specialized experience in clinical diagnostics, outpatient care, and patient management.`}
+              </p>
+
+              {/* Consultation Modes & Working Hours Badges */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Available Consultation Modes</span>
+                  <div className="flex items-center gap-2 pt-0.5">
+                    <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-bold text-xs border border-blue-200">
+                      In-Person OPD
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-teal-50 text-teal-700 font-bold text-xs border border-teal-200">
+                      Online Video OPD
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Working Days & Hours</span>
+                  <p className="font-extrabold text-slate-900 text-xs">
+                    {(doctor.available_days || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']).join(', ')}
+                  </p>
+                  <p className="text-[11px] text-slate-500">{doctor.consultation_hours || '10:00 AM - 05:00 PM'}</p>
+                </div>
+              </div>
+            </div>
+
             {/* Associated Hospital or Clinic */}
             {organization && (
               <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">

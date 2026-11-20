@@ -578,10 +578,10 @@ export const LandingPage = () => {
                         <div className="mt-4 pt-3 border-t border-slate-100">
                           <Link
                             to={`/hospitals/${h.id}`}
-                            className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
+                            className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
                           >
                             <Calendar className="w-3.5 h-3.5" />
-                            <span>Open Hospital Profile & Book</span>
+                            <span>Book OPD</span>
                           </Link>
                         </div>
                       </div>
@@ -701,10 +701,10 @@ export const LandingPage = () => {
                         <div className="mt-4 pt-3 border-t border-slate-100">
                           <Link
                             to={`/clinics/${c.id}`}
-                            className="w-full py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
+                            className="w-full py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
                           >
                             <Calendar className="w-3.5 h-3.5" />
-                            <span>Open Clinic Profile & Book</span>
+                            <span>Book OPD</span>
                           </Link>
                         </div>
                       </div>
@@ -836,10 +836,10 @@ export const LandingPage = () => {
                     <div className="mt-4 pt-3 border-t border-slate-100">
                       <Link
                         to={`/hospitals/${h.id}`}
-                        className="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
+                        className="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
                       >
                         <Calendar className="w-3.5 h-3.5" />
-                        <span>Book Appointment</span>
+                        <span>Book OPD</span>
                       </Link>
                     </div>
                   </div>
@@ -906,10 +906,10 @@ export const LandingPage = () => {
                     <div className="mt-4 pt-3 border-t border-slate-100">
                       <Link
                         to={`/clinics/${c.id}`}
-                        className="w-full py-2 px-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
+                        className="w-full py-2 px-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
                       >
                         <Calendar className="w-3.5 h-3.5" />
-                        <span>Book Appointment</span>
+                        <span>Book OPD</span>
                       </Link>
                     </div>
                   </div>

@@ -319,20 +319,14 @@ export const ClinicsListPage = () => {
                     </div>
                   </div>
 
-                  {/* Actions: View Clinic Profile & Book Appointment */}
-                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                  {/* Action: Book OPD */}
+                  <div className="mt-6 pt-4 border-t border-slate-100">
                     <Link
-                      to={`/clinics/${c.id}`}
-                      className="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs transition"
-                    >
-                      View Profile
-                    </Link>
-                    <Link
-                      to={`/clinics/${c.id}`}
-                      className="flex-1 py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition flex items-center justify-center gap-1.5"
+                      to={`/clinics/${c.id}${searchQuery ? `?search=${encodeURIComponent(searchQuery)}` : ''}`}
+                      className="w-full py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition flex items-center justify-center gap-1.5"
                     >
                       <Calendar className="w-3.5 h-3.5" />
-                      <span>Book Appointment</span>
+                      <span>Book OPD</span>
                     </Link>
                   </div>
                 </div>

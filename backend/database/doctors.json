@@ -2472,5 +2472,77 @@
     "bio": "Medical specialist providing comprehensive clinical care.",
     "is_active": true,
     "created_at": "2026-11-20T11:07:29.682862"
+  },
+  {
+    "id": "doc-047",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2022-8047",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
+  },
+  {
+    "id": "doc-048",
+    "name": "Dr. Aarav Nambiar",
+    "email": "dr.aarav.test@yashoda.org",
+    "phone": "+91 98490 99881",
+    "qualifications": "MBBS, MS (General Surgery), MCh",
+    "specialization": "General Surgery",
+    "department": "General Surgery",
+    "experience_years": 11,
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_fee": 750.0,
+    "medical_keywords": [
+      "hernia",
+      "appendix",
+      "gallstones",
+      "laparoscopy"
+    ],
+    "conditions_treated": [
+      "Inguinal Hernia",
+      "Acute Appendicitis",
+      "Cholelithiasis"
+    ],
+    "consultation_type": "Both",
+    "consultation_hours": "10:00 AM - 04:00 PM",
+    "working_hours": "10:00 AM - 04:00 PM",
+    "rating": 5.0,
+    "reviews_count": 0,
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "bio": "Medical specialist providing comprehensive clinical care.",
+    "is_active": true,
+    "created_at": "2026-11-20T11:57:53.192196"
   }
 ]

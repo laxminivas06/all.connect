@@ -139,6 +139,8 @@ export const api = {
   getNotifications: () => request('/notifications'),
   markNotificationRead: (id) => request(`/notifications/${id}/read`, { method: 'PUT' }),
   markAllNotificationsRead: () => request('/notifications/mark-all-read', { method: 'PUT' }),
+  deleteNotification: (id) => request(`/notifications/${id}`, { method: 'DELETE' }),
+  deleteAllNotifications: () => request('/notifications', { method: 'DELETE' }),
 
   // Admin
   getAdminOverview: () => request('/admin/overview'),

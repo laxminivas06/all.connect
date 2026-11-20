@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import {
@@ -28,7 +28,8 @@ import {
   Check,
   Users,
   Info,
-  Shield
+  Shield,
+  Loader2
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 import { ProcedureEnquiryModal } from '../components/ProcedureEnquiryModal';
@@ -54,15 +55,14 @@ export const LandingPage = () => {
   const [hospitals, setHospitals] = useState([]);
   const [clinics, setClinics] = useState([]);
   const [offers, setOffers] = useState([]);
-  const [specialists, setSpecialists] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Search & Discovery State
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArea, setSelectedArea] = useState('All');
-  const [pinCodeInput, setPinCodeInput] = useState('');
   const [userCoords, setUserCoords] = useState(null); // { lat, lng, label }
   const [detectingLocation, setDetectingLocation] = useState(false);
+  const [locationError, setLocationError] = useState(null);
 
   // Modals
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -76,28 +76,33 @@ export const LandingPage = () => {
   const [selectedProcedure, setSelectedProcedure] = useState(null);
   const [selectedOrgForProcedure, setSelectedOrgForProcedure] = useState(null);
 
-  // Offers Carousel index
+  // Large Advertisement Banner Slider state
   const [offerSlideIndex, setOfferSlideIndex] = useState(0);
+  const [isBannerHovered, setIsBannerHovered] = useState(false);
+
+  // Hospital Carousel ref
+  const hospitalCarouselRef = useRef(null);
 
   const popularSymptoms = [
-    { label: 'Fever', query: 'fever' },
+    { label: 'Fever & Infection', query: 'fever' },
     { label: 'Cough & Cold', query: 'cough' },
-    { label: 'Headache', query: 'headache' },
-    { label: 'Skin Problems', query: 'skin problems' },
-    { label: 'Dental Care', query: 'dental problems' },
-    { label: 'Eye Checkup', query: 'eye problems' },
-    { label: 'Cardiologist', query: 'cardiologist' },
-    { label: 'Dermatologist', query: 'dermatologist' },
-    { label: 'General Physician', query: 'general physician' }
+    { label: 'Headache & Migraine', query: 'headache' },
+    { label: 'Skin & Acne', query: 'skin' },
+    { label: 'Joint & Bone Pain', query: 'bone' },
+    { label: 'Heart & Chest Pain', query: 'heart' },
+    { label: 'Eye Checkup', query: 'eye' },
+    { label: 'Stomach & Acidity', query: 'stomach' },
+    { label: 'Pediatrics / Child', query: 'child' }
   ];
 
-  // Geolocation trigger
-  const handleUseCurrentLocation = () => {
+  // Automatic Geolocation detection on mount
+  const handleDetectLocation = () => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
+      setLocationError('Geolocation is not supported by your browser.');
       return;
     }
     setDetectingLocation(true);
+    setLocationError(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setUserCoords({
@@ -109,17 +114,23 @@ export const LandingPage = () => {
       },
       (err) => {
         console.warn('Geolocation denied or unavailable:', err);
-        // Default to central Hyderabad coordinates
+        setLocationError('Location permission denied. Please select your area manually.');
+        // Fallback default coordinates (Central Hyderabad)
         setUserCoords({
           lat: 17.4399,
           lng: 78.4983,
-          label: 'Hyderabad Centre'
+          label: 'Hyderabad Central'
         });
         setDetectingLocation(false);
       },
-      { timeout: 5000 }
+      { timeout: 7000, enableHighAccuracy: false }
     );
   };
+
+  useEffect(() => {
+    // Automatically attempt geolocation detection on load
+    handleDetectLocation();
+  }, []);
 
   const handleDiscoverySearch = async (searchTerm) => {
     const term = (searchTerm !== undefined ? searchTerm : searchQuery).trim();
@@ -131,7 +142,6 @@ export const LandingPage = () => {
     try {
       const res = await api.discoverySearchDoctors(term);
       setDiscoveryResult(res);
-      // Scroll to discovery result
       setTimeout(() => {
         const el = document.getElementById('discovery-results-section');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -157,13 +167,11 @@ export const LandingPage = () => {
     Promise.all([
       api.getHospitals(),
       api.getClinics(),
-      api.getPublishedOffers(),
-      api.getDoctors()
-    ]).then(([hList, cList, oList, dList]) => {
+      api.getPublishedOffers()
+    ]).then(([hList, cList, oList]) => {
       setHospitals(hList || []);
       setClinics(cList || []);
       setOffers(oList || []);
-      setSpecialists((dList || []).filter(d => d.is_active));
     }).catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);
@@ -186,25 +194,46 @@ export const LandingPage = () => {
     return dist !== null ? `${dist} km away` : null;
   };
 
+  // Filtered & Distance-sorted Facilities
   const filteredHospitals = hospitals.filter(h => {
     const areaMatch = selectedArea === 'All' || (h.area || '').toLowerCase() === selectedArea.toLowerCase();
-    const pinMatch = !pinCodeInput || (h.pincode || '').includes(pinCodeInput.trim());
     const queryMatch = !searchQuery || (h.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (h.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
       (h.area || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return areaMatch && pinMatch && queryMatch;
+    return areaMatch && queryMatch;
+  });
+
+  const sortedHospitals = [...filteredHospitals].sort((a, b) => {
+    if (!userCoords) return 0;
+    const distA = calculateDistance(userCoords.lat, userCoords.lng, a.coordinates?.lat || a.latitude, a.coordinates?.lng || a.longitude) ?? 9999;
+    const distB = calculateDistance(userCoords.lat, userCoords.lng, b.coordinates?.lat || b.latitude, b.coordinates?.lng || b.longitude) ?? 9999;
+    return distA - distB;
   });
 
   const filteredClinics = clinics.filter(c => {
     const areaMatch = selectedArea === 'All' || (c.area || '').toLowerCase() === selectedArea.toLowerCase();
-    const pinMatch = !pinCodeInput || (c.pincode || '').includes(pinCodeInput.trim());
     const queryMatch = !searchQuery || (c.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (c.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
       (c.area || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return areaMatch && pinMatch && queryMatch;
+    return areaMatch && queryMatch;
   });
 
-  // Carousel controls
+  const sortedClinics = [...filteredClinics].sort((a, b) => {
+    if (!userCoords) return 0;
+    const distA = calculateDistance(userCoords.lat, userCoords.lng, a.coordinates?.lat || a.latitude, a.coordinates?.lng || a.longitude) ?? 9999;
+    const distB = calculateDistance(userCoords.lat, userCoords.lng, b.coordinates?.lat || b.latitude, b.coordinates?.lng || b.longitude) ?? 9999;
+    return distA - distB;
+  });
+
+  // Automatic Banner Slider timer (5s interval) with pause on hover
+  useEffect(() => {
+    if (offers.length <= 1 || isBannerHovered) return;
+    const interval = setInterval(() => {
+      setOfferSlideIndex(prev => (prev + 1) % offers.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [offers.length, isBannerHovered]);
+
   const nextOfferSlide = () => {
     if (offers.length === 0) return;
     setOfferSlideIndex((prev) => (prev + 1) % offers.length);
@@ -214,15 +243,23 @@ export const LandingPage = () => {
     setOfferSlideIndex((prev) => (prev - 1 + offers.length) % offers.length);
   };
 
+  // Hospital Carousel Scroll Handlers
+  const scrollHospitalCarousel = (direction) => {
+    if (hospitalCarouselRef.current) {
+      const scrollAmount = direction === 'left' ? -380 : 380;
+      hospitalCarouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       
-      {/* Hero & Main Search Section */}
+      {/* 1. FIRST INTERFACE – LOCATION & SEARCH */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-900 via-slate-900 to-slate-950 text-white pt-16 pb-24 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]" />
         
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold backdrop-blur-md">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-teal-300" />
             <span>Hyderabad Centralized Healthcare Mesh & EHR Federation</span>
           </div>
@@ -232,18 +269,38 @@ export const LandingPage = () => {
           </h1>
 
           <p className="text-xs sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Search multi-speciality hospitals, neighborhood clinics, top specialists, symptoms, or surgical procedures across Hyderabad. Book instant verified OPD slots with transparent fees.
+            Search multi-speciality hospitals, neighborhood clinics, symptoms, or surgical procedures across Hyderabad. Book instant verified OPD slots with transparent locked fees.
           </p>
 
+          {/* Location Status & Indicator */}
+          <div className="flex items-center justify-center gap-2 text-xs">
+            {detectingLocation ? (
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 animate-pulse">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-400" />
+                <span>Detecting nearby location...</span>
+              </div>
+            ) : userCoords ? (
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300">
+                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Showing healthcare facilities near {userCoords.label}</span>
+              </div>
+            ) : locationError ? (
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300">
+                <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
+                <span>{locationError}</span>
+              </div>
+            ) : null}
+          </div>
+
           {/* Main Intelligent Search Bar */}
-          <div className="max-w-4xl mx-auto bg-white p-2 sm:p-3 rounded-2xl shadow-2xl border border-slate-200/80 text-slate-800 flex flex-col md:flex-row items-center gap-2">
+          <div className="max-w-4xl mx-auto bg-white p-2.5 sm:p-3 rounded-2xl shadow-2xl border border-slate-200/80 text-slate-800 flex flex-col md:flex-row items-center gap-2.5">
             
             {/* Search Input */}
             <div className="flex-1 flex items-center px-3 w-full border-b md:border-b-0 md:border-r border-slate-200 pb-2 md:pb-0">
               <Search className="w-5 h-5 text-slate-400 shrink-0" />
               <input
                 type="text"
-                placeholder="Search your health concern, hospital, doctor or speciality..."
+                placeholder="Search health concern, hospital, doctor, or condition..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -259,47 +316,44 @@ export const LandingPage = () => {
                   type="button"
                   onClick={clearDiscoverySearch}
                   className="p-1 rounded-full text-slate-400 hover:text-slate-600 transition"
+                  aria-label="Clear search"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
 
-            {/* Dynamic Location & PIN Code Selector */}
+            {/* Area Dropdown & Location Retry Button */}
             <div className="flex flex-wrap items-center gap-2 w-full md:w-auto px-2">
-              <div className="relative">
+              <div className="relative flex-1 sm:flex-initial">
                 <select
                   value={selectedArea}
                   onChange={(e) => setSelectedArea(e.target.value)}
-                  className="text-xs px-3 py-2 bg-slate-100 rounded-xl font-medium text-slate-700 border-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-xs px-3 py-2.5 bg-slate-100 rounded-xl font-medium text-slate-700 border-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                  title="Select locality"
                 >
                   {dynamicAreas.map(a => (
-                    <option key={a} value={a}>{a === 'All' ? 'All Areas' : a}</option>
+                    <option key={a} value={a}>{a === 'All' ? 'All Areas (Hyderabad)' : a}</option>
                   ))}
                 </select>
               </div>
 
-              <input
-                type="text"
-                maxLength={6}
-                placeholder="PIN Code"
-                value={pinCodeInput}
-                onChange={(e) => setPinCodeInput(e.target.value)}
-                className="w-20 text-xs px-2.5 py-2 bg-slate-100 rounded-xl font-mono text-slate-700 placeholder-slate-400 border-none focus:ring-2 focus:ring-blue-500"
-              />
-
+              {/* Automatic Location Re-trigger Button */}
               <button
                 type="button"
-                onClick={handleUseCurrentLocation}
-                title="Detect current location for distance calculation"
-                className={`p-2 rounded-xl border text-xs font-semibold flex items-center gap-1 transition ${
-                  userCoords
-                    ? 'bg-blue-50 border-blue-300 text-blue-700'
+                onClick={handleDetectLocation}
+                disabled={detectingLocation}
+                title="Detect current location for accurate distances"
+                className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition ${
+                  detectingLocation
+                    ? 'bg-blue-50 border-blue-300 text-blue-700 opacity-80'
+                    : userCoords
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100'
                     : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
                 }`}
               >
                 <Navigation className={`w-3.5 h-3.5 ${detectingLocation ? 'animate-spin text-blue-600' : ''}`} />
-                <span className="hidden sm:inline">{userCoords ? 'Near Me' : 'Location'}</span>
+                <span className="hidden sm:inline">{detectingLocation ? 'Detecting...' : userCoords ? 'Nearby' : 'Locate'}</span>
               </button>
 
               <button
@@ -321,7 +375,7 @@ export const LandingPage = () => {
             </div>
           </div>
 
-          {/* Symptom to Specialty Quick Chips */}
+          {/* Common Health Concerns Chips */}
           <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-2 pt-1 text-xs">
             <span className="text-slate-400 font-medium text-[11px] mr-1">Common Health Concerns:</span>
             {popularSymptoms.map((sym, idx) => (
@@ -329,7 +383,7 @@ export const LandingPage = () => {
                 key={idx}
                 type="button"
                 onClick={() => handleSymptomClick(sym.query)}
-                className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 text-[11px] font-medium backdrop-blur-xs transition"
+                className="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 text-[11px] font-medium backdrop-blur-xs transition shadow-xs"
               >
                 {sym.label}
               </button>
@@ -338,24 +392,24 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Main Content Area */}
+      {/* Main Body Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
         
-        {/* Symptom & Specialty Discovery Results */}
+        {/* Symptom & Discovery Results (Intelligent Medical Search Engine) */}
         {discoveryResult && (
           <section id="discovery-results-section" className="bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 rounded-3xl p-6 md:p-8 border border-indigo-500/30 shadow-2xl text-white space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-indigo-900/50 pb-5">
               <div>
                 <div className="flex items-center gap-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
                   <Sparkles className="w-4 h-4 text-teal-400" />
-                  <span>Symptom-to-Speciality Discovery Results</span>
+                  <span>Intelligent Medical Discovery Results</span>
                 </div>
                 <h2 className="text-2xl font-black text-white mt-1">
                   Healthcare Matches for &ldquo;{discoveryResult.query}&rdquo;
                 </h2>
                 <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <span className="text-xs text-slate-400">Relevant Clinical Specialities:</span>
-                  {(discoveryResult.matched_specializations || []).map((spec, idx) => (
+                  <span className="text-xs text-slate-400">Matched Departments & Specialities:</span>
+                  {(discoveryResult.matched_departments || discoveryResult.matched_specializations || []).map((spec, idx) => (
                     <span
                       key={idx}
                       className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
@@ -372,97 +426,26 @@ export const LandingPage = () => {
                 className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 flex items-center gap-1.5 transition"
               >
                 <X className="w-4 h-4 text-slate-400" />
-                Clear Discovery Search
+                Clear Results
               </button>
             </div>
 
             {/* Non-Diagnostic Disclaimer */}
             <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-center gap-2.5">
-              <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
+              <Shield className="w-4 h-4 text-amber-400 shrink-0" />
               <span>
-                <strong>Non-Diagnostic Provider Matching:</strong> {discoveryResult.disclaimer || 'Search correlations suggest relevant clinical specialties and verified facilities. Does not replace emergency care or clinical medical evaluation.'}
+                {discoveryResult.disclaimer || 'Healthcare discovery suggestions, not a medical diagnosis. Actual clinical diagnosis, surgical candidacy, and treatment suitability must be determined by a qualified medical professional.'}
               </span>
             </div>
 
-            {/* 1. RELEVANT HOSPITALS & CLINICS FIRST */}
-            {((discoveryResult.hospitals && discoveryResult.hospitals.length > 0) || (discoveryResult.clinics && discoveryResult.clinics.length > 0)) && (
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-blue-400" />
-                  <span>Verified Hospitals & Clinics for this Concern</span>
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[...(discoveryResult.hospitals || []), ...(discoveryResult.clinics || [])].map((facility) => {
-                    const isHospital = facility.id.startsWith('hosp');
-                    const distStr = getFacilityDistance(facility);
-                    return (
-                      <div
-                        key={facility.id}
-                        className="bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition group"
-                      >
-                        <div className="space-y-3">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                isHospital ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' : 'bg-teal-500/20 text-teal-300 border border-teal-500/30'
-                              }`}>
-                                {isHospital ? 'Hospital' : 'Clinic'}
-                              </span>
-                              <h4 className="font-bold text-base text-white mt-1 group-hover:text-blue-300 transition">
-                                {facility.name}
-                              </h4>
-                              <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
-                                <MapPin className="w-3 h-3 text-slate-500" />
-                                <span>{facility.area || facility.city}</span>
-                                {distStr && <span className="text-teal-400 font-bold ml-1">• {distStr}</span>}
-                              </p>
-                            </div>
-                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-400/10 text-amber-300 text-xs font-semibold border border-amber-400/20">
-                              <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                              {facility.rating || 4.8}
-                            </span>
-                          </div>
-
-                          <div className="flex flex-wrap gap-1">
-                            {(facility.departments || []).slice(0, 3).map((dept) => (
-                              <span key={dept} className="px-2 py-0.5 rounded bg-slate-800 text-[10px] text-slate-300">
-                                {dept}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                          <Link
-                            to={isHospital ? `/hospitals/${facility.id}` : `/clinics/${facility.id}`}
-                            className="px-3 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 text-xs font-semibold transition"
-                          >
-                            Open Profile
-                          </Link>
-                          <Link
-                            to={`/book-opd?hospital_id=${facility.id}`}
-                            className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1"
-                          >
-                            <Calendar className="w-3.5 h-3.5" />
-                            Book OPD
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* 2. MATCHING SPECIALIST DOCTORS NEXT */}
-            <div className="space-y-3 pt-4 border-t border-slate-800">
-              <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                <Stethoscope className="w-4 h-4 text-teal-400" />
-                <span>Affiliated Specialist Doctors ({(discoveryResult.doctors || []).length})</span>
+            {/* Matched Available Doctors (With fee revealed ONLY in Book Slot step) */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-bold text-slate-300 flex items-center gap-2">
+                <Users className="w-4 h-4 text-indigo-400" />
+                <span>Recommended Doctors for this Health Concern ({discoveryResult.doctors?.length || 0})</span>
               </h3>
 
-              {(discoveryResult.doctors || []).length > 0 ? (
+              {discoveryResult.doctors && discoveryResult.doctors.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {discoveryResult.doctors.map((doc) => (
                     <div
@@ -476,11 +459,11 @@ export const LandingPage = () => {
                               {doc.name}
                             </h4>
                             <p className="text-xs font-medium text-teal-400">{doc.specialization}</p>
-                            <p className="text-[11px] text-slate-400">{doc.qualifications || doc.qualification} &bull; {doc.experience_years} yrs exp</p>
+                            <p className="text-[11px] text-slate-400">{doc.qualifications || doc.qualification} &bull; {doc.experience_years || 5} yrs exp</p>
                           </div>
                           <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-400/10 text-amber-300 text-xs font-semibold border border-amber-400/20">
                             <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                            {doc.rating || 4.8}
+                            {doc.rating || 4.9}
                           </span>
                         </div>
 
@@ -502,10 +485,11 @@ export const LandingPage = () => {
                         )}
                       </div>
 
+                      {/* Doctor card action: NO upfront fee, clean BOOK SLOT CTA */}
                       <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
-                        <div>
-                          <span className="text-[10px] text-slate-500 block uppercase font-medium">Fee</span>
-                          <span className="text-base font-black text-white">₹{doc.consultation_fee || 500}</span>
+                        <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold">
+                          <CheckCircle className="w-3.5 h-3.5" />
+                          <span>OPD Available Today</span>
                         </div>
 
                         <button
@@ -514,10 +498,10 @@ export const LandingPage = () => {
                             setSelectedDoctor(doc);
                             setBookingModalOpen(true);
                           }}
-                          className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1"
+                          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5"
                         >
                           <Calendar className="w-3.5 h-3.5" />
-                          Book Slot
+                          <span>Book Slot</span>
                         </button>
                       </div>
                     </div>
@@ -525,120 +509,198 @@ export const LandingPage = () => {
                 </div>
               ) : (
                 <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-center text-xs text-slate-400">
-                  No individual doctors on duty right now. Book directly with participating hospitals or clinics above.
+                  No individual doctors on duty for this query. You can book directly with participating hospitals or clinics below.
                 </div>
               )}
             </div>
           </section>
         )}
 
-        {/* 3. PROMOTIONAL CAROUSEL: "Exciting Healthcare Offers" */}
+        {/* 2. LARGE PREMIUM SLIDING ADVERTISEMENT BANNER */}
         {offers.length > 0 && (
-          <section className="space-y-4">
+          <section className="space-y-3">
             <div className="flex items-center justify-between">
-              <div>
-                <div className="inline-flex items-center gap-1.5 text-rose-600 text-xs font-bold uppercase tracking-wide">
-                  <Tag className="w-4 h-4" />
-                  VERIFIED PROMOTIONAL CAMPAIGNS
-                </div>
-                <h2 className="text-2xl font-black text-slate-900">
-                  Exciting Healthcare Offers
-                </h2>
-                <p className="text-xs text-slate-500">Curated, accredited health packages and preventive checkups from top facilities</p>
+              <div className="inline-flex items-center gap-1.5 text-rose-600 text-xs font-bold uppercase tracking-wide">
+                <Tag className="w-4 h-4" />
+                FEATURED HEALTHCARE CAMPAIGNS & ACCREDITED PACKAGES
               </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={prevOfferSlide}
-                  className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition shadow-xs"
-                  aria-label="Previous Offer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={nextOfferSlide}
-                  className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition shadow-xs"
-                  aria-label="Next Offer"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-                <Link
-                  to="/offers"
-                  className="ml-2 text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                >
-                  View All ({offers.length}) <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+              <Link
+                to="/offers"
+                className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+              >
+                View All Offers ({offers.length}) <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
 
-            {/* Carousel Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {offers.slice(offerSlideIndex, offerSlideIndex + 3).concat(
-                offers.slice(0, Math.max(0, (offerSlideIndex + 3) - offers.length))
-              ).slice(0, 3).map((offer) => (
-                <div
-                  key={offer.id}
-                  className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200">
-                        {offer.discount_percentage || 25}% OFF
-                      </span>
-                      <span className="text-[10px] font-semibold text-slate-400 capitalize">{offer.category || 'Package'}</span>
+            {/* Single Large Interactive Banner */}
+            <div
+              className="relative w-full rounded-3xl overflow-hidden shadow-xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 text-white border border-slate-800 transition-all"
+              onMouseEnter={() => setIsBannerHovered(true)}
+              onMouseLeave={() => setIsBannerHovered(false)}
+            >
+              {(() => {
+                const currentOffer = offers[offerSlideIndex] || offers[0];
+                return (
+                  <div className="p-6 sm:p-10 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 min-h-[300px]">
+                    {/* Left Details */}
+                    <div className="max-w-2xl space-y-4">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <span className="px-3 py-1 rounded-full text-xs font-black bg-rose-500 text-white uppercase tracking-wider shadow-sm">
+                          {currentOffer.discount_percentage || 25}% OFF SPECIAL
+                        </span>
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-teal-300 border border-white/20 capitalize">
+                          {currentOffer.category || 'Preventive Healthcare'}
+                        </span>
+                        <span className="text-xs text-slate-300 font-semibold">
+                          {currentOffer.organization_name}
+                        </span>
+                      </div>
+
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
+                        {currentOffer.title}
+                      </h2>
+
+                      <p className="text-xs sm:text-sm text-slate-300 line-clamp-3 leading-relaxed">
+                        {currentOffer.description}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-4 pt-2">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-2xl sm:text-3xl font-black text-white">
+                            ₹{currentOffer.discounted_price}
+                          </span>
+                          <span className="text-sm sm:text-base text-slate-400 line-through">
+                            ₹{currentOffer.original_price}
+                          </span>
+                        </div>
+
+                        <button
+                          onClick={() => setBookingModalOpen(true)}
+                          className="px-6 py-3 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-teal-500/25 transition flex items-center gap-2"
+                        >
+                          <Calendar className="w-4 h-4" />
+                          <span>Book This Package</span>
+                        </button>
+                      </div>
                     </div>
 
-                    <h3 className="font-bold text-sm text-slate-900 mt-2.5 line-clamp-1">{offer.title}</h3>
-                    <p className="text-[11px] font-medium text-blue-700">{offer.organization_name}</p>
-                    <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">{offer.description}</p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-xs text-slate-400 line-through mr-1.5">₹{offer.original_price}</span>
-                      <span className="text-lg font-black text-slate-900">₹{offer.discounted_price}</span>
+                    {/* Right Visual Highlights Card */}
+                    <div className="w-full md:w-auto p-5 sm:p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 shrink-0">
+                      <div className="flex items-center gap-2 text-teal-300 font-bold text-xs uppercase tracking-wider">
+                        <ShieldCheck className="w-4 h-4" />
+                        <span>Federated Hospital Package</span>
+                      </div>
+                      <div className="space-y-2 text-xs text-slate-200">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>Full Clinical Evaluation Included</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>Federated EHR Digital Records Sync</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <span>Guaranteed Priority OPD Slot</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>Valid across Hyderabad</span>
+                        <span className="text-emerald-400 font-bold">Instant Confirmation</span>
+                      </div>
                     </div>
-
-                    <button
-                      onClick={() => setBookingModalOpen(true)}
-                      className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-xs transition"
-                    >
-                      Book Offer
-                    </button>
                   </div>
-                </div>
-              ))}
+                );
+              })()}
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevOfferSlide}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-white flex items-center justify-center backdrop-blur-md border border-white/10 transition shadow-md"
+                aria-label="Previous Offer Slide"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={nextOfferSlide}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-white flex items-center justify-center backdrop-blur-md border border-white/10 transition shadow-md"
+                aria-label="Next Offer Slide"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              {/* Dots Pagination */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+                {offers.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setOfferSlideIndex(idx)}
+                    className={`h-2 rounded-full transition-all ${
+                      offerSlideIndex === idx ? 'w-6 bg-teal-400' : 'w-2 bg-white/40 hover:bg-white/70'
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
-        {/* 4. MULTI-SPECIALITY HOSPITALS SECTION */}
-        <section id="hospitals-clinics" className="space-y-4">
-          <div className="flex items-center justify-between">
+        {/* 3. MULTI-SPECIALITY HOSPITALS – HORIZONTAL SLIDING CAROUSEL */}
+        <section id="hospitals-carousel-section" className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-blue-600" />
-                <span>Multi-Speciality Hospitals in Hyderabad</span>
+              <div className="inline-flex items-center gap-1.5 text-blue-600 text-xs font-bold uppercase tracking-wide">
+                <Building2 className="w-4 h-4" />
+                ACCREDITED MULTI-SPECIALITY HOSPITALS
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+                Top Hospitals in Hyderabad
               </h2>
-              <p className="text-xs text-slate-500">Each hospital operates an independent management console with centralized patient discovery</p>
+              <p className="text-xs text-slate-500">Swipe or navigate through certified hospitals with 24x7 emergency and federated OPD</p>
             </div>
-            <Link to="/hospitals" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-              Explore All Hospitals <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              <button
+                onClick={() => scrollHospitalCarousel('left')}
+                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition shadow-xs"
+                aria-label="Slide Left"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => scrollHospitalCarousel('right')}
+                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition shadow-xs"
+                aria-label="Slide Right"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+              <Link
+                to="/hospitals"
+                className="ml-2 text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+              >
+                View All ({hospitals.length}) <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredHospitals.map((h) => {
+          {/* Horizontal Scrolling Track with Touch Swiping */}
+          <div
+            ref={hospitalCarouselRef}
+            className="flex overflow-x-auto gap-5 snap-x snap-mandatory scroll-smooth pb-4 pt-1 no-scrollbar"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {sortedHospitals.map((h) => {
               const distStr = getFacilityDistance(h);
               return (
                 <div
                   key={h.id}
-                  className="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group"
+                  className="min-w-[300px] sm:min-w-[340px] md:min-w-[380px] snap-start bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group shrink-0"
                 >
                   <div className="p-5 space-y-3">
                     <div className="flex items-start justify-between">
                       <div>
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">
                             {h.area || 'Hyderabad'}
                           </span>
@@ -648,7 +710,7 @@ export const LandingPage = () => {
                             </span>
                           )}
                         </div>
-                        <h3 className="font-extrabold text-base text-slate-900 mt-1.5 group-hover:text-blue-600 transition">
+                        <h3 className="font-extrabold text-base text-slate-900 mt-2 group-hover:text-blue-600 transition">
                           {h.name}
                         </h3>
                         <p className="text-xs text-slate-500 italic mt-0.5">{h.tagline || 'Leading Multi-Speciality Facility'}</p>
@@ -667,13 +729,13 @@ export const LandingPage = () => {
                       </p>
                       <p className="flex items-center gap-1.5 text-emerald-600 font-semibold">
                         <CheckCircle className="w-3.5 h-3.5 shrink-0" />
-                        <span>{h.emergency_24x7 ? '24x7 Emergency Care Active' : 'OPD Consultations'}</span>
+                        <span>{h.emergency_24x7 ? '24x7 Emergency Care Active' : 'OPD Consultations Active'}</span>
                       </p>
                     </div>
 
                     {/* Departments */}
                     <div className="flex flex-wrap gap-1.5 pt-1">
-                      {(h.departments || []).slice(0, 4).map((d) => (
+                      {(h.departments || []).slice(0, 3).map((d) => (
                         <span key={d} className="px-2 py-0.5 bg-slate-100 rounded-md text-[10px] text-slate-600 font-medium">
                           {d}
                         </span>
@@ -681,24 +743,20 @@ export const LandingPage = () => {
                     </div>
                   </div>
 
+                  {/* Actions: Direct Book Appointment button */}
                   <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
                     <Link
                       to={`/hospitals/${h.id}`}
-                      className="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition"
+                      className="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition"
                     >
-                      Open Profile
-                    </Link>
-                    <Link
-                      to={`/hospitals/${h.id}#doctors`}
-                      className="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition hidden sm:inline-block"
-                    >
-                      View Doctors
+                      Facility Profile
                     </Link>
                     <Link
                       to={`/book-opd?hospital_id=${h.id}`}
-                      className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs transition"
+                      className="flex-1 text-center px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5"
                     >
-                      Book OPD
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>Book Appointment</span>
                     </Link>
                   </div>
                 </div>
@@ -707,70 +765,96 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* 5. CONSULT WITH OUR SPECIALISTS SECTION */}
-        <section id="specialists-section" className="space-y-4">
-          <div className="flex items-center justify-between">
+        {/* 4. NEIGHBORHOOD CLINICS SECTION WITH DIRECT "BOOK OPD" CTA */}
+        <section id="clinics-section" className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="inline-flex items-center gap-1.5 text-teal-600 text-xs font-bold uppercase tracking-wide">
-                <Users className="w-4 h-4" />
-                ACCREDITED CLINICAL DIRECTORY
+                <Stethoscope className="w-4 h-4" />
+                PRIMARY & NEIGHBORHOOD CLINICS
               </div>
-              <h2 className="text-2xl font-black text-slate-900">
-                Consult with Our Specialists
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+                Local Polyclinics with Minimal Waiting Time
               </h2>
-              <p className="text-xs text-slate-500">Board-certified specialists across top hospitals & clinics in Hyderabad</p>
+              <p className="text-xs text-slate-500">Accessible outpatient clinics in your neighborhood with direct appointment booking</p>
             </div>
-            <Link to="/book-opd" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-              Explore All Specialists <ArrowRight className="w-3.5 h-3.5" />
+
+            <Link
+              to="/clinics"
+              className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1 self-start sm:self-auto"
+            >
+              Explore All Clinics ({clinics.length}) <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {specialists.slice(0, 8).map((doc) => (
-              <div
-                key={doc.id}
-                className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-bold text-sm text-slate-900">{doc.name}</h3>
-                      <p className="text-xs font-semibold text-teal-600">{doc.specialization}</p>
-                      <p className="text-[11px] text-slate-400">{doc.qualifications || 'MBBS, MD'} • {doc.experience_years || 5} yrs exp</p>
+            {sortedClinics.slice(0, 4).map((c) => {
+              const distStr = getFacilityDistance(c);
+              return (
+                <div
+                  key={c.id}
+                  className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                          {c.area}
+                        </span>
+                        {distStr && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                            {distStr}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-1 text-xs font-bold text-amber-600">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <span>{c.rating || 4.8}</span>
+                      </div>
                     </div>
-                    <span className="flex items-center gap-1 text-xs font-bold text-amber-600">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      {doc.rating || 4.9}
-                    </span>
+
+                    <h3 className="font-extrabold text-sm text-slate-900 leading-snug group-hover:text-teal-600 transition">
+                      {c.name}
+                    </h3>
+                    <p className="text-xs text-slate-500 italic line-clamp-1">{c.tagline || 'Neighborhood Polyclinic'}</p>
+
+                    <div className="space-y-1 text-xs text-slate-600 pt-1">
+                      <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span className="truncate">{c.address || c.area}</span>
+                      </p>
+                      <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
+                        <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                        <span className="truncate">{c.operating_hours || '09:00 AM - 09:00 PM'}</span>
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {(c.departments || []).slice(0, 3).map(d => (
+                        <span key={d} className="px-2 py-0.5 rounded bg-slate-100 text-[10px] font-medium text-slate-600">
+                          {d}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <p className="text-[11px] text-slate-500 font-medium">
-                    {doc.organization_name || 'Hospital / Clinic'}
-                  </p>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] text-slate-400 block uppercase">Fee</span>
-                    <span className="text-sm font-black text-slate-900">₹{doc.consultation_fee || 600}</span>
+                  {/* Single Primary Action: BOOK OPD */}
+                  <div className="mt-4 pt-3 border-t border-slate-100">
+                    <Link
+                      to={`/book-opd?clinic_id=${c.id}`}
+                      className="w-full py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-xs transition flex items-center justify-center gap-1.5 tracking-wide"
+                    >
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>BOOK OPD</span>
+                    </Link>
                   </div>
-
-                  <button
-                    onClick={() => {
-                      setSelectedDoctor(doc);
-                      setBookingModalOpen(true);
-                    }}
-                    className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-xs transition"
-                  >
-                    Book Slot
-                  </button>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
-        {/* 6. ABOUT ALLCONNECT & TRUST SECTION */}
+        {/* 5. ABOUT ALLCONNECT & TRUST SECTION */}
         <section id="about-trust-section" className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 space-y-8">
           <div className="max-w-3xl space-y-3">
             <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30">
@@ -780,7 +864,7 @@ export const LandingPage = () => {
               About AllConnect Healthcare Ecosystem
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              AllConnect is Hyderabad&apos;s centralized healthcare mesh uniting multi-speciality hospitals, independent clinics, specialists, diagnostic labs, and pharmacies on a single federated SaaS platform.
+              AllConnect is Hyderabad&apos;s centralized healthcare mesh uniting multi-speciality hospitals, independent clinics, diagnostic labs, and pharmacies on a single federated SaaS platform.
             </p>
           </div>
 
@@ -818,6 +902,7 @@ export const LandingPage = () => {
         isOpen={bookingModalOpen}
         onClose={() => setBookingModalOpen(false)}
         initialDoctor={selectedDoctor}
+        initialHospital={selectedHospitalForBooking}
       />
 
       {/* Procedure Enquiry Modal */}
@@ -830,3 +915,4 @@ export const LandingPage = () => {
     </div>
   );
 };
+export default LandingPage;

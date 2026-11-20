@@ -210,6 +210,26 @@ def add_hospital_doctor(doc_data: Dict[str, Any], current_user: Dict[str, Any] =
 
     docs = find_all("doctors")
     new_id = f"doc-{len(docs) + 1:03d}"
+
+    keywords_raw = doc_data.get("medical_keywords", [])
+    if isinstance(keywords_raw, str):
+        keywords = [k.strip() for k in keywords_raw.split(",") if k.strip()]
+    elif isinstance(keywords_raw, list):
+        keywords = [str(k).strip() for k in keywords_raw if str(k).strip()]
+    else:
+        keywords = []
+
+    conditions_raw = doc_data.get("conditions_treated", [])
+    if isinstance(conditions_raw, str):
+        conditions = [c.strip() for c in conditions_raw.split(",") if c.strip()]
+    elif isinstance(conditions_raw, list):
+        conditions = [str(c).strip() for c in conditions_raw if str(c).strip()]
+    else:
+        conditions = []
+
+    consultation_type = doc_data.get("consultation_type", "In-Person")
+    consultation_hours = doc_data.get("consultation_hours") or doc_data.get("working_hours", "09:30 AM - 05:30 PM")
+
     record = {
         "id": new_id,
         "name": doc_data.get("name"),
@@ -222,6 +242,11 @@ def add_hospital_doctor(doc_data: Dict[str, Any], current_user: Dict[str, Any] =
         "organization_id": org_id,
         "organization_name": hospital.get("name", "Hospital") if hospital else "Hospital",
         "consultation_fee": float(doc_data.get("consultation_fee", 600)),
+        "medical_keywords": keywords,
+        "conditions_treated": conditions,
+        "consultation_type": consultation_type,
+        "consultation_hours": consultation_hours,
+        "working_hours": consultation_hours,
         "rating": 5.0,
         "reviews_count": 0,
         "available_days": doc_data.get("available_days", ["Monday", "Wednesday", "Friday"]),

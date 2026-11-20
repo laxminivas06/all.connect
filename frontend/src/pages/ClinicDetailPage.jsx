@@ -134,7 +134,7 @@ export const ClinicDetailPage = () => {
                   </h4>
                   <p className="text-xs text-teal-700 font-semibold">{d.specialization}</p>
                   <p className="text-[10px] text-slate-500">{d.qualifications}</p>
-                  <p className="text-xs font-bold text-slate-800 mt-1">₹{d.consultation_fee} Fee</p>
+                  <span className="text-[11px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200 mt-1 inline-block">OPD Available</span>
                 </div>
                 <button
                   onClick={() => {

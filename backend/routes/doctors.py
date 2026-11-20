@@ -7,60 +7,79 @@ from routes.admin import log_audit_event
 
 router = APIRouter(prefix="/api/doctors", tags=["Doctors"])
 
-SYMPTOM_SPECIALTY_MAP = {
-    "fever": ["General Medicine", "Internal Medicine", "Pediatrics"],
-    "temperature": ["General Medicine", "Internal Medicine", "Pediatrics"],
-    "chills": ["General Medicine", "Internal Medicine"],
-    "cough": ["Pulmonology", "General Medicine", "ENT"],
-    "cold": ["Pulmonology", "General Medicine", "ENT"],
-    "throat": ["ENT", "General Medicine"],
-    "respiratory": ["Pulmonology", "General Medicine"],
-    "breathing": ["Pulmonology", "Cardiology"],
-    "skin": ["Dermatology"],
-    "skin problems": ["Dermatology"],
-    "rash": ["Dermatology", "Allergy"],
-    "itching": ["Dermatology"],
-    "acne": ["Dermatology"],
-    "dental": ["Dentistry", "Dental Surgery"],
-    "dental problems": ["Dentistry", "Dental Surgery"],
-    "tooth": ["Dentistry", "Dental Surgery"],
-    "toothache": ["Dentistry", "Dental Surgery"],
-    "teeth": ["Dentistry"],
-    "eye": ["Ophthalmology"],
-    "eye checkup": ["Ophthalmology"],
-    "vision": ["Ophthalmology"],
-    "heart": ["Cardiology"],
-    "cardiologist": ["Cardiology"],
-    "chest pain": ["Cardiology", "Emergency & Critical Care"],
-    "palpitations": ["Cardiology"],
-    "cardiac": ["Cardiology"],
-    "bone": ["Orthopedics"],
-    "joint": ["Orthopedics"],
-    "joint pain": ["Orthopedics"],
-    "knee": ["Orthopedics"],
-    "orthopaedic consultation": ["Orthopedics"],
-    "fracture": ["Orthopedics"],
-    "ortho": ["Orthopedics"],
-    "child": ["Pediatrics"],
-    "pediatric": ["Pediatrics"],
-    "infant": ["Pediatrics"],
-    "baby": ["Pediatrics"],
-    "stomach": ["Gastroenterology", "General Medicine"],
-    "acidity": ["Gastroenterology", "General Medicine"],
-    "digestion": ["Gastroenterology"],
-    "gastric": ["Gastroenterology"],
-    "nerve": ["Neurology"],
-    "headache": ["Neurology", "General Medicine"],
-    "migraine": ["Neurology"],
-    "diabetes": ["Endocrinology", "General Medicine"],
-    "sugar": ["Endocrinology", "General Medicine"],
-    "thyroid": ["Endocrinology"],
-    "general physician": ["General Medicine", "Internal Medicine", "Family Medicine"],
-    "general consultation": ["General Medicine", "Internal Medicine", "Family Medicine"],
-    "dermatologist": ["Dermatology"],
-    "checkup": ["General Medicine", "Internal Medicine", "Family Medicine"],
-    "full body checkup": ["General Medicine", "Pathology", "Preventive Care"]
+DEPARTMENT_SYNONYMS = {
+    "Cardiology": [
+        "heart", "chest pain", "palpitations", "cardiac", "bp", "blood pressure",
+        "cholesterol", "angina", "ecg", "bypass", "hypertension", "heart attack", "cardiologist"
+    ],
+    "General Medicine": [
+        "fever", "cough", "cold", "weakness", "fatigue", "infection", "headache",
+        "flu", "chills", "viral", "malaise", "body ache", "temperature", "physician", "checkup"
+    ],
+    "General Surgery": [
+        "hernia", "appendix", "appendicitis", "gallstones", "piles", "fistula",
+        "fissure", "biopsy", "swelling", "cyst", "abscess", "laparoscopy", "surgeon"
+    ],
+    "Orthopedics": [
+        "bone", "joint", "knee", "fracture", "back pain", "arthritis", "sprain",
+        "spine", "shoulder", "disc", "ortho", "ligament", "hip", "spondylitis", "orthopedic"
+    ],
+    "Pediatrics": [
+        "child", "infant", "baby", "newborn", "vaccination", "pediatric",
+        "growth", "immunization", "kids", "pediatrician"
+    ],
+    "Dermatology": [
+        "skin", "acne", "rash", "itching", "hair fall", "dandruff", "eczema",
+        "psoriasis", "dermatologist", "allergy", "pigmentation", "fungal"
+    ],
+    "Neurology": [
+        "brain", "nerve", "migraine", "stroke", "paralysis", "seizure",
+        "epilepsy", "numbness", "dizziness", "tremors", "neuropathy", "headache", "neurologist"
+    ],
+    "Ophthalmology": [
+        "eye", "vision", "cataract", "glaucoma", "squint", "blurry",
+        "specs", "retina", "cornea", "lasik", "dry eye", "eye checkup", "ophthalmologist"
+    ],
+    "ENT": [
+        "ear", "nose", "throat", "sinusitis", "tonsils", "hearing",
+        "tinnitus", "hoarseness", "dizziness", "ear pain", "nasal polyps", "ent specialist"
+    ],
+    "Gastroenterology": [
+        "stomach", "acidity", "digestion", "liver", "jaundice", "endoscopy",
+        "gas", "gastritis", "reflux", "ibs", "ulcer", "abdominal pain", "gastroenterologist"
+    ],
+    "Gynecology": [
+        "pregnancy", "periods", "menstrual", "pcod", "pcos", "uterine",
+        "delivery", "cramps", "infertility", "fibroid", "obstetrics", "gynecologist", "womens health"
+    ],
+    "Urology": [
+        "kidney", "stone", "urine", "prostate", "urinary tract", "uti",
+        "bladder", "hematuria", "dysuria", "urologist"
+    ],
+    "Pulmonology": [
+        "asthma", "breathing", "lungs", "bronchitis", "pneumonia",
+        "wheezing", "shortness of breath", "respiratory", "pulmonary", "inhaler", "pulmonologist"
+    ],
+    "Psychiatry": [
+        "anxiety", "depression", "sleep", "stress", "mental health",
+        "mood", "insomnia", "panic", "bipolar", "psychiatrist"
+    ]
 }
+
+# Auto-generate SYMPTOM_SPECIALTY_MAP from DEPARTMENT_SYNONYMS
+SYMPTOM_SPECIALTY_MAP = {}
+for dept, keywords in DEPARTMENT_SYNONYMS.items():
+    for kw in keywords:
+        if kw not in SYMPTOM_SPECIALTY_MAP:
+            SYMPTOM_SPECIALTY_MAP[kw] = []
+        if dept not in SYMPTOM_SPECIALTY_MAP[kw]:
+            SYMPTOM_SPECIALTY_MAP[kw].append(dept)
+
+# Additional mappings for common query variations
+SYMPTOM_SPECIALTY_MAP["sugar"] = ["Endocrinology", "General Medicine"]
+SYMPTOM_SPECIALTY_MAP["diabetes"] = ["Endocrinology", "General Medicine"]
+SYMPTOM_SPECIALTY_MAP["thyroid"] = ["Endocrinology", "General Medicine"]
+SYMPTOM_SPECIALTY_MAP["full body checkup"] = ["General Medicine", "Pathology", "Preventive Care"]
 
 PROCEDURE_CATALOG = {
     "cataract surgery": {
@@ -287,18 +306,44 @@ def discovery_search(query: Optional[str] = Query(None), q: Optional[str] = Quer
 
         doc_spec = d.get("specialization", "")
         doc_dept = d.get("department", "")
+        doc_keywords = [k.lower() for k in d.get("medical_keywords", []) if isinstance(k, str)]
+        doc_conditions = [c.lower() for c in d.get("conditions_treated", []) if isinstance(c, str)]
+
+        score = 0
+        is_exact_keyword = any(q == k for k in doc_keywords)
+        is_partial_keyword = any(q in k or k in q for k in doc_keywords)
+        is_exact_condition = any(q == c for c in doc_conditions)
+        is_partial_condition = any(q in c or c in q for c in doc_conditions)
         is_name_match = q in d.get("name", "").lower()
         is_spec_match = doc_spec in matched_specs or any(s.lower() in doc_spec.lower() for s in matched_specs)
         is_dept_match = doc_dept in matched_departments or any(s.lower() in doc_dept.lower() for s in matched_departments)
 
-        if is_name_match or is_spec_match or is_dept_match:
+        if is_exact_keyword:
+            score += 40
+        elif is_partial_keyword:
+            score += 25
+        
+        if is_exact_condition:
+            score += 35
+        elif is_partial_condition:
+            score += 20
+
+        if is_name_match:
+            score += 30
+        if is_spec_match:
+            score += 15
+        if is_dept_match:
+            score += 10
+
+        if score > 0 or is_name_match or is_spec_match or is_dept_match:
             org_id = d.get("organization_id")
             org = hospitals_map.get(org_id) or clinics_map.get(org_id)
             if org:
                 # Calculate bookable slots
-                avail_hours = d.get("consultation_hours") or "09:00 AM - 01:00 PM"
+                avail_hours = d.get("consultation_hours") or d.get("working_hours") or "09:00 AM - 01:00 PM"
                 matched_doctors.append({
                     **d,
+                    "match_score": score,
                     "available_today": True,
                     "sample_slots": ["10:00 AM", "10:30 AM", "11:15 AM", "04:30 PM", "05:15 PM"],
                     "organization_details": {
@@ -313,8 +358,8 @@ def discovery_search(query: Optional[str] = Query(None), q: Optional[str] = Quer
                     }
                 })
 
-    # Sort doctors by rating & experience
-    matched_doctors.sort(key=lambda x: (x.get("rating", 0), x.get("experience_years", 0)), reverse=True)
+    # Sort doctors by match score first (exact match priority), then rating & experience
+    matched_doctors.sort(key=lambda x: (x.get("match_score", 0), x.get("rating", 0), x.get("experience_years", 0)), reverse=True)
 
     # 8. Filter relevant participating hospitals & clinics
     relevant_org_ids = set(d.get("organization_id") for d in matched_doctors if d.get("organization_id"))
@@ -549,6 +594,25 @@ def create_organization_doctor(
     phone = payload.get("phone") or payload.get("contact_number", "+91 98490 00000")
     password = payload.get("password") or "Doctor@123"
 
+    keywords_raw = payload.get("medical_keywords", [])
+    if isinstance(keywords_raw, str):
+        keywords = [k.strip() for k in keywords_raw.split(",") if k.strip()]
+    elif isinstance(keywords_raw, list):
+        keywords = [str(k).strip() for k in keywords_raw if str(k).strip()]
+    else:
+        keywords = []
+
+    conditions_raw = payload.get("conditions_treated", [])
+    if isinstance(conditions_raw, str):
+        conditions = [c.strip() for c in conditions_raw.split(",") if c.strip()]
+    elif isinstance(conditions_raw, list):
+        conditions = [str(c).strip() for c in conditions_raw if str(c).strip()]
+    else:
+        conditions = []
+
+    consultation_type = payload.get("consultation_type", "In-Person")
+    consultation_hours = payload.get("consultation_hours") or payload.get("working_hours", "09:30 AM - 05:30 PM")
+
     record = {
         "id": new_doc_id,
         "name": doc_name,
@@ -562,6 +626,10 @@ def create_organization_doctor(
         "organization_id": org_id,
         "organization_name": org.get("name", "Medical Centre") if org else "Medical Centre",
         "consultation_fee": float(payload.get("consultation_fee", 600)),
+        "medical_keywords": keywords,
+        "conditions_treated": conditions,
+        "consultation_type": consultation_type,
+        "consultation_hours": consultation_hours,
         "contact_number": phone,
         "phone": phone,
         "email": email,

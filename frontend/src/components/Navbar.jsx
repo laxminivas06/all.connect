@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../services/api';
 import {
   Activity,
   Stethoscope,
@@ -14,18 +15,31 @@ import {
   X,
   Calendar,
   Building2,
-  Users,
   Info,
-  Home
+  Home,
+  Trash2,
+  CheckCircle2,
+  CheckCheck,
+  AlertCircle
 } from 'lucide-react';
 
 export const Navbar = ({ onToggleSidebar }) => {
   const auth = useAuth() || {};
-  const { user = null, logout = () => {}, notifications = [], unreadCount = 0 } = auth;
+  const {
+    user = null,
+    logout = () => {},
+    notifications = [],
+    unreadCount = 0,
+    removeNotification = () => {},
+    clearAllNotifications = () => {},
+    refreshNotifications = () => {}
+  } = auth;
   const navigate = useNavigate();
   const location = useLocation();
   const [showNotifs, setShowNotifs] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [confirmClearAll, setConfirmClearAll] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
 
   const getDashboardPath = () => {
     if (!user) return '/login';
@@ -51,6 +65,49 @@ export const Navbar = ({ onToggleSidebar }) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleMarkAsRead = async (id, e) => {
+    e?.stopPropagation();
+    try {
+      await api.markNotificationRead(id);
+      refreshNotifications();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleMarkAllRead = async () => {
+    try {
+      setActionLoading(true);
+      await api.markAllNotificationsRead();
+      refreshNotifications();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleDeleteOne = async (id, e) => {
+    e?.stopPropagation();
+    try {
+      await removeNotification(id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleClearAllConfirmed = async () => {
+    try {
+      setActionLoading(true);
+      await clearAllNotifications();
+      setConfirmClearAll(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setActionLoading(false);
     }
   };
 
@@ -109,16 +166,16 @@ export const Navbar = ({ onToggleSidebar }) => {
                   className={`px-3 py-2 rounded-xl hover:text-blue-600 hover:bg-slate-50 transition flex items-center gap-1.5 ${location.pathname.startsWith('/hospitals') ? 'text-blue-600 font-extrabold' : ''}`}
                 >
                   <Building2 className="w-3.5 h-3.5" />
-                  Hospitals & Clinics
+                  Hospitals
                 </Link>
 
-                <button
-                  onClick={() => scrollToSection('specialists-section')}
-                  className="px-3 py-2 rounded-xl hover:text-blue-600 hover:bg-slate-50 transition flex items-center gap-1.5"
+                <Link
+                  to="/clinics"
+                  className={`px-3 py-2 rounded-xl hover:text-blue-600 hover:bg-slate-50 transition flex items-center gap-1.5 ${location.pathname.startsWith('/clinics') ? 'text-blue-600 font-extrabold' : ''}`}
                 >
-                  <Users className="w-3.5 h-3.5" />
-                  Specialists
-                </button>
+                  <Stethoscope className="w-3.5 h-3.5" />
+                  Clinics
+                </Link>
 
                 <Link
                   to="/offers"
@@ -165,8 +222,12 @@ export const Navbar = ({ onToggleSidebar }) => {
             {user && (
               <div className="relative">
                 <button
-                  onClick={() => setShowNotifs(!showNotifs)}
+                  onClick={() => {
+                    setShowNotifs(!showNotifs);
+                    setConfirmClearAll(false);
+                  }}
                   className="p-2 text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded-lg relative transition"
+                  aria-label="View notifications"
                 >
                   <Bell className="w-5 h-5" />
                   {unreadCount > 0 && (
@@ -177,20 +238,110 @@ export const Navbar = ({ onToggleSidebar }) => {
                 </button>
 
                 {showNotifs && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in">
-                    <div className="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-800">In-App Notifications</span>
-                      <span className="text-[10px] text-slate-500">{notifications.length} total</span>
+                  <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in">
+                    {/* Header with Actions */}
+                    <div className="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-black text-slate-900">Notifications</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                          {notifications.length}
+                        </span>
+                      </div>
+                      {notifications.length > 0 && (
+                        <div className="flex items-center gap-2">
+                          {unreadCount > 0 && (
+                            <button
+                              onClick={handleMarkAllRead}
+                              disabled={actionLoading}
+                              className="text-[11px] font-bold text-blue-600 hover:text-blue-800 transition flex items-center gap-1"
+                              title="Mark all as read"
+                            >
+                              <CheckCheck className="w-3.5 h-3.5" />
+                              <span>Mark read</span>
+                            </button>
+                          )}
+                          <button
+                            onClick={() => setConfirmClearAll(true)}
+                            disabled={actionLoading}
+                            className="text-[11px] font-bold text-rose-600 hover:text-rose-800 transition flex items-center gap-1"
+                            title="Delete all notifications"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Clear all</span>
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    <div className="max-h-72 overflow-y-auto divide-y divide-slate-100">
+
+                    {/* Clear All Confirmation Banner */}
+                    {confirmClearAll && (
+                      <div className="p-3 mx-3 my-2 bg-rose-50 border border-rose-200 rounded-xl text-xs flex flex-col gap-2">
+                        <div className="flex items-start gap-2 text-rose-800 font-semibold">
+                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                          <span>Delete all notifications? This cannot be undone.</span>
+                        </div>
+                        <div className="flex items-center justify-end gap-2 mt-1">
+                          <button
+                            onClick={() => setConfirmClearAll(false)}
+                            className="px-2.5 py-1 text-slate-600 bg-white border border-slate-200 rounded-lg font-bold text-[11px] hover:bg-slate-50 transition"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleClearAllConfirmed}
+                            disabled={actionLoading}
+                            className="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold text-[11px] transition shadow-xs"
+                          >
+                            {actionLoading ? 'Deleting...' : 'Yes, Delete All'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Notification List */}
+                    <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
                       {notifications.length === 0 ? (
-                        <p className="text-center py-6 text-xs text-slate-400">No new notifications</p>
+                        <div className="py-10 px-4 text-center">
+                          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <CheckCircle2 className="w-6 h-6" />
+                          </div>
+                          <p className="text-xs font-bold text-slate-800">You're all caught up!</p>
+                          <p className="text-[11px] text-slate-400 mt-0.5">No notifications yet.</p>
+                        </div>
                       ) : (
-                        notifications.slice(0, 5).map(n => (
-                          <div key={n.id} className="p-3 text-xs hover:bg-slate-50 transition">
-                            <p className="font-semibold text-slate-800">{n.title}</p>
-                            <p className="text-slate-500 text-[11px] mt-0.5">{n.message}</p>
-                            <span className="text-[9px] text-slate-400 block mt-1">{new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        notifications.map(n => (
+                          <div
+                            key={n.id}
+                            onClick={() => !n.is_read && handleMarkAsRead(n.id)}
+                            className={`p-3 text-xs transition flex items-start justify-between gap-3 group cursor-pointer ${
+                              n.is_read ? 'hover:bg-slate-50 opacity-80' : 'bg-blue-50/40 hover:bg-blue-50/70'
+                            }`}
+                          >
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1.5">
+                                {!n.is_read && (
+                                  <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
+                                )}
+                                <p className={`truncate font-semibold ${n.is_read ? 'text-slate-700' : 'text-slate-900 font-bold'}`}>
+                                  {n.title}
+                                </p>
+                              </div>
+                              <p className="text-slate-500 text-[11px] mt-1 line-clamp-2 leading-relaxed">
+                                {n.message}
+                              </p>
+                              <span className="text-[10px] text-slate-400 block mt-1.5 font-medium">
+                                {n.created_at ? new Date(n.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recently'}
+                              </span>
+                            </div>
+
+                            {/* Delete single notification button */}
+                            <button
+                              onClick={(e) => handleDeleteOne(n.id, e)}
+                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg opacity-0 group-hover:opacity-100 transition shrink-0"
+                              title="Delete notification"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
                           </div>
                         ))
                       )}
@@ -219,23 +370,23 @@ export const Navbar = ({ onToggleSidebar }) => {
                 ) : (
                   <Link
                     to={getDashboardPath()}
-                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-sm flex items-center gap-1.5 transition"
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-1.5 transition"
                   >
-                    <LayoutDashboard className="w-3.5 h-3.5 text-blue-400" />
+                    <LayoutDashboard className="w-3.5 h-3.5 text-blue-600" />
                     <span>Dashboard</span>
                   </Link>
                 )}
 
                 <button
                   onClick={logout}
+                  className="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
                   title="Logout"
-                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-1.5 sm:space-x-2">
+              <div className="flex items-center space-x-2">
                 <Link
                   to="/profile"
                   className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5"
@@ -287,15 +438,16 @@ export const Navbar = ({ onToggleSidebar }) => {
               className="block px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
             >
               <Building2 className="w-4 h-4 text-blue-600" />
-              Hospitals & Clinics
+              Hospitals
             </Link>
-            <button
-              onClick={() => { setShowMobileMenu(false); scrollToSection('specialists-section'); }}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+            <Link
+              to="/clinics"
+              onClick={() => setShowMobileMenu(false)}
+              className="block px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
             >
-              <Users className="w-4 h-4 text-teal-600" />
-              Specialists
-            </button>
+              <Stethoscope className="w-4 h-4 text-teal-600" />
+              Clinics
+            </Link>
             <Link
               to="/offers"
               onClick={() => setShowMobileMenu(false)}

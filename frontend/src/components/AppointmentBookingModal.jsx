@@ -16,6 +16,7 @@ export const AppointmentBookingModal = ({
   const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [fetchingDoctorDetails, setFetchingDoctorDetails] = useState(false);
   const [error, setError] = useState('');
   const [successData, setSuccessData] = useState(null);
 
@@ -33,21 +34,35 @@ export const AppointmentBookingModal = ({
       setStep(1);
       if (initialDate) setSelectedDate(initialDate);
       if (initialTime) setSelectedSlot(initialTime);
-      if (initialDoctor) {
-        setSelectedDoctor(initialDoctor);
-        if (!initialTime) {
-          setSelectedSlot(initialDoctor.available_slots ? initialDoctor.available_slots[0] : '10:00 AM');
-        }
-      } else {
-        api.getDoctors().then(docs => {
-          setDoctorsList(docs);
-          if (docs.length > 0) {
-            setSelectedDoctor(docs[0]);
+
+      const targetDocId = typeof initialDoctor === 'string' ? initialDoctor : initialDoctor?.id;
+      if (targetDocId) {
+        setFetchingDoctorDetails(true);
+        api.getDoctor(targetDocId)
+          .then(data => {
+            const docObj = data.doctor || data;
+            setSelectedDoctor(docObj);
             if (!initialTime) {
-              setSelectedSlot(docs[0].available_slots ? docs[0].available_slots[0] : '10:00 AM');
+              setSelectedSlot(docObj.available_slots ? docObj.available_slots[0] : '10:00 AM');
             }
-          }
-        });
+          })
+          .catch(() => {
+            if (typeof initialDoctor === 'object') setSelectedDoctor(initialDoctor);
+          })
+          .finally(() => setFetchingDoctorDetails(false));
+      } else {
+        setFetchingDoctorDetails(true);
+        api.getDoctors()
+          .then(docs => {
+            setDoctorsList(docs || []);
+            if (docs && docs.length > 0) {
+              setSelectedDoctor(docs[0]);
+              if (!initialTime) {
+                setSelectedSlot(docs[0].available_slots ? docs[0].available_slots[0] : '10:00 AM');
+              }
+            }
+          })
+          .finally(() => setFetchingDoctorDetails(false));
       }
     }
   }, [isOpen, initialDoctor, initialDate, initialTime]);
@@ -136,20 +151,26 @@ export const AppointmentBookingModal = ({
               </div>
             )}
 
-            {/* Selected Doctor Summary Card */}
-            {selectedDoctor && (
-              <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 flex items-center justify-between">
+            {/* Selected Doctor Summary Card with Skeleton Loader */}
+            {fetchingDoctorDetails ? (
+              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 animate-pulse space-y-2">
+                <div className="h-4 bg-slate-200 rounded w-1/3" />
+                <div className="h-3 bg-slate-200 rounded w-2/3" />
+                <div className="h-2.5 bg-slate-200 rounded w-1/4" />
+              </div>
+            ) : selectedDoctor ? (
+              <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-200 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold text-slate-800">{selectedDoctor.name}</p>
-                  <p className="text-[11px] text-blue-700">{selectedDoctor.specialization} • {selectedDoctor.organization_name}</p>
+                  <p className="text-[11px] text-blue-700 font-medium">{selectedDoctor.specialization} • {selectedDoctor.organization_name}</p>
                   <p className="text-[10px] text-slate-500">{selectedDoctor.qualifications}</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-black text-slate-900 block">₹{selectedDoctor.consultation_fee}</span>
-                  <span className="text-[10px] text-emerald-600 font-semibold">Consultation Fee</span>
+                  <span className="text-sm font-black text-slate-900 block">₹{selectedDoctor.consultation_fee}</span>
+                  <span className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Locked Fee</span>
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* Date Selection */}
             <div className="grid grid-cols-2 gap-3">
@@ -219,10 +240,10 @@ export const AppointmentBookingModal = ({
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 disabled:opacity-50 transition"
+                disabled={loading || fetchingDoctorDetails}
+                className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-black text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 disabled:opacity-50 transition flex items-center justify-center gap-2"
               >
-                {loading ? 'Validating slot...' : `Confirm & Pay ₹${selectedDoctor?.consultation_fee || 500}`}
+                {loading ? 'Processing Slot Reservation...' : fetchingDoctorDetails ? 'Loading Doctor Details...' : `Confirm & Pay ₹${selectedDoctor?.consultation_fee || 500}`}
               </button>
               <p className="text-center text-[10px] text-slate-400 mt-2">
                 🔒 Prevents double-booking automatically across the centralized mesh.

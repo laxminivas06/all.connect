@@ -43,6 +43,66 @@ export const DoctorsTab = ({
     initialView === 'availability' && effectiveDoctors.length > 0 ? effectiveDoctors[0] : null
   );
 
+  // Department presets for smart keyword suggestions
+  const departmentPresets = {
+    'Cardiology': {
+      keywords: 'heart, chest pain, palpitations, cardiac, bp, blood pressure, cholesterol, angina, ecg, bypass',
+      conditions: 'Coronary Artery Disease, Hypertension, Arrhythmia, Heart Failure, Angina Pectoris'
+    },
+    'General Medicine': {
+      keywords: 'fever, cough, cold, weakness, fatigue, infection, headache, flu, chills, viral, malaise, body ache',
+      conditions: 'Viral Fever, Respiratory Infection, Diabetes Management, Hypertension, General Checkup'
+    },
+    'General Surgery': {
+      keywords: 'hernia, appendix, appendicitis, gallstones, piles, fistula, fissure, biopsy, swelling, cyst, abscess',
+      conditions: 'Inguinal Hernia, Acute Appendicitis, Cholelithiasis, Anorectal Fissure, Soft Tissue Cysts'
+    },
+    'Orthopedics': {
+      keywords: 'bone, joint, knee, fracture, back pain, arthritis, sprain, spine, shoulder, disc, ortho, ligament',
+      conditions: 'Osteoarthritis, Ligament Tear, Knee Pain, Lumbar Spondylosis, Sports Injury, Bone Fractures'
+    },
+    'Pediatrics': {
+      keywords: 'child, infant, baby, newborn, vaccination, pediatric, growth, immunization, kids',
+      conditions: 'Childhood Viral Infections, Growth Monitoring, Routine Immunization, Pediatric Allergy, Colic'
+    },
+    'Dermatology': {
+      keywords: 'skin, acne, rash, itching, hair fall, dandruff, eczema, psoriasis, dermatologist, allergy',
+      conditions: 'Acne Vulgaris, Eczema, Psoriasis, Alopecia Areata, Fungal Infections, Contact Dermatitis'
+    },
+    'Neurology': {
+      keywords: 'brain, nerve, migraine, stroke, paralysis, seizure, epilepsy, numbness, dizziness, tremors',
+      conditions: 'Migraine, Epilepsy, Peripheral Neuropathy, Stroke Rehabilitation, Essential Tremors'
+    },
+    'Ophthalmology': {
+      keywords: 'eye, vision, cataract, glaucoma, squint, blurry, specs, retina, cornea, lasik, dry eye',
+      conditions: 'Cataract, Refractive Errors, Glaucoma, Dry Eye Syndrome, Diabetic Retinopathy'
+    },
+    'ENT': {
+      keywords: 'ear, nose, throat, sinusitis, tonsils, hearing, tinnitus, hoarseness, dizziness, ear pain',
+      conditions: 'Chronic Sinusitis, Tonsillitis, Deviated Nasal Septum, Otitis Media, Allergic Rhinitis'
+    },
+    'Gastroenterology': {
+      keywords: 'stomach, acidity, digestion, liver, jaundice, endoscopy, gas, gastritis, reflux, ibs, ulcer',
+      conditions: 'GERD, Non-Alcoholic Fatty Liver, Chronic Gastritis, Irritable Bowel Syndrome, Peptic Ulcers'
+    },
+    'Gynecology': {
+      keywords: 'pregnancy, periods, menstrual, pcod, pcos, uterine, delivery, cramps, infertility, fibroid',
+      conditions: 'PCOS / PCOD, Antenatal Care, Menstrual Irregularities, Uterine Fibroids, High Risk Pregnancy'
+    },
+    'Urology': {
+      keywords: 'kidney, stone, urine, prostate, urinary tract, uti, bladder, hematuria',
+      conditions: 'Renal Calculi, Benign Prostatic Hyperplasia, Recurrent UTI, Urinary Incontinence'
+    },
+    'Pulmonology': {
+      keywords: 'asthma, breathing, lungs, bronchitis, pneumonia, wheezing, shortness of breath, respiratory',
+      conditions: 'Bronchial Asthma, COPD, Pneumonia, Allergic Bronchitis, Sleep Apnea'
+    },
+    'Psychiatry': {
+      keywords: 'anxiety, depression, sleep, stress, mental health, mood, insomnia, panic',
+      conditions: 'Generalized Anxiety Disorder, Major Depressive Disorder, Insomnia, Panic Disorder'
+    }
+  };
+
   // Add Doctor Form State
   const [doctorForm, setDoctorForm] = useState({
     name: 'Dr. ',
@@ -55,8 +115,12 @@ export const DoctorsTab = ({
     contact_number: '+91 98490 ',
     email: '',
     consultation_fee: 600,
+    consultation_type: 'Both',
+    medical_keywords: 'fever, cough, cold, weakness, fatigue, infection, headache, flu, chills, viral',
+    conditions_treated: 'Viral Fever, Respiratory Infection, Diabetes Management, Hypertension',
     available_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     working_hours: '09:30 AM - 05:30 PM',
+    consultation_hours: '09:30 AM - 01:30 PM',
     break_times: '01:00 PM - 02:00 PM',
     appointment_duration: 15,
     slot_limits: 25,
@@ -65,6 +129,17 @@ export const DoctorsTab = ({
     password: 'Doctor@123'
   });
   const [addDoctorLoading, setAddDoctorLoading] = useState(false);
+
+  const handleDepartmentChange = (dept) => {
+    const preset = departmentPresets[dept];
+    setDoctorForm(prev => ({
+      ...prev,
+      department: dept,
+      specialization: dept,
+      medical_keywords: preset ? preset.keywords : prev.medical_keywords,
+      conditions_treated: preset ? preset.conditions : prev.conditions_treated
+    }));
+  };
 
   // Availability Form State
   const [availForm, setAvailForm] = useState({
@@ -319,16 +394,31 @@ export const DoctorsTab = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Clinical Department *</label>
+                  <select
+                    value={doctorForm.department}
+                    onChange={(e) => handleDepartmentChange(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 bg-white"
+                  >
+                    {Object.keys(departmentPresets).map(dept => (
+                      <option key={dept} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Clinical Specialisation *</label>
                   <input
                     type="text"
                     required
                     value={doctorForm.specialization}
-                    onChange={(e) => setDoctorForm({ ...doctorForm, specialization: e.target.value, department: e.target.value })}
+                    onChange={(e) => setDoctorForm({ ...doctorForm, specialization: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. Cardiology, Pediatrics, Dermatology"
+                    placeholder="e.g. Interventional Cardiology, Pediatric Surgery"
                   />
                 </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Medical Registration Number (State/NMC) *</label>
                   <input
@@ -339,6 +429,52 @@ export const DoctorsTab = ({
                     className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500"
                     placeholder="e.g. TSMC-45892"
                   />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Consultation Type *</label>
+                  <select
+                    value={doctorForm.consultation_type}
+                    onChange={(e) => setDoctorForm({ ...doctorForm, consultation_type: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 bg-white"
+                  >
+                    <option value="Both">Both (In-Person OPD & Video)</option>
+                    <option value="In-Person">In-Person OPD Only</option>
+                    <option value="Video">Video Consultation Only</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Medical Keywords and Conditions for intelligent patient discovery */}
+              <div className="space-y-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-slate-800">
+                      Medical Search Keywords & Symptoms *
+                    </label>
+                    <span className="text-[10px] text-blue-600 font-semibold">Matched with patient concerns</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={doctorForm.medical_keywords}
+                    onChange={(e) => setDoctorForm({ ...doctorForm, medical_keywords: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 bg-white"
+                    placeholder="e.g. heart, chest pain, bp, palpitations, angina, ecg"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">Comma-separated keywords matching patient symptom searches.</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
+                    Medical Conditions Treated *
+                  </label>
+                  <input
+                    type="text"
+                    value={doctorForm.conditions_treated}
+                    onChange={(e) => setDoctorForm({ ...doctorForm, conditions_treated: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 bg-white"
+                    placeholder="e.g. Coronary Artery Disease, Hypertension, Heart Failure"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">Specific clinical diagnoses and pathologies handled.</p>
                 </div>
               </div>
 

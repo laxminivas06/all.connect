@@ -3174,5 +3174,137 @@
     "severity": "info",
     "ip_address": "127.0.0.1",
     "detail": "Cleaned up 0 temporary files, reclaimed 0 B"
+  },
+  {
+    "id": "aud-1795139449-290",
+    "timestamp": "2026-11-20 07:20:49",
+    "actor": "admin",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-admin-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User admin (super_admin) logged in successfully"
+  },
+  {
+    "id": "aud-1795139449-291",
+    "timestamp": "2026-11-20 07:20:49",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795139449-292",
+    "timestamp": "2026-11-20 07:20:49",
+    "actor": "Anonymous",
+    "action": "LOGIN_FAILED",
+    "target": "bruteforce_test_user",
+    "category": "Authentication",
+    "severity": "warning",
+    "ip_address": "127.0.0.1",
+    "detail": "Failed login attempt for nonexistent user identifier: bruteforce_test_user"
+  },
+  {
+    "id": "aud-1795139449-293",
+    "timestamp": "2026-11-20 07:20:49",
+    "actor": "Anonymous",
+    "action": "LOGIN_FAILED",
+    "target": "bruteforce_test_user",
+    "category": "Authentication",
+    "severity": "warning",
+    "ip_address": "127.0.0.1",
+    "detail": "Failed login attempt for nonexistent user identifier: bruteforce_test_user"
+  },
+  {
+    "id": "aud-1795139449-294",
+    "timestamp": "2026-11-20 07:20:49",
+    "actor": "Anonymous",
+    "action": "LOGIN_FAILED",
+    "target": "bruteforce_test_user",
+    "category": "Authentication",
+    "severity": "warning",
+    "ip_address": "127.0.0.1",
+    "detail": "Failed login attempt for nonexistent user identifier: bruteforce_test_user"
+  },
+  {
+    "id": "aud-1795139449-295",
+    "timestamp": "2026-11-20 07:20:49",
+    "actor": "Anonymous",
+    "action": "LOGIN_FAILED",
+    "target": "bruteforce_test_user",
+    "category": "Authentication",
+    "severity": "warning",
+    "ip_address": "127.0.0.1",
+    "detail": "Failed login attempt for nonexistent user identifier: bruteforce_test_user"
+  },
+  {
+    "id": "aud-1795139450-296",
+    "timestamp": "2026-11-20 07:20:50",
+    "actor": "Anonymous",
+    "action": "LOGIN_FAILED",
+    "target": "bruteforce_test_user",
+    "category": "Authentication",
+    "severity": "warning",
+    "ip_address": "127.0.0.1",
+    "detail": "Failed login attempt for nonexistent user identifier: bruteforce_test_user"
+  },
+  {
+    "id": "aud-1795139458-297",
+    "timestamp": "2026-11-20 07:20:58",
+    "actor": "admin",
+    "action": "DATABASE_RESTORED",
+    "target": "backup_20261120_072055_automated_test",
+    "category": "Database Maintenance",
+    "severity": "warning",
+    "ip_address": "127.0.0.1",
+    "detail": "Database restored from backup backup_20261120_072055_automated_test. Safety snapshot created: backup_20261120_072057_pre_restore_safety"
+  },
+  {
+    "id": "aud-1795139458-298",
+    "timestamp": "2026-11-20 07:20:58",
+    "actor": "admin",
+    "action": "UPDATE_STORAGE_LIMIT",
+    "target": "hosp-001",
+    "category": "Storage Governance",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Storage limit updated to 1 MB (threshold 50%) for hosp-001"
+  },
+  {
+    "id": "aud-1795139458-299",
+    "timestamp": "2026-11-20 07:20:58",
+    "actor": "Super Admin",
+    "action": "DOCUMENT_UPLOADED",
+    "target": "hospital_test_doc_1795139458.pdf",
+    "category": "Compliance Documents",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Uploaded registration_document (test_doc.pdf, 66.4 KB)"
+  },
+  {
+    "id": "aud-1795139458-300",
+    "timestamp": "2026-11-20 07:20:58",
+    "actor": "admin",
+    "action": "UPDATE_STORAGE_LIMIT",
+    "target": "hosp-001",
+    "category": "Storage Governance",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Storage limit updated to 2048 MB (threshold 80%) for hosp-001"
+  },
+  {
+    "id": "aud-1795139459-301",
+    "timestamp": "2026-11-20 07:20:59",
+    "actor": "admin",
+    "action": "SYSTEM_CLEANUP_EXECUTED",
+    "target": "temporary_storage",
+    "category": "Storage Governance",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "Cleaned up 0 temporary files, reclaimed 0 B"
   }
 ]

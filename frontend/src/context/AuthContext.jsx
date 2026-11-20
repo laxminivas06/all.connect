@@ -71,6 +71,24 @@ export const AuthProvider = ({ children }) => {
     setNotifications([]);
   };
 
+  const removeNotification = async (id) => {
+    try {
+      await api.deleteNotification(id);
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    } catch (err) {
+      console.error('Failed to delete notification', err);
+    }
+  };
+
+  const clearAllNotifications = async () => {
+    try {
+      await api.deleteAllNotifications();
+      setNotifications([]);
+    } catch (err) {
+      console.error('Failed to clear notifications', err);
+    }
+  };
+
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
@@ -83,7 +101,9 @@ export const AuthProvider = ({ children }) => {
       logout,
       notifications,
       unreadCount,
-      refreshNotifications: fetchNotifications
+      refreshNotifications: fetchNotifications,
+      removeNotification,
+      clearAllNotifications
     }}>
       {children}
     </AuthContext.Provider>

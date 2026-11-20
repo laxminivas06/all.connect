@@ -430,9 +430,9 @@ export const BookOpdPage = () => {
                       </div>
 
                       <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <div>
-                          <span className="text-[10px] text-slate-400 block uppercase font-bold">OPD Fee</span>
-                          <span className="text-lg font-black text-slate-900">₹{doc.consultation_fee || 500}</span>
+                        <div className="flex items-center gap-1 text-xs text-emerald-600 font-bold">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span>OPD Available</span>
                         </div>
 
                         <div className="flex items-center gap-1.5">
@@ -448,9 +448,10 @@ export const BookOpdPage = () => {
                               setSelectedDoctor(doc);
                               setBookingModalOpen(true);
                             }}
-                            className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition"
+                            className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition flex items-center gap-1"
                           >
-                            Book Slot
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>Book Slot</span>
                           </button>
                         </div>
                       </div>

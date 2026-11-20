@@ -201,8 +201,8 @@ export const HospitalDetailPage = () => {
                     </div>
 
                     <div className="text-right">
-                      <span className="text-sm font-black text-slate-900 block">₹{doc.consultation_fee}</span>
-                      <span className="text-[10px] text-slate-400">OPD Fee</span>
+                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 block">Active OPD</span>
+                      <span className="text-[10px] text-slate-400">Available</span>
                     </div>
                   </div>
 

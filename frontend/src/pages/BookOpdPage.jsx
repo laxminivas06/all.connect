@@ -657,6 +657,7 @@ export const BookOpdPage = () => {
         onClose={() => setBookingModalOpen(false)}
         initialDoctor={selectedDoctor}
         initialTime={selectedSlot}
+        initialComplaint={searchQuery}
         onBookingSuccess={(appt) => setLastBooking(appt)}
       />
 

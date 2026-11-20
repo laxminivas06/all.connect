@@ -102,6 +102,8 @@ def login(req: LoginRequest):
             "email": user.get("email"),
             "role": user["role"],
             "full_name": user.get("full_name"),
+            "name": user.get("full_name") or user.get("username"),
+            "phone": user.get("phone"),
             "organization_id": user.get("organization_id"),
             "entity_id": user.get("entity_id")
         }
@@ -286,6 +288,8 @@ def get_me(current_user: Dict[str, Any] = Depends(get_current_user_payload)):
             "email": user.get("email"),
             "role": user["role"],
             "full_name": user.get("full_name"),
+            "name": user.get("full_name") or user.get("username"),
+            "phone": user.get("phone"),
             "organization_id": user.get("organization_id"),
             "entity_id": user.get("entity_id")
         },

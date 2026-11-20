@@ -965,6 +965,7 @@ export const LandingPage = () => {
         onClose={() => setBookingModalOpen(false)}
         initialDoctor={selectedDoctor}
         initialHospital={selectedHospitalForBooking}
+        initialComplaint={searchQuery}
       />
 
       {/* Procedure Enquiry Modal */}

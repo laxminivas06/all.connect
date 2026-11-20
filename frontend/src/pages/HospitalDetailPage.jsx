@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import {
   Building2,
@@ -26,12 +26,14 @@ import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 
 export const HospitalDetailPage = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get('search') || searchParams.get('q') || '';
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   // Doctor search & speciality filter state
-  const [searchCareQuery, setSearchCareQuery] = useState('');
+  const [searchCareQuery, setSearchCareQuery] = useState(initialQuery);
   const [selectedSpeciality, setSelectedSpeciality] = useState('All');
 
   // Booking modal
@@ -458,6 +460,7 @@ export const HospitalDetailPage = () => {
         onClose={() => setBookingModalOpen(false)}
         initialDoctor={selectedDoctor}
         initialHospital={hospital}
+        initialComplaint={searchCareQuery || initialQuery}
       />
     </div>
   );

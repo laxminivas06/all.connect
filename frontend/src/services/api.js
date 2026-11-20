@@ -93,6 +93,7 @@ export const api = {
   getAppointments: (status) => request(`/appointments${status ? `?status=${status}` : ''}`),
   getAppointmentPricingQuote: (data) => request('/appointments/pricing-quote', { method: 'POST', body: JSON.stringify(data) }),
   bookAppointment: (data) => request('/appointments/book', { method: 'POST', body: JSON.stringify(data) }),
+  cancelAppointment: (id, data) => request(`/appointments/${id}/cancel`, { method: 'PUT', body: JSON.stringify(data || {}) }),
   updateAppointmentStatus: (id, data) => request(`/appointments/${id}/status`, { method: 'PUT', body: JSON.stringify(data) }),
   assignAppointmentDoctor: (id, data) => request(`/appointments/${id}/assign`, { method: 'PUT', body: JSON.stringify(data) }),
   updateAppointmentBilling: (id, data) => request(`/appointments/${id}/billing`, { method: 'PUT', body: JSON.stringify(data) }),

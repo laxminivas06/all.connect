@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Body
 from models.schemas import AppointmentCreateRequest, AppointmentStatusUpdateRequest, AppointmentPricingQuoteRequest
 from database.db import find_all, find_one, insert, update
 from services.auth_utils import get_current_user_payload
@@ -82,6 +82,7 @@ def get_appointment_pricing_quote(req: AppointmentPricingQuoteRequest):
         "currency": "INR"
     }
 
+@router.post("")
 @router.post("/book")
 def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any] = Depends(get_current_user_payload)):
     # 1. Fetch doctor & organization
@@ -294,6 +295,28 @@ def update_appointment_status(
 
     return {
         "message": f"Appointment status changed to {req.status}",
+        "appointment": updated
+    }
+
+@router.put("/{appointment_id}/cancel")
+def cancel_appointment_endpoint(
+    appointment_id: str,
+    payload: Dict[str, Any] = Body(default={}),
+    current_user: Dict[str, Any] = Depends(get_current_user_payload)
+):
+    appt = find_one("appointments", lambda a: a.get("id") == appointment_id or a.get("appointment_id") == appointment_id)
+    if not appt:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+
+    reason = payload.get("reason") or "Patient cancelled via portal"
+    updates = {
+        "status": "cancelled",
+        "cancellation_reason": reason,
+        "payment_status": "Refund Initiated"
+    }
+    updated = update("appointments", appt["id"], updates, id_field="id")
+    return {
+        "message": "Appointment cancelled successfully",
         "appointment": updated
     }
 

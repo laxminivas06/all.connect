@@ -65,6 +65,7 @@ export const OffersPage = () => {
   // Booking Modal
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedOrgForBooking, setSelectedOrgForBooking] = useState(null);
+  const [selectedOfferForBooking, setSelectedOfferForBooking] = useState(null);
 
   const categories = ['All', 'Health Package', 'Cardiac Care', 'Senior Care', 'Chronic Disease', 'Women Health', 'Endocrinology', 'Orthopedics', 'Child Care', 'Dermatology'];
   const areas = ['All', 'Malkajgiri', 'Secunderabad', 'Uppal', 'Tarnaka', 'Nacharam', 'Begumpet', 'Jubilee Hills', 'Banjara Hills', 'Somajiguda'];
@@ -151,6 +152,7 @@ export const OffersPage = () => {
       organization_type: offer.organization_type
     };
     setSelectedOrgForBooking(orgObj);
+    setSelectedOfferForBooking(offer);
     setSelectedOfferForDetails(null);
     setAdModalOpen(false);
     setBookingModalOpen(true);
@@ -670,9 +672,11 @@ export const OffersPage = () => {
         onClose={() => {
           setBookingModalOpen(false);
           setSelectedOrgForBooking(null);
+          setSelectedOfferForBooking(null);
         }}
         initialHospital={selectedOrgForBooking?.organization_type === 'hospital' ? selectedOrgForBooking : null}
         initialClinic={selectedOrgForBooking?.organization_type === 'clinic' ? selectedOrgForBooking : null}
+        initialComplaint={selectedOfferForBooking?.title || ''}
       />
     </div>
   );

@@ -20,12 +20,55 @@ def get_optional_user_payload(authorization: Optional[str] = Header(None)) -> Op
 
 @router.get("/me")
 def get_my_patient_data(current_user: Dict[str, Any] = Depends(get_current_user_payload)):
-    if current_user["role"] != "patient":
+    if current_user.get("role") != "patient":
         raise HTTPException(status_code=403, detail="Access reserved for patient role")
 
-    patient = find_one("patients", lambda p: p.get("patient_id") == current_user.get("entity_id") or p.get("user_id") == current_user["sub"])
+    user_id = current_user.get("sub")
+    entity_id = current_user.get("entity_id")
+    email = current_user.get("email")
+
+    patient = find_one("patients", lambda p: 
+        (entity_id and (p.get("patient_id") == entity_id or p.get("id") == entity_id)) or
+        (user_id and p.get("user_id") == user_id) or
+        (email and p.get("email") and str(p.get("email")).lower() == str(email).lower())
+    )
     if not patient:
-        patient = find_one("patients", lambda p: p.get("patient_id") == "PAT-2026-000001")
+        # Auto-create fresh isolated patient profile for this user record if missing
+        user = find_one("users", lambda u: u.get("id") == user_id)
+        if user and user.get("role") == "patient":
+            patients = find_all("patients")
+            next_num = len(patients) + 1
+            new_pid = user.get("entity_id") or f"PAT-2026-{next_num:06d}"
+            new_hid = f"HC-2026-{next_num:06d}"
+            patient = {
+                "id": new_pid,
+                "patient_id": new_pid,
+                "health_id": new_hid,
+                "user_id": user_id,
+                "full_name": user.get("full_name") or user.get("username", "Patient"),
+                "email": user.get("email", ""),
+                "mobile": user.get("phone") or user.get("mobile", ""),
+                "phone": user.get("phone") or user.get("mobile", ""),
+                "dob": "1992-06-15",
+                "age": 34,
+                "gender": "Other",
+                "blood_group": "O+",
+                "address": "Hyderabad, Telangana",
+                "area": "Hyderabad",
+                "city": "Hyderabad",
+                "pincode": "500001",
+                "emergency_contact": "",
+                "allergies": [],
+                "chronic_conditions": [],
+                "permitted_organizations": [],
+                "created_at": datetime.now().isoformat(),
+                "account_status": "active"
+            }
+            insert("patients", patient)
+            if not user.get("entity_id"):
+                update("users", user_id, {"entity_id": new_pid}, id_field="id")
+        else:
+            raise HTTPException(status_code=404, detail="Patient profile not found for the authenticated user")
 
     # Fetch patient's related entities
     pid = patient["patient_id"]
@@ -38,10 +81,10 @@ def get_my_patient_data(current_user: Dict[str, Any] = Depends(get_current_user_
     hospitals = find_all("hospitals", lambda h: h.get("publishing_status") == "published")
     clinics = find_all("clinics", lambda c: c.get("publishing_status") == "published")
     all_orgs = [
-        {"id": h["id"], "name": h["name"], "type": "Hospital", "area": h["area"]}
+        {"id": h["id"], "name": h["name"], "type": "Hospital", "area": h.get("area", "Hyderabad")}
         for h in hospitals
     ] + [
-        {"id": c["id"], "name": c["name"], "type": "Clinic", "area": c["area"]}
+        {"id": c["id"], "name": c["name"], "type": "Clinic", "area": c.get("area", "Hyderabad")}
         for c in clinics
     ]
 
@@ -65,9 +108,17 @@ def update_patient_consent(req: PatientConsentUpdateRequest, current_user: Dict[
     if current_user["role"] != "patient":
         raise HTTPException(status_code=403, detail="Only patients can manage their data sharing consents")
     
-    patient = find_one("patients", lambda p: p.get("patient_id") == current_user.get("entity_id") or p.get("user_id") == current_user["sub"])
+    user_id = current_user.get("sub")
+    entity_id = current_user.get("entity_id")
+    email = current_user.get("email")
+
+    patient = find_one("patients", lambda p: 
+        (entity_id and (p.get("patient_id") == entity_id or p.get("id") == entity_id)) or
+        (user_id and p.get("user_id") == user_id) or
+        (email and p.get("email") and str(p.get("email")).lower() == str(email).lower())
+    )
     if not patient:
-        patient = find_one("patients", lambda p: p.get("patient_id") == "PAT-2026-000001")
+        raise HTTPException(status_code=404, detail="Patient profile not found")
 
     updated = update("patients", patient["id"], {"permitted_organizations": req.permitted_organizations}, id_field="id")
     return {
@@ -83,16 +134,58 @@ def update_my_patient_profile(
     if current_user["role"] != "patient":
         raise HTTPException(status_code=403, detail="Only patients can manage personal profile")
 
-    patient = find_one("patients", lambda p: p.get("patient_id") == current_user.get("entity_id") or p.get("user_id") == current_user["sub"])
-    if not patient:
-        patient = find_one("patients", lambda p: p.get("patient_id") == "PAT-2026-000001")
+    user_id = current_user.get("sub")
+    entity_id = current_user.get("entity_id")
+    email = current_user.get("email")
+
+    patient = find_one("patients", lambda p: 
+        (entity_id and (p.get("patient_id") == entity_id or p.get("id") == entity_id)) or
+        (user_id and p.get("user_id") == user_id) or
+        (email and p.get("email") and str(p.get("email")).lower() == str(email).lower())
+    )
     if not patient:
         raise HTTPException(status_code=404, detail="Patient profile not found")
 
     allowed_fields = [
-        "full_name", "phone", "emergency_contact", "address",
-        "blood_group", "allergies", "chronic_conditions", "notification_preferences"
+        "full_name", "phone", "mobile", "email", "dob", "gender",
+        "address", "area", "city", "pincode", "blood_group",
+        "emergency_contact", "allergies", "chronic_conditions",
+        "profile_photo_url", "notification_preferences"
     ]
+    updates = {}
+    for k in allowed_fields:
+        if k in payload:
+            updates[k] = payload[k]
+
+    if "phone" in updates and "mobile" not in updates:
+        updates["mobile"] = updates["phone"]
+    if "mobile" in updates and "phone" not in updates:
+        updates["phone"] = updates["mobile"]
+
+    if "dob" in updates and updates["dob"]:
+        try:
+            birth_year = int(str(updates["dob"]).split("-")[0])
+            updates["age"] = max(0, 2026 - birth_year)
+        except Exception:
+            pass
+
+    updated = update("patients", patient["id"], updates, id_field="id")
+
+    # Sync name/phone/email to users table so session reflects changes
+    user_updates = {}
+    if "full_name" in updates:
+        user_updates["full_name"] = updates["full_name"]
+    if "email" in updates:
+        user_updates["email"] = updates["email"]
+    if "mobile" in updates:
+        user_updates["phone"] = updates["mobile"]
+    if user_updates and user_id:
+        update("users", user_id, user_updates, id_field="id")
+
+    return {
+        "message": "Personal health profile updated successfully",
+        "patient": updated
+    }
     updates = {k: v for k, v in payload.items() if k in allowed_fields}
 
     updated = update("patients", patient["id"], updates, id_field="id")

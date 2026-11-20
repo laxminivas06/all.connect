@@ -20,7 +20,11 @@ import {
   Loader2,
   Check,
   Receipt,
-  Download
+  Download,
+  Edit,
+  Phone,
+  Mail,
+  FileText
 } from 'lucide-react';
 
 export const getDoctorDisplayName = (doc) => {
@@ -59,6 +63,8 @@ const AppointmentBookingModalContent = ({
   initialClinic = null,
   initialDate = null,
   initialTime = null,
+  initialComplaint = '',
+  searchQuery = '',
   onSuccess,
   onBookingSuccess
 }) => {
@@ -70,7 +76,7 @@ const AppointmentBookingModalContent = ({
   // Step 3: Calendar-Based Date Selection
   // Step 4: Time Slot & Capacity Selection
   // Step 5: Official Price Quote & Summary
-  // Step 6: Patient Details & Booking Confirmation
+  // Step 6: Patient Details & Booking Confirmation Review
   // Step 7: Payment Page & Digital Receipt
   const [step, setStep] = useState(1);
 
@@ -108,7 +114,8 @@ const AppointmentBookingModalContent = ({
   const [priceQuote, setPriceQuote] = useState(null);
   const [loadingQuote, setLoadingQuote] = useState(false);
 
-  // Step 6 State: Patient Details
+  // Step 6 State: Patient Details & Chief Complaint
+  const [patientId, setPatientId] = useState('');
   const [patientName, setPatientName] = useState('');
   const [patientMobile, setPatientMobile] = useState('');
   const [patientEmail, setPatientEmail] = useState('');
@@ -197,6 +204,15 @@ const AppointmentBookingModalContent = ({
         setPatientName(user.name || user.full_name || '');
         setPatientMobile(user.mobile || user.phone || '');
         setPatientEmail(user.email || '');
+        setPatientId(user.entity_id || user.patient_id || 'PAT-VERIFIED');
+      } else {
+        setPatientId('PAT-GUEST');
+      }
+
+      // Pre-fill Chief Medical Complaint from search query or initial complaint
+      const prefilledComplaint = (initialComplaint || searchQuery || '').trim();
+      if (prefilledComplaint) {
+        setChiefComplaint(prefilledComplaint);
       }
 
       // Initialize Doctor
@@ -205,7 +221,6 @@ const AppointmentBookingModalContent = ({
         if (docObj) {
           setSelectedDoctor(docObj);
           configureDoctorModes(docObj);
-          // If organization is known and doc is provided, proceed directly to Step 2
           setStep(2);
         } else {
           fetchDoctorById(initialDoctor);
@@ -216,7 +231,7 @@ const AppointmentBookingModalContent = ({
         setStep(1);
       }
     }
-  }, [isOpen, initialDoctor, initialHospital, initialClinic]);
+  }, [isOpen, initialDoctor, initialHospital, initialClinic, initialComplaint, searchQuery, user]);
 
   // Fetch Month Availability when Month, Year, or Doctor changes
   useEffect(() => {
@@ -300,7 +315,7 @@ const AppointmentBookingModalContent = ({
     }
   };
 
-  // Step 6: Confirm Booking
+  // Step 6: Confirm Booking & Proceed to Payment
   const handleConfirmBooking = async (e) => {
     if (e) e.preventDefault();
     if (!patientName.trim()) {
@@ -322,17 +337,20 @@ const AppointmentBookingModalContent = ({
         appointment_date: selectedDate,
         appointment_time: selectedSlot,
         appointment_type: consultationMode,
-        chief_complaint: chiefComplaint || `OPD consultation with ${getDoctorDisplayName(selectedDoctor)}`,
-        patient_name: patientName,
-        patient_phone: patientMobile
+        chief_complaint: chiefComplaint.trim() || `OPD consultation with ${getDoctorDisplayName(selectedDoctor)}`,
+        patient_name: patientName.trim(),
+        patient_phone: patientMobile.trim(),
+        patient_email: patientEmail.trim() || undefined,
+        patient_id: patientId || undefined
       };
 
       const res = await api.bookAppointment(payload);
-      setSuccessData(res.appointment || res);
-      // Proceed to Step 7: Payment Page
+      const appt = res.appointment || res;
+      setSuccessData(appt);
+      // Proceed to Step 7: Payment Page ONLY after confirmation
       setStep(7);
-      if (onSuccess) onSuccess(res.appointment || res);
-      if (onBookingSuccess) onBookingSuccess(res.appointment || res);
+      if (onSuccess) onSuccess(appt);
+      if (onBookingSuccess) onBookingSuccess(appt);
     } catch (err) {
       setError(err.message || 'Slot collision or capacity limit reached. Please select another slot.');
     } finally {
@@ -554,7 +572,7 @@ const AppointmentBookingModalContent = ({
                 </div>
               </div>
 
-              {/* Mode Options */}
+              {/* Mode Options: ONLY Enabled modes displayed */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
                 {enabledModes.includes('In-Person Consultation') && (
                   <button
@@ -594,7 +612,7 @@ const AppointmentBookingModalContent = ({
                     <div>
                       <h5 className="font-extrabold text-xs text-slate-900">Video Consultation</h5>
                       <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                        Encrypted high-definition teleconsultation from home with digital prescription.
+                        Encrypted teleconsultation from home with digital prescription.
                       </p>
                     </div>
                   </button>
@@ -805,7 +823,7 @@ const AppointmentBookingModalContent = ({
             </div>
           )}
 
-          {/* STEP 5: OFFICIAL PRICE QUOTE & APPOINTMENT SUMMARY */}
+          {/* STEP 5: OFFICIAL PRICE QUOTE & SUMMARY */}
           {step === 5 && priceQuote && (
             <div className="space-y-4">
               <div>
@@ -864,102 +882,212 @@ const AppointmentBookingModalContent = ({
             </div>
           )}
 
-          {/* STEP 6: PATIENT DETAILS & CONFIRMATION */}
+          {/* STEP 6: PATIENT DETAILS & APPOINTMENT CONFIRMATION REVIEW (CRITICAL STEP) */}
           {step === 6 && (
-            <form onSubmit={handleConfirmBooking} className="space-y-4">
+            <form onSubmit={handleConfirmBooking} className="space-y-5 animate-in fade-in">
               <div>
-                <h4 className="text-sm font-extrabold text-slate-900">Step 6: Patient Details & Review</h4>
-                <p className="text-xs text-slate-500">Confirm the patient details for this clinical visit.</p>
+                <h4 className="text-sm font-extrabold text-slate-900">Step 6: Patient Details & Appointment Confirmation Review</h4>
+                <p className="text-xs text-slate-500">
+                  Review the booking summary and confirm patient details. Your symptom query has been pre-populated into the Chief Medical Complaint.
+                </p>
               </div>
 
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Patient Full Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={patientName}
-                    onChange={(e) => setPatientName(e.target.value)}
-                    placeholder="Enter patient full name"
-                    className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
-                  />
+              {/* Complete Confirmation Summary Review Card */}
+              <div className="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-3.5 text-xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                  <span className="font-black text-slate-900 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-blue-600" />
+                    Appointment Confirmation Summary
+                  </span>
+                  <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">
+                    Pre-Payment Review
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Mobile Phone *</label>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Healthcare Facility</span>
+                    <p className="font-extrabold text-slate-900">{getDoctorOrgName(selectedDoctor, targetOrg)}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Consulting Specialist</span>
+                    <div className="flex items-center justify-between">
+                      <p className="font-extrabold text-slate-900">
+                        {getDoctorDisplayName(selectedDoctor)} ({getDoctorSpecialty(selectedDoctor)})
+                      </p>
+                      {doctorsList.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setStep(1)}
+                          className="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-0.5"
+                        >
+                          <Edit className="w-3 h-3" /> Edit
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Consultation Mode</span>
+                    <div className="flex items-center justify-between">
+                      <p className="font-bold text-blue-700">{consultationMode}</p>
+                      <button
+                        type="button"
+                        onClick={() => setStep(2)}
+                        className="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-0.5"
+                      >
+                        <Edit className="w-3 h-3" /> Edit
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Date & Time Slot</span>
+                    <div className="flex items-center justify-between">
+                      <p className="font-extrabold text-slate-900">{selectedDate} at {selectedSlot}</p>
+                      <button
+                        type="button"
+                        onClick={() => setStep(3)}
+                        className="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-0.5"
+                      >
+                        <Edit className="w-3 h-3" /> Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Price Breakdown */}
+                <div className="bg-white p-3 rounded-xl border border-slate-200/80 space-y-1.5">
+                  <div className="flex justify-between text-slate-600">
+                    <span>Consultation Fee:</span>
+                    <span className="font-bold text-slate-800">₹{priceQuote?.consultation_fee || 600}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-600">
+                    <span>Service Charges:</span>
+                    <span className="font-bold text-emerald-600">₹{priceQuote?.additional_charges || 0}</span>
+                  </div>
+                  <div className="flex justify-between pt-1.5 border-t border-slate-100 font-black text-slate-900 text-sm">
+                    <span>Total Payable:</span>
+                    <span className="text-blue-700 text-base">₹{priceQuote?.total_payable || priceQuote?.consultation_fee || 600}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Patient Details Form Fields (Pre-populated from user profile) */}
+              <div className="space-y-3">
+                <span className="text-xs font-black text-slate-900 uppercase tracking-wider block">
+                  Patient Contact & Medical Information
+                </span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">Patient Full Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={patientName}
+                      onChange={(e) => setPatientName(e.target.value)}
+                      placeholder="Patient Full Name"
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">Patient ID / Reference</label>
+                    <input
+                      type="text"
+                      value={patientId}
+                      onChange={(e) => setPatientId(e.target.value)}
+                      placeholder="e.g. PAT-2026-000001"
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl bg-slate-50 font-mono text-slate-700 font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1">Contact Phone Number *</label>
                     <input
                       type="tel"
                       required
                       value={patientMobile}
                       onChange={(e) => setPatientMobile(e.target.value)}
-                      placeholder="e.g. +91 98480 11001"
-                      className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      placeholder="+91 98480 11001"
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                    <label className="block font-bold text-slate-700 mb-1">Email Address</label>
                     <input
                       type="email"
                       value={patientEmail}
                       onChange={(e) => setPatientEmail(e.target.value)}
                       placeholder="patient@example.com"
-                      className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Chief Medical Complaint / Symptoms</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+                    <span>Chief Medical Complaint / Symptoms</span>
+                    <span className="text-[10px] text-blue-600 font-bold">Auto-populated from Search</span>
+                  </label>
                   <textarea
                     rows={2}
                     value={chiefComplaint}
                     onChange={(e) => setChiefComplaint(e.target.value)}
-                    placeholder="Describe main symptom (e.g. persistent dry cough, fever for 3 days)..."
-                    className="w-full text-xs px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    placeholder="Describe main symptom or reason for visit (e.g. Persistent dry cough, fever for 3 days)..."
+                    className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold"
                   />
                 </div>
               </div>
 
+              {/* Navigation Action Buttons */}
               <div className="flex justify-between pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setStep(5)}
                   className="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-100 text-xs font-bold transition"
                 >
-                  Back
+                  Back to Summary
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2"
+                  className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-md shadow-blue-600/30 transition flex items-center gap-2"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-                  <span>Confirm Appointment</span>
+                  <span>Confirm & Proceed to Payment</span>
                 </button>
               </div>
             </form>
           )}
 
-          {/* STEP 7: PAYMENT PAGE & DIGITAL RECEIPT */}
+          {/* STEP 7: PAYMENT PAGE & DIGITAL RECEIPT (APPEARS ONLY AFTER CONFIRMATION REVIEW) */}
           {step === 7 && successData && (
             <div className="space-y-4">
               {!paymentComplete ? (
-                <div className="space-y-4">
+                <div className="space-y-4 animate-in fade-in">
                   <div>
-                    <h4 className="text-sm font-extrabold text-slate-900">Step 7: Appointment Checkout</h4>
-                    <p className="text-xs text-slate-500">Your appointment has been registered. Complete payment to finalize.</p>
+                    <h4 className="text-sm font-extrabold text-slate-900">Step 7: Appointment Payment & Checkout</h4>
+                    <p className="text-xs text-slate-500">Your clinical appointment slot is reserved. Select payment option to finalize.</p>
                   </div>
 
                   {/* Summary Card */}
                   <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs">
                     <div className="flex justify-between font-mono text-[11px] text-blue-700">
-                      <span>Appointment ID:</span>
+                      <span>Appointment Reference ID:</span>
                       <span className="font-extrabold">{successData.id || successData.appointment_id}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Doctor:</span>
+                      <span className="text-slate-500">Patient Name:</span>
+                      <span className="font-bold text-slate-800">{successData.patient_name || patientName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Consulting Doctor:</span>
                       <span className="font-bold text-slate-800">{successData.doctor_name || getDoctorDisplayName(selectedDoctor)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Chief Complaint:</span>
+                      <span className="font-bold text-slate-800">{successData.chief_complaint || chiefComplaint || 'OPD Consultation'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Schedule:</span>
@@ -967,7 +1095,7 @@ const AppointmentBookingModalContent = ({
                     </div>
                     <div className="flex justify-between pt-2 border-t border-slate-200 font-black text-slate-900 text-sm">
                       <span>Total Payable:</span>
-                      <span className="text-blue-700 text-base">₹{successData.consultation_fee}</span>
+                      <span className="text-blue-700 text-base">₹{successData.consultation_fee || priceQuote?.total_payable || 600}</span>
                     </div>
                   </div>
 
@@ -1008,10 +1136,10 @@ const AppointmentBookingModalContent = ({
                     type="button"
                     disabled={paymentProcessing}
                     onClick={handleProcessPayment}
-                    className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md shadow-emerald-600/30 transition flex items-center justify-center gap-2"
                   >
                     {paymentProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
-                    <span>Complete Payment & Generate Slip</span>
+                    <span>Complete Payment & Generate Digital Slip</span>
                   </button>
                 </div>
               ) : (
@@ -1036,11 +1164,15 @@ const AppointmentBookingModalContent = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Patient:</span>
-                      <span className="font-bold text-slate-800">{successData.patient_name}</span>
+                      <span className="font-bold text-slate-800">{successData.patient_name || patientName}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Doctor:</span>
                       <span className="font-bold text-slate-800">{successData.doctor_name || getDoctorDisplayName(selectedDoctor)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Chief Complaint:</span>
+                      <span className="font-bold text-slate-800">{successData.chief_complaint || chiefComplaint}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Schedule:</span>

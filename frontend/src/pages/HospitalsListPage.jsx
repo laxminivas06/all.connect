@@ -381,6 +381,7 @@ export const HospitalsListPage = () => {
         }}
         initialDoctor={selectedDoctor}
         initialHospital={selectedHospital}
+        initialComplaint={searchQuery}
       />
     </div>
   );

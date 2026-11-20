@@ -347,6 +347,7 @@ export const ClinicsListPage = () => {
         isOpen={bookingModalOpen}
         onClose={() => setBookingModalOpen(false)}
         initialClinic={selectedClinicForBooking}
+        initialComplaint={searchQuery}
       />
     </div>
   );

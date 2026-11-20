@@ -21,7 +21,8 @@
     "organization_id": null,
     "entity_id": "PAT-2026-000001",
     "is_active": true,
-    "created_at": "2026-01-10T10:00:00"
+    "created_at": "2026-01-10T10:00:00",
+    "phone": "+91 98480 99999"
   },
   {
     "id": "usr-hospital-01",
@@ -514,5 +515,77 @@
     "entity_id": "doc-042",
     "is_active": true,
     "created_at": "2026-11-20T10:39:48.719120"
+  },
+  {
+    "id": "usr-doc-044",
+    "username": "dr.aarav.test",
+    "email": "dr.aarav.test@yashoda.org",
+    "role": "doctor",
+    "full_name": "Dr. Aarav Nambiar",
+    "hashed_password": "97c67e02d0202c91219497fb429e5c77$b0b3578d9290089a6dc37df7dc943ed86b434b401d7cd3259ced962091465abe",
+    "organization_id": "hosp-001",
+    "entity_id": "doc-044",
+    "is_active": true,
+    "created_at": "2026-11-20T10:57:13.849167"
+  },
+  {
+    "id": "usr-patient-43",
+    "username": "isolated_1795152859",
+    "email": "isolated_1795152859@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795152859",
+    "hashed_password": "0240b97ccc10a4af57d9bec4c0e278ee$27809f3397d7e347a3b992d805a12fdee820277548c658775c8c9f93a3972d81",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000043",
+    "is_active": true,
+    "created_at": "2026-11-20T11:04:20.035480"
+  },
+  {
+    "id": "usr-patient-44",
+    "username": "isolated_1795152903",
+    "email": "isolated_1795152903@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795152903",
+    "hashed_password": "364e990615a89f513d486b1ddf7a7150$21d838556f119ee10248dadf224deba48331c88eb303bf55d2b42930a5de95ed",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000044",
+    "is_active": true,
+    "created_at": "2026-11-20T11:05:03.310645"
+  },
+  {
+    "id": "usr-patient-45",
+    "username": "isolated_1795153019",
+    "email": "isolated_1795153019@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795153019",
+    "hashed_password": "06deeaf88ba6b39d3783224af3c80a9e$94a0560c628091c5efc04541180d6223b4a0483ce542208d1c5a5d414c91dfcf",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000045",
+    "is_active": true,
+    "created_at": "2026-11-20T11:06:59.228240"
+  },
+  {
+    "id": "usr-patient-46",
+    "username": "isolated_1795153046",
+    "email": "isolated_1795153046@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795153046",
+    "hashed_password": "8bd21bb3a196bd6a5ba0016a913d0a01$bb2611a57bbb931a3052205fe096504ed0cfbc2c1047c0b3e5f839caf2990c18",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000046",
+    "is_active": true,
+    "created_at": "2026-11-20T11:07:26.747391"
+  },
+  {
+    "id": "usr-doc-046",
+    "username": "dr.aarav.test",
+    "email": "dr.aarav.test@yashoda.org",
+    "role": "doctor",
+    "full_name": "Dr. Aarav Nambiar",
+    "hashed_password": "a385d51e1282d024fd7fa13deccd0cfc$ab781aa2478c28958aea20f759ce94c717e4c11c90e165580eb50161f5453b48",
+    "organization_id": "hosp-001",
+    "entity_id": "doc-046",
+    "is_active": true,
+    "created_at": "2026-11-20T11:07:29.770345"
   }
 ]

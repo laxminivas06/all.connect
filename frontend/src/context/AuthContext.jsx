@@ -71,6 +71,27 @@ export const AuthProvider = ({ children }) => {
     setNotifications([]);
   };
 
+  const updateUser = (updatedFields) => {
+    setUser(prev => {
+      const merged = { ...prev, ...updatedFields };
+      localStorage.setItem('allconnect_user', JSON.stringify(merged));
+      return merged;
+    });
+  };
+
+  const refreshUser = async () => {
+    try {
+      const res = await api.getMe();
+      if (res?.user) {
+        setUser(res.user);
+        localStorage.setItem('allconnect_user', JSON.stringify(res.user));
+        return res.user;
+      }
+    } catch (e) {
+      console.error('Failed to refresh user data', e);
+    }
+  };
+
   const removeNotification = async (id) => {
     try {
       await api.deleteNotification(id);
@@ -99,6 +120,8 @@ export const AuthProvider = ({ children }) => {
       login,
       loginAs,
       logout,
+      updateUser,
+      refreshUser,
       notifications,
       unreadCount,
       refreshNotifications: fetchNotifications,

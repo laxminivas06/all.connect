@@ -1759,5 +1759,28 @@
     "status": "Confirmed",
     "chief_complaint": "Testing redesign customer booking flow",
     "created_at": "2026-11-20T08:08:29.689754"
+  },
+  {
+    "id": "APT-2026-000075",
+    "appointment_id": "APT-2026-000075",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "patient_mobile": "+91 98480 11001",
+    "patient_health_id": "HC-2026-000001",
+    "doctor_id": "doc-041",
+    "doctor_name": "Dr. Suresh Varma, MD",
+    "department": "General Medicine",
+    "specialization": "General Medicine",
+    "organization_id": null,
+    "organization_name": "MaxCure Super Speciality Hospital",
+    "appointment_date": "2027-02-22",
+    "appointment_time": "11:00 AM",
+    "appointment_type": "In-Person",
+    "consultation_fee": 600,
+    "payment_status": "Confirmed (Online)",
+    "payment_mode": "Online UPI Gateway",
+    "status": "Confirmed",
+    "chief_complaint": "Consultation with Dr. Suresh Varma, MD",
+    "created_at": "2026-11-20T10:39:36.700779"
   }
 ]

@@ -17,25 +17,27 @@ def list_hospitals(
     hospitals = find_all("hospitals", lambda h: h.get("publishing_status") == "published")
     results = []
     for h in hospitals:
+        depts = h.get("departments") or ["General Medicine"]
         if area and area.lower() != "all" and h.get("area", "").lower() != area.lower():
             continue
-        if department and department.lower() != "all" and department not in h.get("departments", []):
+        if department and department.lower() != "all" and department not in depts:
             continue
         if emergency_only and not h.get("emergency_24x7", False):
             continue
         if search:
             q = search.lower()
             name_match = q in h.get("name", "").lower()
-            dept_match = any(q in d.lower() for d in h.get("departments", []))
+            dept_match = any(q in d.lower() for d in depts)
             area_match = q in h.get("area", "").lower()
             if not (name_match or dept_match or area_match):
                 continue
         
         # Attach active doctor count and published offers count
-        docs = find_all("doctors", lambda d: d.get("organization_id") == h["id"])
+        docs = find_all("doctors", lambda d: (d.get("organization_id") == h["id"] or d.get("hospital_id") == h["id"]))
         offers = find_all("offers", lambda o: o.get("organization_id") == h["id"] and o.get("workflow_status") == "published")
         results.append({
             **h,
+            "departments": depts,
             "doctors_count": len(docs),
             "offers_count": len(offers),
             "offers": offers[:2]  # Quick preview of top 2 packages
@@ -49,7 +51,13 @@ def get_hospital_public_profile(hospital_id: str):
         raise HTTPException(status_code=404, detail="Hospital not found")
 
     today_str = datetime.now().strftime("%Y-%m-%d")
-    doctors = find_all("doctors", lambda d: d.get("organization_id") == hospital_id and d.get("is_active", True))
+    from routes.doctors import normalize_doctor
+    raw_doctors = find_all(
+        "doctors",
+        lambda d: (d.get("organization_id") == hospital_id or d.get("hospital_id") == hospital_id)
+        and (d.get("is_active", True) or d.get("account_status") == "active")
+    )
+    doctors = [normalize_doctor(d) for d in raw_doctors]
     offers = find_all(
         "offers",
         lambda o: o.get("organization_id") == hospital_id 

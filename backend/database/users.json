@@ -478,5 +478,41 @@
     "entity_id": "doc-037",
     "is_active": true,
     "created_at": "2026-11-20T08:49:15.751914"
+  },
+  {
+    "id": "usr-doc-038",
+    "username": "dr.aarav.test",
+    "email": "dr.aarav.test@yashoda.org",
+    "role": "doctor",
+    "full_name": "Dr. Aarav Nambiar",
+    "hashed_password": "ab532361c23a47ed5b896940d802c6f0$6f2175cbf9132f275417616bd2f6e249b50a1f4908c06dd8b7a2b60b3bbd431c",
+    "organization_id": "hosp-001",
+    "entity_id": "doc-038",
+    "is_active": true,
+    "created_at": "2026-11-20T10:37:31.730347"
+  },
+  {
+    "id": "usr-doc-040",
+    "username": "dr.aarav.test",
+    "email": "dr.aarav.test@yashoda.org",
+    "role": "doctor",
+    "full_name": "Dr. Aarav Nambiar",
+    "hashed_password": "148f7c2f1163b4d42b3ae3835529479f$3f3a0a3cd46c92be6e6898000d461349a517f0ff273bd9be3499539a114c7d94",
+    "organization_id": "hosp-001",
+    "entity_id": "doc-040",
+    "is_active": true,
+    "created_at": "2026-11-20T10:39:12.925903"
+  },
+  {
+    "id": "usr-doc-042",
+    "username": "dr.aarav.test",
+    "email": "dr.aarav.test@yashoda.org",
+    "role": "doctor",
+    "full_name": "Dr. Aarav Nambiar",
+    "hashed_password": "ec42b1da699031db66fbbde474934f31$b17dce3f24bf27e4c22f55f658ec5faaa097700fa9ffd1ac3fffaccdcc7a3246",
+    "organization_id": "hosp-001",
+    "entity_id": "doc-042",
+    "is_active": true,
+    "created_at": "2026-11-20T10:39:48.719120"
   }
 ]

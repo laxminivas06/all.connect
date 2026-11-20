@@ -91,7 +91,7 @@ def create_offer(req: OfferCreateRequest, current_user: Dict[str, Any] = Depends
     }
     insert("offers", record)
 
-    # Informational system notification
+    # Informational system notification for super admin
     insert("notifications", {
         "id": f"notif-ad-published-{offer_id}",
         "user_id": "usr-admin-01",
@@ -100,6 +100,19 @@ def create_offer(req: OfferCreateRequest, current_user: Dict[str, Any] = Depends
         "message": f"'{req.title}' published by {record['organization_name']}.",
         "type": "advertisement",
         "link": "/dashboard/admin/promotions",
+        "is_read": False,
+        "created_at": datetime.now().isoformat()
+    })
+
+    # Genuine event notification for patient users about new healthcare offer
+    insert("notifications", {
+        "id": f"notif-offer-patient-{offer_id}",
+        "user_id": None,
+        "role": "patient",
+        "title": f"New Health Package: {req.title}",
+        "message": f"{record['organization_name']} published '{req.title}' ({discount_pct}% OFF).",
+        "type": "offer",
+        "link": f"/offers?organization_id={record['organization_id']}",
         "is_read": False,
         "created_at": datetime.now().isoformat()
     })

@@ -366,7 +366,7 @@ export const HospitalDetailPage = () => {
                       {/* Doctor photo / avatar */}
                       <div className="w-14 h-14 rounded-2xl bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-extrabold text-lg shrink-0 overflow-hidden">
                         {doc.profile_photo_url ? (
-                          <img src={doc.profile_photo_url} alt={doc.name} className="w-full h-full object-cover" />
+                          <img src={doc.profile_photo_url} alt={doc.name || doc.full_name || 'Doctor'} className="w-full h-full object-cover" />
                         ) : (
                           <User className="w-7 h-7 text-blue-600" />
                         )}
@@ -376,10 +376,10 @@ export const HospitalDetailPage = () => {
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <h4 className="font-extrabold text-base text-slate-900 truncate">
-                              {doc.name}
+                              {doc.name || doc.full_name || 'Doctor'}
                             </h4>
-                            <p className="text-xs font-semibold text-blue-700">{doc.specialization}</p>
-                            <p className="text-[11px] text-slate-500">{doc.qualifications || 'MBBS, MD'}</p>
+                            <p className="text-xs font-semibold text-blue-700">{doc.specialization || doc.specialty || doc.department || 'Specialist'}</p>
+                            <p className="text-[11px] text-slate-500">{doc.qualifications || doc.qualification || 'MBBS, MD'}</p>
                           </div>
                           <span className="flex items-center gap-1 text-xs font-bold text-amber-600 shrink-0">
                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />

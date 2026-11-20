@@ -91,7 +91,7 @@ blocked_appt = client.post(
         'doctor_id': doctor_id,
         'organization_id': hosp_id,
         'patient_id': 'PAT-2026-000001',
-        'appointment_date': '2027-02-20',
+        'appointment_date': '2027-02-22',
         'appointment_time': '11:00 AM'
     }
 )
@@ -122,7 +122,7 @@ allowed_appt = client.post(
         'doctor_id': doctor_id,
         'organization_id': hosp_id,
         'patient_id': 'PAT-2026-000001',
-        'appointment_date': '2027-02-20',
+        'appointment_date': '2027-02-22',
         'appointment_time': '11:00 AM'
     }
 )

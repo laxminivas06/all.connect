@@ -104,7 +104,7 @@ export default function App() {
   return (
     <ErrorBoundary level="app" title="AllConnect Application Status">
       <AuthProvider>
-        <Router>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<PublicLayout><LandingPage /></PublicLayout>} />

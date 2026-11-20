@@ -57,6 +57,44 @@ export class ErrorBoundary extends React.Component {
         : 'An isolated error occurred while loading this section. Your other pages and data remain safe.'
     );
 
+    // Modal-level isolated fallback (modal dialog overlay)
+    if (level === 'modal') {
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 border border-slate-100 text-center space-y-4">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900">{title || 'Booking Window Unavailable'}</h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                {friendlyMessage || 'An unexpected issue occurred while rendering this booking window. The underlying facility records remain safe.'}
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={this.handleReset}
+                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                Retry
+              </button>
+              {this.props.onClose && (
+                <button
+                  type="button"
+                  onClick={this.props.onClose}
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition"
+                >
+                  Close Window
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // Widget-level isolated fallback (card inside dashboard or page)
     if (level === 'widget') {
       return (

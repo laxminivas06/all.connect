@@ -505,6 +505,30 @@ def enquire_procedure(payload: Dict[str, Any]):
         "enquiry": enquiry_record
     }
 
+def normalize_doctor(d: Dict[str, Any]) -> Dict[str, Any]:
+    if not d:
+        return d
+    item = dict(d)
+    name = item.get("name") or item.get("full_name") or "Doctor"
+    item["name"] = name
+    item["full_name"] = item.get("full_name") or name
+    org_id = item.get("organization_id") or item.get("hospital_id") or ""
+    item["organization_id"] = org_id
+    if "hospital_id" in item and not item.get("organization_id"):
+        item["organization_id"] = item["hospital_id"]
+    spec = item.get("specialization") or item.get("specialty") or item.get("department") or "General Medicine"
+    item["specialization"] = spec
+    item["specialty"] = spec
+    item["department"] = item.get("department") or spec
+    item["qualifications"] = item.get("qualifications") or item.get("qualification") or "MBBS, MD"
+    item["qualification"] = item["qualifications"]
+    item["organization_name"] = item.get("organization_name") or item.get("hospital_name") or "Healthcare Facility"
+    item["hospital_name"] = item["organization_name"]
+    item["available_slots"] = item.get("available_slots") or item.get("time_slots") or ["09:30 AM", "10:30 AM", "11:30 AM", "02:30 PM", "04:30 PM"]
+    item["time_slots"] = item["available_slots"]
+    item["is_active"] = item.get("is_active", True) if item.get("account_status") != "inactive" else False
+    return item
+
 @router.get("")
 def list_doctors(
     specialization: Optional[str] = None,
@@ -512,13 +536,16 @@ def list_doctors(
     area: Optional[str] = None,
     search: Optional[str] = None
 ):
-    doctors = find_all("doctors", lambda d: d.get("is_active", True))
+    raw_doctors = find_all("doctors", lambda d: d.get("is_active", True) or d.get("account_status") == "active")
     results = []
-    for d in doctors:
+    for raw in raw_doctors:
+        d = normalize_doctor(raw)
         if specialization and specialization.lower() != "all" and d.get("specialization", "").lower() != specialization.lower():
             continue
-        if organization_id and d.get("organization_id") != organization_id:
-            continue
+        if organization_id:
+            doc_org = d.get("organization_id") or d.get("hospital_id")
+            if doc_org != organization_id:
+                continue
         if search:
             q = search.lower()
             name_match = q in d.get("name", "").lower()
@@ -531,9 +558,10 @@ def list_doctors(
 
 @router.get("/{doctor_id}")
 def get_doctor_profile(doctor_id: str):
-    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
-    if not doc:
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
         raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
 
     org_id = doc.get("organization_id")
     org = None
@@ -586,9 +614,10 @@ def get_doctor_profile(doctor_id: str):
 
 @router.get("/{doctor_id}/schedule")
 def get_doctor_schedule_info(doctor_id: str):
-    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
-    if not doc:
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
         raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
     
     org_id = doc.get("organization_id")
     org = None
@@ -632,9 +661,10 @@ def get_doctor_daily_slots(
     date: str = Query(..., description="Date in YYYY-MM-DD format"),
     mode: Optional[str] = Query("In-Person", description="Consultation mode")
 ):
-    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
-    if not doc:
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
         raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
 
     try:
         req_date = datetime.strptime(date, "%Y-%m-%d")
@@ -730,9 +760,10 @@ def get_doctor_month_availability(
     year: int = Query(...),
     month: int = Query(...)
 ):
-    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
-    if not doc:
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
         raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
 
     import calendar
     _, num_days = calendar.monthrange(year, month)
@@ -964,9 +995,10 @@ def update_doctor_availability(
     payload: Dict[str, Any],
     current_user: Dict[str, Any] = Depends(get_current_user_payload)
 ):
-    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
-    if not doc:
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
         raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
 
     if current_user["role"] not in ["super_admin", "doctor"] and current_user.get("organization_id") != doc.get("organization_id"):
         raise HTTPException(status_code=403, detail="Permission denied")
@@ -1023,9 +1055,10 @@ def update_doctor_profile(
     payload: Dict[str, Any],
     current_user: Dict[str, Any] = Depends(get_current_user_payload)
 ):
-    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
-    if not doc:
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
         raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
 
     if current_user["role"] not in ["super_admin", "doctor"] and current_user.get("organization_id") != doc.get("organization_id"):
         raise HTTPException(status_code=403, detail="Permission denied")

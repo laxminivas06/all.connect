@@ -221,9 +221,13 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
         update("patients", patient["id"], {"permitted_organizations": perms}, id_field="id")
 
     # 6. Notifications for Doctor, Hospital, and Patient
+    patient_user_identifier = patient.get("user_id") or patient.get("patient_id") or current_user.get("sub")
+    target_org_id = doctor.get("organization_id")
+    is_hospital_org = str(target_org_id).startswith("hosp")
+
     insert("notifications", {
         "id": f"notif-apt-pat-{next_num}",
-        "user_id": patient.get("user_id"),
+        "user_id": patient_user_identifier,
         "role": "patient",
         "title": "Appointment Booked & Confirmed",
         "message": f"Your appointment {appointment_id} with {doc_display_name} at {org_name} is confirmed for {req.appointment_date} at {req.appointment_time}.",
@@ -236,11 +240,12 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
     insert("notifications", {
         "id": f"notif-apt-org-{next_num}",
         "user_id": None,
-        "role": "hospital" if doctor.get("organization_id", "").startswith("hosp") else "clinic",
+        "organization_id": target_org_id,
+        "role": "hospital" if is_hospital_org else "clinic",
         "title": "New Appointment Booked",
         "message": f"{patient_name} booked with {doc_display_name} for {req.appointment_date} at {req.appointment_time}.",
         "type": "appointment",
-        "link": f"/dashboard/{'hospital' if doctor.get('organization_id', '').startswith('hosp') else 'clinic'}/appointments",
+        "link": f"/dashboard/{'hospital' if is_hospital_org else 'clinic'}/appointments",
         "is_read": False,
         "created_at": datetime.now().isoformat()
     })

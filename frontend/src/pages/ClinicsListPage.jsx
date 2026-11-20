@@ -346,7 +346,7 @@ export const ClinicsListPage = () => {
       <AppointmentBookingModal
         isOpen={bookingModalOpen}
         onClose={() => setBookingModalOpen(false)}
-        initialHospital={selectedClinicForBooking}
+        initialClinic={selectedClinicForBooking}
       />
     </div>
   );

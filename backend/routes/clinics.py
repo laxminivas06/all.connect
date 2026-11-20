@@ -45,7 +45,13 @@ def get_clinic_public_profile(clinic_id: str):
         raise HTTPException(status_code=404, detail="Clinic not found")
 
     today_str = datetime.now().strftime("%Y-%m-%d")
-    doctors = find_all("doctors", lambda d: d.get("organization_id") == clinic_id and d.get("is_active", True))
+    from routes.doctors import normalize_doctor
+    raw_doctors = find_all(
+        "doctors",
+        lambda d: (d.get("organization_id") == clinic_id or d.get("clinic_id") == clinic_id)
+        and (d.get("is_active", True) or d.get("account_status") == "active")
+    )
+    doctors = [normalize_doctor(d) for d in raw_doctors]
     offers = find_all(
         "offers",
         lambda o: o.get("organization_id") == clinic_id 

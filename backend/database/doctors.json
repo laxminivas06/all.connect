@@ -51,7 +51,8 @@
       "Angina Pectoris"
     ],
     "consultation_type": "Both",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Rajesh Sharma"
   },
   {
     "id": "doc-002",
@@ -103,7 +104,8 @@
       "Colic"
     ],
     "consultation_type": "Both",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Sneha Reddy"
   },
   {
     "id": "doc-003",
@@ -156,7 +158,8 @@
       "Fractures"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. V. K. Ramanathan"
   },
   {
     "id": "doc-004",
@@ -206,7 +209,8 @@
       "Parkinsonism"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Ananya Mukherjee"
   },
   {
     "id": "doc-005",
@@ -260,7 +264,8 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. P. Venkat Rao"
   },
   {
     "id": "doc-006",
@@ -308,7 +313,8 @@
       "PCOS"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Kavita Deshmukh"
   },
   {
     "id": "doc-007",
@@ -361,7 +367,8 @@
       "Fractures"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Pradeep Chander"
   },
   {
     "id": "doc-008",
@@ -413,7 +420,8 @@
       "Contact Dermatitis"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Fatima Zahra"
   },
   {
     "id": "doc-009",
@@ -462,7 +470,8 @@
       "Sleep Apnea"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. T. Harinath"
   },
   {
     "id": "doc-010",
@@ -513,7 +522,8 @@
       "High Risk Pregnancy"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Madhavi Latha"
   },
   {
     "id": "doc-011",
@@ -567,7 +577,8 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. S. K. Nageshwar"
   },
   {
     "id": "doc-012",
@@ -618,7 +629,8 @@
       "Allergic Rhinitis"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Vinay Kumar"
   },
   {
     "id": "doc-013",
@@ -669,7 +681,8 @@
       "Colic"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Rohit Agarwal"
   },
   {
     "id": "doc-014",
@@ -719,7 +732,8 @@
       "Angina Pectoris"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Kiranmai V."
   },
   {
     "id": "doc-015",
@@ -773,7 +787,8 @@
       "Fractures"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "full_name": "Dr. Anand Swaroop"
   },
   {
     "id": "doc-016",
@@ -822,7 +837,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-017",
@@ -871,7 +900,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-018",
@@ -920,7 +963,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-019",
@@ -969,7 +1026,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-020",
@@ -1018,7 +1089,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-021",
@@ -1067,7 +1152,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-022",
@@ -1574,7 +1673,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-030",
@@ -1689,7 +1802,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-032",
@@ -1738,7 +1865,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-033",
@@ -1787,7 +1928,21 @@
       "General Checkup"
     ],
     "consultation_type": "In-Person",
-    "consultation_hours": "09:30 AM - 01:30 PM"
+    "consultation_hours": "09:30 AM - 01:30 PM",
+    "name": "Dr. Suresh Varma, MD",
+    "organization_id": "hosp-001",
+    "specialization": "General Medicine",
+    "department": "General Medicine",
+    "qualifications": "MBBS, MD",
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "reviews_count": 0,
+    "organization_name": "Apollo Health City - Jubilee Hills",
+    "is_active": true
   },
   {
     "id": "doc-034",
@@ -1896,7 +2051,8 @@
     ],
     "bio": "Medical specialist providing comprehensive clinical care.",
     "is_active": true,
-    "created_at": "2026-11-20T07:20:15.212736"
+    "created_at": "2026-11-20T07:20:15.212736",
+    "full_name": "Dr. Aarav Nambiar"
   },
   {
     "id": "doc-036",
@@ -1939,7 +2095,8 @@
     ],
     "bio": "Medical specialist providing comprehensive clinical care.",
     "is_active": true,
-    "created_at": "2026-11-20T08:10:59.449732"
+    "created_at": "2026-11-20T08:10:59.449732",
+    "full_name": "Dr. Aarav Nambiar"
   },
   {
     "id": "doc-037",
@@ -1982,6 +2139,194 @@
     ],
     "bio": "Medical specialist providing comprehensive clinical care.",
     "is_active": true,
-    "created_at": "2026-11-20T08:49:15.659537"
+    "created_at": "2026-11-20T08:49:15.659537",
+    "full_name": "Dr. Aarav Nambiar"
+  },
+  {
+    "id": "doc-038",
+    "name": "Dr. Aarav Nambiar",
+    "email": "dr.aarav.test@yashoda.org",
+    "phone": "+91 98490 99881",
+    "qualifications": "MBBS, MS (General Surgery), MCh",
+    "specialization": "General Surgery",
+    "department": "General Surgery",
+    "experience_years": 11,
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_fee": 750.0,
+    "medical_keywords": [
+      "hernia",
+      "appendix",
+      "gallstones",
+      "laparoscopy"
+    ],
+    "conditions_treated": [
+      "Inguinal Hernia",
+      "Acute Appendicitis",
+      "Cholelithiasis"
+    ],
+    "consultation_type": "Both",
+    "consultation_hours": "10:00 AM - 04:00 PM",
+    "working_hours": "10:00 AM - 04:00 PM",
+    "rating": 5.0,
+    "reviews_count": 0,
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "bio": "Medical specialist providing comprehensive clinical care.",
+    "is_active": true,
+    "created_at": "2026-11-20T10:37:31.664716"
+  },
+  {
+    "id": "doc-039",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2024-8039",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
+  },
+  {
+    "id": "doc-040",
+    "name": "Dr. Aarav Nambiar",
+    "email": "dr.aarav.test@yashoda.org",
+    "phone": "+91 98490 99881",
+    "qualifications": "MBBS, MS (General Surgery), MCh",
+    "specialization": "General Surgery",
+    "department": "General Surgery",
+    "experience_years": 11,
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_fee": 750.0,
+    "medical_keywords": [
+      "hernia",
+      "appendix",
+      "gallstones",
+      "laparoscopy"
+    ],
+    "conditions_treated": [
+      "Inguinal Hernia",
+      "Acute Appendicitis",
+      "Cholelithiasis"
+    ],
+    "consultation_type": "Both",
+    "consultation_hours": "10:00 AM - 04:00 PM",
+    "working_hours": "10:00 AM - 04:00 PM",
+    "rating": 5.0,
+    "reviews_count": 0,
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "bio": "Medical specialist providing comprehensive clinical care.",
+    "is_active": true,
+    "created_at": "2026-11-20T10:39:12.834160"
+  },
+  {
+    "id": "doc-041",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2021-8041",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
+  },
+  {
+    "id": "doc-042",
+    "name": "Dr. Aarav Nambiar",
+    "email": "dr.aarav.test@yashoda.org",
+    "phone": "+91 98490 99881",
+    "qualifications": "MBBS, MS (General Surgery), MCh",
+    "specialization": "General Surgery",
+    "department": "General Surgery",
+    "experience_years": 11,
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_fee": 750.0,
+    "medical_keywords": [
+      "hernia",
+      "appendix",
+      "gallstones",
+      "laparoscopy"
+    ],
+    "conditions_treated": [
+      "Inguinal Hernia",
+      "Acute Appendicitis",
+      "Cholelithiasis"
+    ],
+    "consultation_type": "Both",
+    "consultation_hours": "10:00 AM - 04:00 PM",
+    "working_hours": "10:00 AM - 04:00 PM",
+    "rating": 5.0,
+    "reviews_count": 0,
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "available_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "bio": "Medical specialist providing comprehensive clinical care.",
+    "is_active": true,
+    "created_at": "2026-11-20T10:39:48.664053"
   }
 ]

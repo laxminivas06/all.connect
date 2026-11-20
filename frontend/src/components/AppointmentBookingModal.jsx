@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { ErrorBoundary } from './ErrorBoundary';
 import {
   X,
   Calendar,
@@ -22,7 +23,35 @@ import {
   Download
 } from 'lucide-react';
 
-export const AppointmentBookingModal = ({
+export const getDoctorDisplayName = (doc) => {
+  if (!doc) return 'Doctor';
+  return String(doc.name || doc.full_name || 'Doctor').trim();
+};
+
+export const getDoctorInitial = (doc) => {
+  const name = getDoctorDisplayName(doc);
+  const clean = name.replace(/^Dr\.?\s*/i, '').trim();
+  return clean ? clean.charAt(0).toUpperCase() : 'D';
+};
+
+export const getDoctorSpecialty = (doc) => {
+  if (!doc) return 'Specialist';
+  return String(doc.specialization || doc.specialty || doc.department || 'Specialist').trim();
+};
+
+export const getDoctorQualifications = (doc) => {
+  if (!doc) return 'MBBS, MD';
+  return String(doc.qualifications || doc.qualification || 'MBBS, MD').trim();
+};
+
+export const getDoctorOrgName = (doc, fallbackOrg) => {
+  if (doc?.organization_name) return String(doc.organization_name).trim();
+  if (doc?.hospital_name) return String(doc.hospital_name).trim();
+  if (fallbackOrg?.name) return String(fallbackOrg.name).trim();
+  return 'Healthcare Facility';
+};
+
+const AppointmentBookingModalContent = ({
   isOpen,
   onClose,
   initialDoctor = null,
@@ -51,7 +80,7 @@ export const AppointmentBookingModal = ({
 
   // Target organization
   const targetOrg = initialHospital || initialClinic || (typeof initialDoctor === 'object' ? initialDoctor?.organization : null);
-  const targetOrgId = targetOrg?.id || (typeof initialDoctor === 'object' ? initialDoctor?.organization_id : null);
+  const targetOrgId = targetOrg?.id || (typeof initialDoctor === 'object' ? (initialDoctor?.organization_id || initialDoctor?.hospital_id) : null);
 
   // Step 1 State: Doctors
   const [doctorsList, setDoctorsList] = useState([]);
@@ -90,6 +119,69 @@ export const AppointmentBookingModal = ({
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
 
+  const configureDoctorModes = (doc) => {
+    if (!doc) return;
+    const rawType = doc.consultation_type || doc.consultation_modes || 'Both';
+    let modes = ['In-Person Consultation', 'Video Consultation'];
+    if (typeof rawType === 'string') {
+      const lower = rawType.toLowerCase();
+      if (lower.includes('in-person') && !lower.includes('video') && !lower.includes('both')) {
+        modes = ['In-Person Consultation'];
+      } else if (lower.includes('video') && !lower.includes('in-person') && !lower.includes('both')) {
+        modes = ['Video Consultation'];
+      }
+    }
+    setEnabledModes(modes);
+    if (!modes.includes(consultationMode)) {
+      setConsultationMode(modes[0]);
+    }
+  };
+
+  const fetchDoctorById = async (docId) => {
+    setLoadingDoctors(true);
+    try {
+      const res = await api.getDoctor(docId);
+      const doc = res.doctor || res;
+      setSelectedDoctor(doc);
+      configureDoctorModes(doc);
+      setStep(2);
+    } catch (err) {
+      setError('Failed to load doctor profile');
+    } finally {
+      setLoadingDoctors(false);
+    }
+  };
+
+  const fetchOrgDoctors = async () => {
+    setLoadingDoctors(true);
+    try {
+      const params = {};
+      if (targetOrgId) params.organization_id = targetOrgId;
+      const docs = await api.getDoctors(params);
+      
+      // Strict organization isolation: filter only doctors belonging to targetOrgId if specified
+      const filtered = targetOrgId 
+        ? (docs || []).filter(d => (d.organization_id === targetOrgId || d.hospital_id === targetOrgId)) 
+        : (docs || []);
+      setDoctorsList(filtered);
+
+      // Single-Doctor Clinic Requirement: If only 1 doctor, select directly without extra steps
+      if (filtered.length === 1) {
+        setSelectedDoctor(filtered[0]);
+        configureDoctorModes(filtered[0]);
+        setStep(2);
+      } else if (filtered.length > 1) {
+        setSelectedDoctor(filtered[0]);
+        configureDoctorModes(filtered[0]);
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load available specialists for this facility.');
+    } finally {
+      setLoadingDoctors(false);
+    }
+  };
+
   // Initialize Modal
   useEffect(() => {
     if (isOpen) {
@@ -125,64 +217,6 @@ export const AppointmentBookingModal = ({
       }
     }
   }, [isOpen, initialDoctor, initialHospital, initialClinic]);
-
-  const configureDoctorModes = (doc) => {
-    const rawType = doc.consultation_type || doc.consultation_modes || 'Both';
-    let modes = ['In-Person Consultation', 'Video Consultation'];
-    if (typeof rawType === 'string') {
-      if (rawType.toLowerCase().includes('in-person') && !rawType.toLowerCase().includes('video') && !rawType.toLowerCase().includes('both')) {
-        modes = ['In-Person Consultation'];
-      } else if (rawType.toLowerCase().includes('video') && !rawType.toLowerCase().includes('in-person') && !rawType.toLowerCase().includes('both')) {
-        modes = ['Video Consultation'];
-      }
-    }
-    setEnabledModes(modes);
-    if (!modes.includes(consultationMode)) {
-      setConsultationMode(modes[0]);
-    }
-  };
-
-  const fetchDoctorById = async (docId) => {
-    setLoadingDoctors(true);
-    try {
-      const res = await api.getDoctor(docId);
-      const doc = res.doctor || res;
-      setSelectedDoctor(doc);
-      configureDoctorModes(doc);
-      setStep(2);
-    } catch (err) {
-      setError('Failed to load doctor profile');
-    } finally {
-      setLoadingDoctors(false);
-    }
-  };
-
-  const fetchOrgDoctors = async () => {
-    setLoadingDoctors(true);
-    try {
-      const params = {};
-      if (targetOrgId) params.organization_id = targetOrgId;
-      const docs = await api.getDoctors(params);
-      
-      // Strict organization isolation: filter only doctors belonging to targetOrgId if specified
-      const filtered = targetOrgId ? (docs || []).filter(d => d.organization_id === targetOrgId) : (docs || []);
-      setDoctorsList(filtered);
-
-      // Single-Doctor Clinic Requirement: If only 1 doctor, select directly without extra steps
-      if (filtered.length === 1) {
-        setSelectedDoctor(filtered[0]);
-        configureDoctorModes(filtered[0]);
-        setStep(2);
-      } else if (filtered.length > 1) {
-        setSelectedDoctor(filtered[0]);
-        configureDoctorModes(filtered[0]);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoadingDoctors(false);
-    }
-  };
 
   // Fetch Month Availability when Month, Year, or Doctor changes
   useEffect(() => {
@@ -251,7 +285,7 @@ export const AppointmentBookingModal = ({
     try {
       const quotePayload = {
         doctor_id: selectedDoctor.id,
-        organization_id: selectedDoctor.organization_id,
+        organization_id: selectedDoctor.organization_id || targetOrgId,
         consultation_mode: consultationMode,
         appointment_date: selectedDate,
         appointment_time: slotTime
@@ -284,11 +318,11 @@ export const AppointmentBookingModal = ({
     try {
       const payload = {
         doctor_id: selectedDoctor.id,
-        organization_id: selectedDoctor.organization_id,
+        organization_id: selectedDoctor.organization_id || targetOrgId,
         appointment_date: selectedDate,
         appointment_time: selectedSlot,
         appointment_type: consultationMode,
-        chief_complaint: chiefComplaint || `OPD consultation with ${selectedDoctor.name}`,
+        chief_complaint: chiefComplaint || `OPD consultation with ${getDoctorDisplayName(selectedDoctor)}`,
         patient_name: patientName,
         patient_phone: patientMobile
       };
@@ -359,7 +393,7 @@ export const AppointmentBookingModal = ({
                 {step === 7 ? (paymentComplete ? 'Booking Confirmed' : 'Payment & Checkout') : 'Schedule Appointment'}
               </h3>
               <p className="text-[11px] text-blue-100">
-                {selectedDoctor ? `${selectedDoctor.name} • ${selectedDoctor.specialization}` : (targetOrg?.name || 'Healthcare Facility')}
+                {selectedDoctor ? `${getDoctorDisplayName(selectedDoctor)} • ${getDoctorSpecialty(selectedDoctor)}` : (targetOrg?.name || 'Healthcare Facility')}
               </p>
             </div>
           </div>
@@ -433,35 +467,41 @@ export const AppointmentBookingModal = ({
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-3">
-                  {doctorsList.map(doc => (
-                    <button
-                      key={doc.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedDoctor(doc);
-                        configureDoctorModes(doc);
-                      }}
-                      className={`p-4 rounded-2xl border text-left transition flex items-center justify-between ${
-                        selectedDoctor?.id === doc.id
-                          ? 'bg-blue-50/70 border-blue-500 shadow-sm ring-2 ring-blue-500'
-                          : 'bg-white hover:bg-slate-50 border-slate-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black text-sm">
-                          {doc.name.replace('Dr. ', '').charAt(0)}
+                  {doctorsList.map(doc => {
+                    const docName = getDoctorDisplayName(doc);
+                    const docSpecialty = getDoctorSpecialty(doc);
+                    const docQual = getDoctorQualifications(doc);
+                    const docInitial = getDoctorInitial(doc);
+                    return (
+                      <button
+                        key={doc.id || doc.doctor_id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctor(doc);
+                          configureDoctorModes(doc);
+                        }}
+                        className={`p-4 rounded-2xl border text-left transition flex items-center justify-between ${
+                          selectedDoctor?.id === doc.id
+                            ? 'bg-blue-50/70 border-blue-500 shadow-sm ring-2 ring-blue-500'
+                            : 'bg-white hover:bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3.5">
+                          <div className="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black text-sm">
+                            {docInitial}
+                          </div>
+                          <div>
+                            <h5 className="font-extrabold text-sm text-slate-900">{docName}</h5>
+                            <p className="text-xs text-blue-600 font-semibold">{docSpecialty} • {docQual}</p>
+                            <p className="text-[11px] text-slate-400 mt-0.5">{doc.experience_years || 5}+ Years Experience</p>
+                          </div>
                         </div>
-                        <div>
-                          <h5 className="font-extrabold text-sm text-slate-900">{doc.name}</h5>
-                          <p className="text-xs text-blue-600 font-semibold">{doc.specialization} • {doc.qualifications}</p>
-                          <p className="text-[11px] text-slate-400 mt-0.5">{doc.experience_years || 5}+ Years Experience</p>
-                        </div>
-                      </div>
-                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
-                        {doc.is_active !== false ? 'Available' : 'Unavailable'}
-                      </span>
-                    </button>
-                  ))}
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                          {doc.is_active !== false ? 'Available' : 'Unavailable'}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               )}
 
@@ -469,7 +509,12 @@ export const AppointmentBookingModal = ({
                 <button
                   type="button"
                   disabled={!selectedDoctor}
-                  onClick={() => setStep(2)}
+                  onClick={() => {
+                    if (selectedDoctor) {
+                      configureDoctorModes(selectedDoctor);
+                      setStep(2);
+                    }
+                  }}
                   className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs disabled:opacity-40 transition flex items-center gap-2"
                 >
                   <span>Continue to Mode Selection</span>
@@ -501,11 +546,11 @@ export const AppointmentBookingModal = ({
               {/* Doctor Quick Badge */}
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
-                  {selectedDoctor.name.replace('Dr. ', '').charAt(0)}
+                  {getDoctorInitial(selectedDoctor)}
                 </div>
                 <div>
-                  <p className="text-xs font-extrabold text-slate-900">{selectedDoctor.name}</p>
-                  <p className="text-[11px] text-slate-500">{selectedDoctor.specialization} • {selectedDoctor.organization_name}</p>
+                  <p className="text-xs font-extrabold text-slate-900">{getDoctorDisplayName(selectedDoctor)}</p>
+                  <p className="text-[11px] text-slate-500">{getDoctorSpecialty(selectedDoctor)} • {getDoctorOrgName(selectedDoctor, targetOrg)}</p>
                 </div>
               </div>
 
@@ -527,7 +572,7 @@ export const AppointmentBookingModal = ({
                     <div>
                       <h5 className="font-extrabold text-xs text-slate-900">In-Person Consultation</h5>
                       <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                        Physical consultation at {selectedDoctor.organization_name || 'facility OPD clinic'}.
+                        Physical consultation at {getDoctorOrgName(selectedDoctor, targetOrg)}.
                       </p>
                     </div>
                   </button>
@@ -577,12 +622,12 @@ export const AppointmentBookingModal = ({
           )}
 
           {/* STEP 3: MONTHLY CALENDAR DATE SELECTION */}
-          {step === 3 && (
+          {step === 3 && selectedDoctor && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-extrabold text-slate-900">Step 3: Calendar-Based Appointment Selection</h4>
-                  <p className="text-xs text-slate-500">Select an available date for {selectedDoctor.name}.</p>
+                  <p className="text-xs text-slate-500">Select an available date for {getDoctorDisplayName(selectedDoctor)}.</p>
                 </div>
                 <button
                   type="button"
@@ -640,7 +685,6 @@ export const AppointmentBookingModal = ({
                     const dayInfo = monthAvailability[dateStr] || {};
                     const isAvailable = dayInfo.available !== false && dayInfo.status !== 'past' && dayInfo.status !== 'off' && dayInfo.status !== 'fully_booked';
                     const isSelected = selectedDate === dateStr;
-                    const isPast = dayInfo.status === 'past';
                     const isFullyBooked = dayInfo.status === 'fully_booked';
 
                     return (
@@ -776,7 +820,7 @@ export const AppointmentBookingModal = ({
                 </div>
                 <div className="flex justify-between border-b border-slate-200 pb-2">
                   <span className="text-slate-500">Doctor:</span>
-                  <span className="font-extrabold text-slate-900">{priceQuote.doctor_name} ({priceQuote.specialization})</span>
+                  <span className="font-extrabold text-slate-900">{priceQuote.doctor_name || getDoctorDisplayName(selectedDoctor)} ({priceQuote.specialization})</span>
                 </div>
                 <div className="flex justify-between border-b border-slate-200 pb-2">
                   <span className="text-slate-500">Consultation Mode:</span>
@@ -915,7 +959,7 @@ export const AppointmentBookingModal = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Doctor:</span>
-                      <span className="font-bold text-slate-800">{successData.doctor_name}</span>
+                      <span className="font-bold text-slate-800">{successData.doctor_name || getDoctorDisplayName(selectedDoctor)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Schedule:</span>
@@ -996,7 +1040,7 @@ export const AppointmentBookingModal = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Doctor:</span>
-                      <span className="font-bold text-slate-800">{successData.doctor_name}</span>
+                      <span className="font-bold text-slate-800">{successData.doctor_name || getDoctorDisplayName(selectedDoctor)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Schedule:</span>
@@ -1025,5 +1069,14 @@ export const AppointmentBookingModal = ({
         </div>
       </div>
     </div>
+  );
+};
+
+export const AppointmentBookingModal = (props) => {
+  if (!props.isOpen) return null;
+  return (
+    <ErrorBoundary level="modal" title="Appointment Booking Unavailable" onClose={props.onClose}>
+      <AppointmentBookingModalContent {...props} />
+    </ErrorBoundary>
   );
 };

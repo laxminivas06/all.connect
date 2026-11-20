@@ -20,7 +20,7 @@
     "storage_limit_bytes": 2147483648,
     "storage_limit_mb": 2048,
     "storage_alert_threshold": 80,
-    "updated_at": "2026-11-20T08:49:59.291121"
+    "updated_at": "2026-11-20T10:39:09.809634"
   },
   {
     "id": "sub-hosp-002",
@@ -704,5 +704,31 @@
     "expires_at": "2026-12-19",
     "amount_paid": 2999.0,
     "amount_due": 2999.0
+  },
+  {
+    "id": "sub-hosp-033",
+    "organization_id": "hosp-033",
+    "organization_name": "MaxCure Super Speciality Hospital",
+    "organization_type": "hospital",
+    "plan_id": "hospital_enterprise",
+    "status": "active",
+    "billing_cycle": "annual",
+    "started_at": "2026-11-20",
+    "expires_at": "2027-11-20",
+    "amount_paid": 299999.0,
+    "amount_due": 299999.0
+  },
+  {
+    "id": "sub-hosp-034",
+    "organization_id": "hosp-034",
+    "organization_name": "MaxCure Super Speciality Hospital",
+    "organization_type": "hospital",
+    "plan_id": "hospital_enterprise",
+    "status": "active",
+    "billing_cycle": "annual",
+    "started_at": "2026-11-20",
+    "expires_at": "2027-11-20",
+    "amount_paid": 299999.0,
+    "amount_due": 299999.0
   }
 ]

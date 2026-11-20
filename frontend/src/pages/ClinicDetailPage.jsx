@@ -346,7 +346,7 @@ export const ClinicDetailPage = () => {
                       className="w-full py-3.5 px-6 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-sm shadow-md shadow-teal-600/20 transition flex items-center justify-center gap-2 tracking-wide"
                     >
                       <Calendar className="w-4 h-4" />
-                      <span>Book Appointment with {doc.name}</span>
+                      <span>Book Appointment with {doc.name || doc.full_name || 'Doctor'}</span>
                     </button>
                   </div>
                 </div>
@@ -390,9 +390,9 @@ export const ClinicDetailPage = () => {
                       <div className="space-y-3">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="font-extrabold text-sm text-slate-900">{doc.name}</h4>
-                            <p className="text-xs font-semibold text-teal-700">{doc.specialization}</p>
-                            <p className="text-[10px] text-slate-500">{doc.qualifications || 'MBBS, MD'}</p>
+                            <h4 className="font-extrabold text-sm text-slate-900">{doc.name || doc.full_name || 'Doctor'}</h4>
+                            <p className="text-xs font-semibold text-teal-700">{doc.specialization || doc.specialty || doc.department || 'Specialist'}</p>
+                            <p className="text-[10px] text-slate-500">{doc.qualifications || doc.qualification || 'MBBS, MD'}</p>
                           </div>
                           <span className="text-xs font-bold text-amber-600 flex items-center gap-1">
                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />

@@ -671,5 +671,17 @@
     "entity_id": "PAT-2026-000052",
     "is_active": true,
     "created_at": "2026-11-21T01:24:19.321921"
+  },
+  {
+    "id": "usr-patient-53",
+    "username": "isolated_1795206161",
+    "email": "isolated_1795206161@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795206161",
+    "hashed_password": "610974aee636d3c897509a3edaf49e81$eb1406d830123799a69e730008e08a3afeb261751ed32d98cfa5dc0edcc87303",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000053",
+    "is_active": true,
+    "created_at": "2026-11-21T01:52:41.276081"
   }
 ]

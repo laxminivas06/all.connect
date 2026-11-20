@@ -464,6 +464,60 @@
         "status": "Cancelled",
         "applied_by": "doctor",
         "created_at": "2026-11-21T01:24:18.063264"
+      },
+      {
+        "id": "lev-1795206159",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:52:39.054322"
+      },
+      {
+        "id": "lev-1795206159",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:52:39.183864"
+      },
+      {
+        "id": "lev-1795206159",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:52:39.689902"
+      },
+      {
+        "id": "lev-1795206159",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:52:39.748291"
+      },
+      {
+        "id": "lev-1795206159",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:52:39.794602"
+      },
+      {
+        "id": "lev-1795206159",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:52:39.847248"
       }
     ],
     "is_available": true
@@ -2970,6 +3024,35 @@
     "qualification": "MBBS, MD",
     "specialty": "General Medicine",
     "registration_number": "TSMC-2021-8051",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
+  },
+  {
+    "id": "doc-052",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2022-8052",
     "experience_years": 10,
     "consultation_fee": 600,
     "hospital_id": "hosp-001",

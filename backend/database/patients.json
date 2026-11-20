@@ -1575,5 +1575,30 @@
     "chronic_conditions": [],
     "permitted_organizations": [],
     "created_at": "2026-11-21T01:24:19.325039"
+  },
+  {
+    "id": "PAT-2026-000053",
+    "patient_id": "PAT-2026-000053",
+    "health_id": "HC-2026-000053",
+    "user_id": "usr-patient-53",
+    "full_name": "Isolated Patient 1795206161",
+    "email": "isolated_1795206161@example.com",
+    "mobile": "+91 99999 88888",
+    "dob": "1995-04-20",
+    "age": 31,
+    "gender": "Female",
+    "blood_group": "B+",
+    "address": "Street 5, Jubilee Hills",
+    "area": "Jubilee Hills",
+    "city": "Hyderabad",
+    "pincode": "500033",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 99999 88888"
+    },
+    "allergies": [],
+    "chronic_conditions": [],
+    "permitted_organizations": [],
+    "created_at": "2026-11-21T01:52:41.279552"
   }
 ]

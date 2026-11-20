@@ -808,5 +808,18 @@
     "expires_at": "2027-11-21",
     "amount_paid": 299999.0,
     "amount_due": 299999.0
+  },
+  {
+    "id": "sub-hosp-041",
+    "organization_id": "hosp-041",
+    "organization_name": "MaxCure Super Speciality Hospital",
+    "organization_type": "hospital",
+    "plan_id": "hospital_enterprise",
+    "status": "active",
+    "billing_cycle": "annual",
+    "started_at": "2026-11-21",
+    "expires_at": "2027-11-21",
+    "amount_paid": 299999.0,
+    "amount_due": 299999.0
   }
 ]

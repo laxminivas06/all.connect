@@ -4560,5 +4560,27 @@
     "severity": "info",
     "ip_address": "127.0.0.1",
     "detail": "Patient PAT-2026-000001 rotated their digital ID verification QR token"
+  },
+  {
+    "id": "aud-1795157249-416",
+    "timestamp": "2026-11-20 12:17:29",
+    "actor": "patient",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-patient-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User patient (patient) logged in successfully"
+  },
+  {
+    "id": "aud-1795157293-417",
+    "timestamp": "2026-11-20 12:18:13",
+    "actor": "admin",
+    "action": "LOGIN_SUCCESS",
+    "target": "usr-admin-01",
+    "category": "Authentication",
+    "severity": "info",
+    "ip_address": "127.0.0.1",
+    "detail": "User admin (super_admin) logged in successfully"
   }
 ]

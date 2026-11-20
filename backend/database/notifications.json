@@ -3444,5 +3444,28 @@
     "link": "/dashboard/clinic/appointments",
     "is_read": false,
     "created_at": "2026-11-20T11:57:52.831684"
+  },
+  {
+    "id": "notif-apt-pat-103",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000103 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-11-21 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T12:17:45.070251"
+  },
+  {
+    "id": "notif-apt-org-103",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2026-11-21 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T12:17:45.089788"
   }
 ]

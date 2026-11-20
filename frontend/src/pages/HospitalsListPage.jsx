@@ -14,7 +14,8 @@ import {
   X,
   Stethoscope,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  Calendar
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 

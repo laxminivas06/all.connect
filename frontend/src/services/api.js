@@ -41,6 +41,7 @@ export const api = {
 
   // Patient
   getMyPatientData: () => request('/patients/me'),
+  getMyDoctors: () => request('/patients/me/doctors'),
   updateMyPatientProfile: (data) => request('/patients/me', { method: 'PUT', body: JSON.stringify(data) }),
   updateConsent: (data) => request('/patients/consent', { method: 'PUT', body: JSON.stringify(data) }),
   getPatientProfile: (patientId) => request(`/patients/${patientId}`),
@@ -97,6 +98,7 @@ export const api = {
   getAppointmentPricingQuote: (data) => request('/appointments/pricing-quote', { method: 'POST', body: JSON.stringify(data) }),
   bookAppointment: (data) => request('/appointments/book', { method: 'POST', body: JSON.stringify(data) }),
   cancelAppointment: (id, data) => request(`/appointments/${id}/cancel`, { method: 'PUT', body: JSON.stringify(data || {}) }),
+  rescheduleAppointment: (id, data) => request(`/appointments/${id}/reschedule`, { method: 'PUT', body: JSON.stringify(data) }),
   updateAppointmentStatus: (id, data) => request(`/appointments/${id}/status`, { method: 'PUT', body: JSON.stringify(data) }),
   assignAppointmentDoctor: (id, data) => request(`/appointments/${id}/assign`, { method: 'PUT', body: JSON.stringify(data) }),
   updateAppointmentBilling: (id, data) => request(`/appointments/${id}/billing`, { method: 'PUT', body: JSON.stringify(data) }),

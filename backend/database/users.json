@@ -635,5 +635,41 @@
     "entity_id": "PAT-2026-000049",
     "is_active": true,
     "created_at": "2026-11-20T22:38:19.997606"
+  },
+  {
+    "id": "usr-patient-50",
+    "username": "isolated_1795203998",
+    "email": "isolated_1795203998@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795203998",
+    "hashed_password": "27196887eb3eb0109e813842edb3641f$5fa6a83cdff40bae62787b0e1cd6b72b671410432362d9fce841a362563c13b1",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000050",
+    "is_active": true,
+    "created_at": "2026-11-21T01:16:38.306592"
+  },
+  {
+    "id": "usr-patient-51",
+    "username": "isolated_1795204418",
+    "email": "isolated_1795204418@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795204418",
+    "hashed_password": "f9bf54d816dba5d5aa539bf898f4d119$908917aad58213628a476b0c83fc0ee7a3acb663b68eafb1cb565b8d9b711ce0",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000051",
+    "is_active": true,
+    "created_at": "2026-11-21T01:23:39.018729"
+  },
+  {
+    "id": "usr-patient-52",
+    "username": "isolated_1795204459",
+    "email": "isolated_1795204459@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795204459",
+    "hashed_password": "a6a98ae8bf2ce39961b223d5365390a5$0f1870d79c9f2b0014114a9a030303380d885ae317ea28e411d4d07fb11c8ab0",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000052",
+    "is_active": true,
+    "created_at": "2026-11-21T01:24:19.321921"
   }
 ]

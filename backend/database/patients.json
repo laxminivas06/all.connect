@@ -28,7 +28,8 @@
       "hosp-001",
       "clinic-001",
       "hosp-002",
-      null
+      null,
+      "hosp-004"
     ],
     "created_at": "2026-01-10T10:00:00",
     "phone": "+91 98480 99999",
@@ -1499,5 +1500,80 @@
     "chronic_conditions": [],
     "permitted_organizations": [],
     "created_at": "2026-11-20T22:38:20.003287"
+  },
+  {
+    "id": "PAT-2026-000050",
+    "patient_id": "PAT-2026-000050",
+    "health_id": "HC-2026-000050",
+    "user_id": "usr-patient-50",
+    "full_name": "Isolated Patient 1795203998",
+    "email": "isolated_1795203998@example.com",
+    "mobile": "+91 99999 88888",
+    "dob": "1995-04-20",
+    "age": 31,
+    "gender": "Female",
+    "blood_group": "B+",
+    "address": "Street 5, Jubilee Hills",
+    "area": "Jubilee Hills",
+    "city": "Hyderabad",
+    "pincode": "500033",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 99999 88888"
+    },
+    "allergies": [],
+    "chronic_conditions": [],
+    "permitted_organizations": [],
+    "created_at": "2026-11-21T01:16:38.309725"
+  },
+  {
+    "id": "PAT-2026-000051",
+    "patient_id": "PAT-2026-000051",
+    "health_id": "HC-2026-000051",
+    "user_id": "usr-patient-51",
+    "full_name": "Isolated Patient 1795204418",
+    "email": "isolated_1795204418@example.com",
+    "mobile": "+91 99999 88888",
+    "dob": "1995-04-20",
+    "age": 31,
+    "gender": "Female",
+    "blood_group": "B+",
+    "address": "Street 5, Jubilee Hills",
+    "area": "Jubilee Hills",
+    "city": "Hyderabad",
+    "pincode": "500033",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 99999 88888"
+    },
+    "allergies": [],
+    "chronic_conditions": [],
+    "permitted_organizations": [],
+    "created_at": "2026-11-21T01:23:39.021700"
+  },
+  {
+    "id": "PAT-2026-000052",
+    "patient_id": "PAT-2026-000052",
+    "health_id": "HC-2026-000052",
+    "user_id": "usr-patient-52",
+    "full_name": "Isolated Patient 1795204459",
+    "email": "isolated_1795204459@example.com",
+    "mobile": "+91 99999 88888",
+    "dob": "1995-04-20",
+    "age": 31,
+    "gender": "Female",
+    "blood_group": "B+",
+    "address": "Street 5, Jubilee Hills",
+    "area": "Jubilee Hills",
+    "city": "Hyderabad",
+    "pincode": "500033",
+    "emergency_contact": {
+      "name": "Primary Contact",
+      "phone": "+91 99999 88888"
+    },
+    "allergies": [],
+    "chronic_conditions": [],
+    "permitted_organizations": [],
+    "created_at": "2026-11-21T01:24:19.325039"
   }
 ]

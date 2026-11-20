@@ -570,7 +570,7 @@ def normalize_doctor(d: Dict[str, Any]) -> Dict[str, Any]:
     item["leave_start"] = s_date
     item["leave_end"] = e_date
     item["leave_reason"] = reason
-    item["leave_message"] = "Doctor Currently Unavailable – On Leave" if on_leave_today else None
+    item["leave_message"] = "Currently Unavailable – On Leave" if on_leave_today else None
     return item
 
 @router.get("")

@@ -18,6 +18,11 @@ import { ClinicDetailPage } from './pages/ClinicDetailPage';
 import { PharmacySearchPage } from './pages/PharmacySearchPage';
 import { OffersPage } from './pages/OffersPage';
 import { VerifyPatientPage } from './pages/patient/VerifyPatientPage';
+import { MyDoctorsPage } from './pages/patient/MyDoctorsPage';
+import { MyAppointmentsPage } from './pages/patient/MyAppointmentsPage';
+import { PrescriptionsPage } from './pages/patient/PrescriptionsPage';
+import { NotificationsPage } from './pages/patient/NotificationsPage';
+import { PatientSettingsPage } from './pages/patient/PatientSettingsPage';
 
 // Dashboards
 import { PatientDashboard } from './pages/patient/PatientDashboard';
@@ -110,8 +115,23 @@ export default function App() {
             <Route path="/" element={<PublicLayout><LandingPage /></PublicLayout>} />
             <Route path="/book-opd" element={<PublicLayout><BookOpdPage /></PublicLayout>} />
             <Route path="/doctors/:id" element={<PublicLayout><DoctorDetailPage /></PublicLayout>} />
+            {/* Dedicated Patient Module Routes */}
+            <Route path="/my-doctors" element={<PublicLayout><MyDoctorsPage /></PublicLayout>} />
+            <Route path="/my-appointments" element={<PublicLayout><MyAppointmentsPage /></PublicLayout>} />
+            <Route path="/appointments" element={<PublicLayout><MyAppointmentsPage /></PublicLayout>} />
+            <Route path="/prescriptions" element={<PublicLayout><PrescriptionsPage /></PublicLayout>} />
+            <Route path="/notifications" element={<PublicLayout><NotificationsPage /></PublicLayout>} />
+            <Route path="/settings" element={<PublicLayout><PatientSettingsPage /></PublicLayout>} />
             <Route path="/profile" element={<PublicLayout><PatientPortalPage /></PublicLayout>} />
             <Route path="/profile/*" element={<PublicLayout><PatientPortalPage /></PublicLayout>} />
+
+            {/* Dashboard Patient Route Mappings */}
+            <Route path="/dashboard/patient/doctors" element={<PublicLayout><MyDoctorsPage /></PublicLayout>} />
+            <Route path="/dashboard/patient/appointments" element={<PublicLayout><MyAppointmentsPage /></PublicLayout>} />
+            <Route path="/dashboard/patient/prescriptions" element={<PublicLayout><PrescriptionsPage /></PublicLayout>} />
+            <Route path="/dashboard/patient/notifications" element={<PublicLayout><NotificationsPage /></PublicLayout>} />
+            <Route path="/dashboard/patient/settings" element={<PublicLayout><PatientSettingsPage /></PublicLayout>} />
+            <Route path="/dashboard/patient/profile" element={<PublicLayout><PatientPortalPage /></PublicLayout>} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/hospitals" element={<PublicLayout><HospitalsListPage /></PublicLayout>} />

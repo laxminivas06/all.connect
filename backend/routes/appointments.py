@@ -97,16 +97,11 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
     if req.appointment_date < today_str:
         raise HTTPException(status_code=400, detail="Cannot book an appointment on a past date.")
 
-    # 3. Doctor availability by weekday and leave
+    # 3. Doctor availability by leave and weekday
     try:
         appt_date_obj = datetime.strptime(req.appointment_date, "%Y-%m-%d")
         day_name = appt_date_obj.strftime("%A")
-        avail_days = doctor.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
-        if day_name not in avail_days:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Dr. {doc_display_name} is not available on {day_name}s. Available days: {', '.join(avail_days)}"
-            )
+
         from routes.doctors import is_doctor_on_leave
         on_leave, s_date, e_date, reason = is_doctor_on_leave(doctor, req.appointment_date)
         if on_leave:
@@ -114,6 +109,13 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
             raise HTTPException(
                 status_code=400,
                 detail=f"Dr. {doc_display_name} is on leave on {req.appointment_date}{date_info}. Doctor Currently Unavailable – On Leave."
+            )
+
+        avail_days = doctor.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+        if day_name not in avail_days:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Dr. {doc_display_name} is not available on {day_name}s. Available days: {', '.join(avail_days)}"
             )
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
@@ -320,12 +322,52 @@ def cancel_appointment_endpoint(
     reason = payload.get("reason") or "Patient cancelled via portal"
     updates = {
         "status": "cancelled",
+        "queue_status": "Cancelled",
         "cancellation_reason": reason,
         "payment_status": "Refund Initiated"
     }
     updated = update("appointments", appt["id"], updates, id_field="id")
     return {
         "message": "Appointment cancelled successfully",
+        "appointment": updated
+    }
+
+@router.put("/{appointment_id}/reschedule")
+def reschedule_appointment(
+    appointment_id: str,
+    payload: Dict[str, Any] = Body(default={}),
+    current_user: Dict[str, Any] = Depends(get_current_user_payload)
+):
+    appt = find_one("appointments", lambda a: a.get("id") == appointment_id or a.get("appointment_id") == appointment_id)
+    if not appt:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+
+    new_date = payload.get("rescheduled_date") or payload.get("new_date") or payload.get("appointment_date")
+    new_time = payload.get("rescheduled_time") or payload.get("new_time") or payload.get("appointment_time")
+    if not new_date or not new_time:
+        raise HTTPException(status_code=400, detail="Both rescheduled date and time must be provided")
+
+    # Verify doctor is not on leave on new_date
+    doctor = find_one("doctors", lambda d: d.get("id") == appt.get("doctor_id"))
+    if doctor:
+        from routes.doctors import is_doctor_on_leave
+        on_leave, s_date, e_date, reason = is_doctor_on_leave(doctor, new_date)
+        if on_leave:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Currently Unavailable – On Leave: Dr. {doctor.get('name', 'Doctor')} is on leave from {s_date} to {e_date} ({reason}). Please select another date."
+            )
+
+    updates = {
+        "appointment_date": new_date,
+        "appointment_time": new_time,
+        "status": "Confirmed",
+        "queue_status": "Waiting",
+        "rescheduled_at": datetime.now().isoformat()
+    }
+    updated = update("appointments", appt["id"], updates, id_field="id")
+    return {
+        "message": f"Appointment successfully rescheduled to {new_date} at {new_time}",
         "appointment": updated
     }
 

@@ -177,6 +177,26 @@ export const Navbar = ({ onToggleSidebar }) => {
                   Clinics
                 </Link>
 
+                {isPatient && (
+                  <>
+                    <Link
+                      to="/my-doctors"
+                      className={`px-3 py-2 rounded-xl hover:text-blue-600 hover:bg-slate-50 transition flex items-center gap-1.5 ${location.pathname.startsWith('/my-doctors') ? 'text-blue-600 font-extrabold' : ''}`}
+                    >
+                      <Stethoscope className="w-3.5 h-3.5 text-blue-600" />
+                      My Doctors
+                    </Link>
+
+                    <Link
+                      to="/my-appointments"
+                      className={`px-3 py-2 rounded-xl hover:text-blue-600 hover:bg-slate-50 transition flex items-center gap-1.5 ${location.pathname.startsWith('/my-appointments') || location.pathname === '/appointments' ? 'text-blue-600 font-extrabold' : ''}`}
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                      My Appointments
+                    </Link>
+                  </>
+                )}
+
                 <Link
                   to="/offers"
                   className={`px-3 py-2 rounded-xl hover:text-rose-600 hover:bg-slate-50 transition flex items-center gap-1.5 ${location.pathname.startsWith('/offers') ? 'text-rose-600 font-extrabold' : ''}`}
@@ -421,6 +441,26 @@ export const Navbar = ({ onToggleSidebar }) => {
               <Stethoscope className="w-4 h-4 text-teal-600" />
               Clinics
             </Link>
+            {isPatient && (
+              <>
+                <Link
+                  to="/my-doctors"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                >
+                  <Stethoscope className="w-4 h-4 text-blue-600" />
+                  My Doctors
+                </Link>
+                <Link
+                  to="/my-appointments"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                >
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  My Appointments
+                </Link>
+              </>
+            )}
             <Link
               to="/offers"
               onClick={() => setShowMobileMenu(false)}

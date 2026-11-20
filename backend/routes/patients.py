@@ -103,6 +103,74 @@ def get_my_patient_data(current_user: Dict[str, Any] = Depends(get_current_user_
         "available_organizations": all_orgs
     }
 
+@router.get("/me/doctors")
+def get_my_doctors(current_user: Dict[str, Any] = Depends(get_current_user_payload)):
+    if current_user.get("role") != "patient":
+        raise HTTPException(status_code=403, detail="Access reserved for patient role")
+
+    user_id = current_user.get("sub")
+    entity_id = current_user.get("entity_id")
+    email = current_user.get("email")
+
+    patient = find_one("patients", lambda p: 
+        (entity_id and (p.get("patient_id") == entity_id or p.get("id") == entity_id)) or
+        (user_id and p.get("user_id") == user_id) or
+        (email and p.get("email") and str(p.get("email")).lower() == str(email).lower())
+    )
+    if not patient:
+        return {"doctors": [], "total_associated_doctors": 0, "recommended_doctors": []}
+
+    pid = patient.get("patient_id")
+    appointments = find_all("appointments", lambda a: a.get("patient_id") == pid)
+
+    from routes.doctors import normalize_doctor, is_doctor_on_leave
+    all_raw_docs = find_all("doctors")
+    doc_map = {d["id"]: d for d in all_raw_docs}
+
+    doc_appts = {}
+    for a in appointments:
+        d_id = a.get("doctor_id")
+        if d_id:
+            if d_id not in doc_appts:
+                doc_appts[d_id] = []
+            doc_appts[d_id].append(a)
+
+    my_doctors = []
+    seen_doc_ids = set()
+    for d_id, appts in doc_appts.items():
+        raw_doc = doc_map.get(d_id)
+        if raw_doc:
+            doc = normalize_doctor(raw_doc)
+            sorted_appts = sorted(appts, key=lambda x: (x.get("appointment_date", ""), x.get("appointment_time", "")), reverse=True)
+            last_appt = sorted_appts[0] if sorted_appts else None
+            has_upcoming = any(a.get("status") in ["Confirmed", "Pending", "Waiting", "In Consultation"] for a in appts)
+
+            doc["total_consultations"] = len(appts)
+            doc["last_consultation_date"] = last_appt.get("appointment_date") if last_appt else None
+            doc["last_consultation_time"] = last_appt.get("appointment_time") if last_appt else None
+            doc["last_consultation_status"] = last_appt.get("status") if last_appt else None
+            doc["has_upcoming_appointment"] = has_upcoming
+            doc["is_associated"] = True
+            my_doctors.append(doc)
+            seen_doc_ids.add(d_id)
+
+    # Sort associated doctors: most recently consulted first
+    my_doctors.sort(key=lambda d: d.get("last_consultation_date") or "", reverse=True)
+
+    # Recommended doctors from active facilities
+    recommended = []
+    for raw_d in all_raw_docs:
+        if raw_d["id"] not in seen_doc_ids:
+            doc = normalize_doctor(raw_d)
+            if doc.get("is_active", True):
+                recommended.append(doc)
+
+    return {
+        "doctors": my_doctors,
+        "total_associated_doctors": len(my_doctors),
+        "recommended_doctors": recommended[:6]
+    }
+
 @router.put("/consent")
 def update_patient_consent(req: PatientConsentUpdateRequest, current_user: Dict[str, Any] = Depends(get_current_user_payload)):
     if current_user["role"] != "patient":

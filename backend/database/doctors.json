@@ -266,6 +266,204 @@
         "status": "Cancelled",
         "applied_by": "doctor",
         "created_at": "2026-11-20T22:36:35.852155"
+      },
+      {
+        "id": "lev-1795203773",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:12:53.682472"
+      },
+      {
+        "id": "lev-1795203773",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:12:53.826240"
+      },
+      {
+        "id": "lev-1795203814",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:13:34.158488"
+      },
+      {
+        "id": "lev-1795203814",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:13:34.366717"
+      },
+      {
+        "id": "lev-1795203814",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:13:34.872915"
+      },
+      {
+        "id": "lev-1795203814",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:13:34.928614"
+      },
+      {
+        "id": "lev-1795203814",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:13:34.998200"
+      },
+      {
+        "id": "lev-1795203815",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:13:35.053663"
+      },
+      {
+        "id": "lev-1795203954",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:15:54.456806"
+      },
+      {
+        "id": "lev-1795203954",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:15:54.610630"
+      },
+      {
+        "id": "lev-1795203955",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:15:55.048251"
+      },
+      {
+        "id": "lev-1795203955",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:15:55.095092"
+      },
+      {
+        "id": "lev-1795203955",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:15:55.136690"
+      },
+      {
+        "id": "lev-1795203955",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:15:55.189647"
+      },
+      {
+        "id": "lev-1795204418",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:23:38.450330"
+      },
+      {
+        "id": "lev-1795204418",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:23:38.610939"
+      },
+      {
+        "id": "lev-1795204457",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:24:17.282444"
+      },
+      {
+        "id": "lev-1795204457",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:24:17.457132"
+      },
+      {
+        "id": "lev-1795204457",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:24:17.919468"
+      },
+      {
+        "id": "lev-1795204457",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:24:17.968339"
+      },
+      {
+        "id": "lev-1795204458",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:24:18.017573"
+      },
+      {
+        "id": "lev-1795204458",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T01:24:18.063264"
       }
     ],
     "is_available": true
@@ -2714,6 +2912,64 @@
     "qualification": "MBBS, MD",
     "specialty": "General Medicine",
     "registration_number": "TSMC-2024-8049",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
+  },
+  {
+    "id": "doc-050",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2020-8050",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
+  },
+  {
+    "id": "doc-051",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2021-8051",
     "experience_years": 10,
     "consultation_fee": 600,
     "hospital_id": "hosp-001",

@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { HealthIdCardModal } from '../../components/HealthIdCardModal';
 import { ConsentModal } from '../../components/ConsentModal';
+import { PatientSubNav } from '../../components/patient/PatientSubNav';
 
 export const PatientPortalPage = () => {
   const { user, logout, updateUser } = useAuth();
@@ -234,7 +235,9 @@ export const PatientPortalPage = () => {
   const patientStatus = patient?.status || 'Active & Verified';
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <PatientSubNav />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 w-full flex-1">
 
       {/* Top Patient Identity & Welcome Banner */}
       <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -958,6 +961,7 @@ export const PatientPortalPage = () => {
         />
       )}
 
+      </div>
     </div>
   );
 };

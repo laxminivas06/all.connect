@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import {
   Calendar,
   FileText,
@@ -20,7 +20,9 @@ import {
   Printer,
   ChevronRight,
   Building2,
-  Stethoscope
+  Stethoscope,
+  User,
+  Settings
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../../components/AppointmentBookingModal';
 import { PrescriptionUploadModal } from '../../components/PrescriptionUploadModal';
@@ -136,55 +138,79 @@ export const PatientDashboard = () => {
         </div>
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div
-          onClick={() => setActiveTab('appointments')}
-          className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm cursor-pointer hover:border-blue-300 transition"
+      {/* Primary Dashboard Shortcuts Grid: Exactly 3 Clean Cards (Prescriptions, Health Profile, Settings) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Card 1: Prescriptions */}
+        <Link
+          to="/prescriptions"
+          className="group bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:border-teal-300 transition-all duration-200 flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between text-blue-600">
-            <span className="text-xs font-bold text-slate-500">Upcoming Consults</span>
-            <Calendar className="w-5 h-5" />
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-teal-600 group-hover:text-white transition-all">
+              <FileText className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900 group-hover:text-teal-600 transition">
+                Prescriptions
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Access certified doctor-issued digital prescriptions, dosages, and medical advice.
+              </p>
+            </div>
           </div>
-          <p className="text-2xl font-black text-slate-900 mt-2">{metrics?.upcoming_appointments || 0}</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Appointments scheduled</p>
-        </div>
+          <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-600">
+            <span>View Prescriptions</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
 
-        <div
-          onClick={() => setActiveTab('prescriptions')}
-          className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm cursor-pointer hover:border-blue-300 transition"
+        {/* Card 2: Health Profile */}
+        <Link
+          to="/profile"
+          className="group bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all duration-200 text-left flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between text-teal-600">
-            <span className="text-xs font-bold text-slate-500">Prescriptions</span>
-            <FileText className="w-5 h-5" />
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all">
+              <User className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-600 transition">
+                Health Profile
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Manage your personal demographics, health ID, emergency contacts & records.
+              </p>
+            </div>
           </div>
-          <p className="text-2xl font-black text-slate-900 mt-2">{metrics?.total_prescriptions || 0}</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Digital & OCR records</p>
-        </div>
+          <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
+            <span>Manage Health Profile</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
 
-        <div
-          onClick={() => setActiveTab('orders')}
-          className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm cursor-pointer hover:border-blue-300 transition"
+        {/* Card 3: Settings */}
+        <Link
+          to="/settings"
+          className="group bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:border-indigo-300 transition-all duration-200 flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between text-amber-600">
-            <span className="text-xs font-bold text-slate-500">Medicine Orders</span>
-            <ShoppingBag className="w-5 h-5" />
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+              <Settings className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900 group-hover:text-indigo-600 transition">
+                Settings
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Configure security credentials, notification channels, and account preferences.
+              </p>
+            </div>
           </div>
-          <p className="text-2xl font-black text-slate-900 mt-2">{metrics?.active_orders || 0}</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Ready for pickup / out</p>
-        </div>
-
-        <div
-          onClick={() => setActiveTab('records')}
-          className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm cursor-pointer hover:border-blue-300 transition"
-        >
-          <div className="flex items-center justify-between text-rose-600">
-            <span className="text-xs font-bold text-slate-500">Diagnostic Reports</span>
-            <FolderHeart className="w-5 h-5" />
+          <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600">
+            <span>Account Settings</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
-          <p className="text-2xl font-black text-slate-900 mt-2">{metrics?.medical_records || 0}</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Lab & scan records</p>
-        </div>
+        </Link>
       </div>
 
       {/* Quick Interactive Actions Toolbar */}

@@ -302,6 +302,84 @@ export const PatientPortalPage = () => {
         </div>
       </div>
 
+      {/* Primary Dashboard Shortcuts Grid: Exactly 3 Clean Cards (Prescriptions, Health Profile, Settings) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Card 1: Prescriptions */}
+        <Link
+          to="/prescriptions"
+          className="group bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:border-teal-300 transition-all duration-200 flex flex-col justify-between"
+        >
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-teal-600 group-hover:text-white transition-all">
+              <FileText className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900 group-hover:text-teal-600 transition">
+                Prescriptions
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Access certified doctor-issued digital prescriptions, dosages, and medical advice.
+              </p>
+            </div>
+          </div>
+          <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-600">
+            <span>View Prescriptions</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Card 2: Health Profile */}
+        <button
+          type="button"
+          onClick={() => setActiveTab('profile')}
+          className={`group bg-white rounded-3xl p-6 border shadow-2xs hover:shadow-md transition-all duration-200 text-left flex flex-col justify-between ${
+            activeTab === 'profile' ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-200/80 hover:border-blue-300'
+          }`}
+        >
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all">
+              <User className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-600 transition">
+                Health Profile
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Manage your personal demographics, health ID, emergency contacts & records.
+              </p>
+            </div>
+          </div>
+          <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
+            <span>Manage Health Profile</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </button>
+
+        {/* Card 3: Settings */}
+        <Link
+          to="/settings"
+          className="group bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:border-indigo-300 transition-all duration-200 flex flex-col justify-between"
+        >
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+              <Settings className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-base text-slate-900 group-hover:text-indigo-600 transition">
+                Settings
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                Configure security credentials, notification channels, and account preferences.
+              </p>
+            </div>
+          </div>
+          <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600">
+            <span>Account Settings</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+      </div>
+
       {/* Consumer Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-slate-200 pb-3 overflow-x-auto scrollbar-none">
         {[

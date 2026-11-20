@@ -435,17 +435,15 @@ def verify_patient_card(
         }
 
     # Public / Unauthenticated / Smartphone camera scanning response:
-    # CRITICAL: NO medical history, NO prescriptions, NO phone number, NO full address exposed.
+    # CRITICAL PRIVACY REQUIREMENT: Return ONLY patient_name and health_id.
+    # NO phone, NO email, NO dob/age, NO address, NO appointments, NO prescriptions, NO medical history.
     return {
         "status": "VALID",
         "card_status": "ACTIVE",
         "authorized_access": False,
         "is_safe_public_view": True,
-        "patient_id": patient["patient_id"],
         "health_id": patient["health_id"],
         "patient_name": patient["full_name"],
-        "gender": patient["gender"],
-        "registration_year": "2026",
         "verification_timestamp": datetime.now().isoformat(),
         "federation": "All.Connect Centralized Healthcare Federation • Hyderabad",
         "message": "Authentic All.Connect Digital Patient ID Card successfully verified."

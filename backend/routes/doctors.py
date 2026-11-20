@@ -567,6 +567,7 @@ def normalize_doctor(d: Dict[str, Any]) -> Dict[str, Any]:
 
     on_leave_today, s_date, e_date, reason = is_doctor_on_leave(item)
     item["is_on_leave"] = on_leave_today
+    item["is_available"] = (not on_leave_today) and item.get("is_active", True)
     item["leave_start"] = s_date
     item["leave_end"] = e_date
     item["leave_reason"] = reason

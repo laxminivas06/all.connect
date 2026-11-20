@@ -191,11 +191,13 @@ export const PrescriptionsPage = () => {
               <FileText className="w-8 h-8" />
             </div>
             <div className="space-y-1.5">
-              <h3 className="text-lg font-black text-slate-900 tracking-tight">No Prescriptions On File</h3>
+              <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                {searchQuery ? 'No Matching Prescriptions' : 'No prescriptions have been issued yet.'}
+              </h3>
               <p className="text-xs text-slate-500 max-w-md mx-auto">
                 {searchQuery
                   ? `No prescriptions matched "${searchQuery}".`
-                  : 'Prescriptions issued by your doctor during OPD appointments will automatically appear here.'}
+                  : 'Prescriptions issued by your doctor during OPD appointments will automatically appear here once authorized.'}
               </p>
             </div>
             <Link

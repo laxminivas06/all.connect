@@ -3384,7 +3384,7 @@
     "message": "Your appointment APT-2026-000103 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-11-25 at 10:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T11:57:52.178591"
   },
   {
@@ -3476,7 +3476,7 @@
     "message": "Your appointment APT-2026-000104 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-18 at 02:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T12:31:07.870200"
   },
   {
@@ -3499,7 +3499,7 @@
     "message": "Your appointment APT-2026-000105 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-04 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:27:27.896181"
   },
   {
@@ -3522,7 +3522,7 @@
     "message": "Your appointment APT-2026-000106 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-04 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:31:15.291641"
   },
   {
@@ -3545,7 +3545,7 @@
     "message": "Your appointment APT-2026-000107 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-04 at 12:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:36:36.245391"
   },
   {
@@ -3568,7 +3568,7 @@
     "message": "Your appointment APT-2026-000107 with Dr. Sneha Reddy is now 'Next in Line'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:36:36.445744"
   },
   {
@@ -3579,7 +3579,7 @@
     "message": "Your appointment APT-2026-000107 with Dr. Sneha Reddy is now 'In Consultation'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:36:36.590905"
   },
   {
@@ -3590,7 +3590,7 @@
     "message": "Your appointment APT-2026-000107 with Dr. Sneha Reddy is now 'Completed'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:36:36.720772"
   },
   {
@@ -3601,7 +3601,7 @@
     "message": "Your appointment APT-2026-000108 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-22 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:38:18.029356"
   },
   {
@@ -3624,7 +3624,7 @@
     "message": "Your appointment APT-2026-000109 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-18 at 04:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:38:19.288906"
   },
   {
@@ -3658,7 +3658,7 @@
     "message": "Your appointment APT-2026-000110 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-04 at 04:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:38:20.132637"
   },
   {
@@ -3681,7 +3681,7 @@
     "message": "Your appointment APT-2026-000111 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-05 at 06:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:38:20.266904"
   },
   {
@@ -3704,7 +3704,7 @@
     "message": "Your appointment APT-2026-000112 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-14 at 04:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:38:20.420364"
   },
   {
@@ -3727,7 +3727,7 @@
     "message": "Your appointment APT-2026-000113 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-15 at 04:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-20T22:38:20.555448"
   },
   {
@@ -3750,7 +3750,7 @@
     "message": "Your appointment APT-2026-000114 with Dr. Pradeep Chander at Sunshine Bone & Joint Institute is confirmed for 2026-11-28 at 06:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T00:59:20.812013"
   },
   {
@@ -3773,7 +3773,7 @@
     "message": "Your appointment APT-2026-000115 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:12:53.763038"
   },
   {
@@ -3796,7 +3796,7 @@
     "message": "Your appointment APT-2026-000116 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:12:53.909218"
   },
   {
@@ -3819,7 +3819,7 @@
     "message": "Your appointment APT-2026-000117 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:34.243329"
   },
   {
@@ -3842,7 +3842,7 @@
     "message": "Your appointment APT-2026-000118 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:34.460530"
   },
   {
@@ -3865,7 +3865,7 @@
     "message": "Your appointment APT-2026-000119 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-06 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:35.177276"
   },
   {
@@ -3888,7 +3888,7 @@
     "message": "Your appointment APT-2026-000119 with Dr. Sneha Reddy is now 'Next in Line'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:35.245738"
   },
   {
@@ -3899,7 +3899,7 @@
     "message": "Your appointment APT-2026-000119 with Dr. Sneha Reddy is now 'In Consultation'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:35.288543"
   },
   {
@@ -3910,7 +3910,7 @@
     "message": "Your appointment APT-2026-000119 with Dr. Sneha Reddy is now 'Completed'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:35.339998"
   },
   {
@@ -3921,7 +3921,7 @@
     "message": "Your appointment APT-2026-000120 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-18 at 05:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:13:36.030938"
   },
   {
@@ -3944,7 +3944,7 @@
     "message": "Your appointment APT-2026-000121 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:54.537423"
   },
   {
@@ -3967,7 +3967,7 @@
     "message": "Your appointment APT-2026-000122 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:54.691337"
   },
   {
@@ -3990,7 +3990,7 @@
     "message": "Your appointment APT-2026-000123 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-06 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:55.284580"
   },
   {
@@ -4013,7 +4013,7 @@
     "message": "Your appointment APT-2026-000123 with Dr. Sneha Reddy is now 'Next in Line'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:55.341825"
   },
   {
@@ -4024,7 +4024,7 @@
     "message": "Your appointment APT-2026-000123 with Dr. Sneha Reddy is now 'In Consultation'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:55.388766"
   },
   {
@@ -4035,7 +4035,7 @@
     "message": "Your appointment APT-2026-000123 with Dr. Sneha Reddy is now 'Completed'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:55.424709"
   },
   {
@@ -4046,7 +4046,7 @@
     "message": "Your appointment APT-2026-000124 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-25 at 09:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:15:56.044846"
   },
   {
@@ -4069,7 +4069,7 @@
     "message": "Your appointment APT-2026-000125 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-22 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:16:37.854294"
   },
   {
@@ -4103,7 +4103,7 @@
     "message": "Your appointment APT-2026-000126 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-04 at 05:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:16:38.379228"
   },
   {
@@ -4126,7 +4126,7 @@
     "message": "Your appointment APT-2026-000127 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-05 at 07:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:16:38.442191"
   },
   {
@@ -4149,7 +4149,7 @@
     "message": "Your appointment APT-2026-000128 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-14 at 05:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:16:38.512106"
   },
   {
@@ -4172,7 +4172,7 @@
     "message": "Your appointment APT-2026-000129 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-15 at 05:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:16:38.574156"
   },
   {
@@ -4195,7 +4195,7 @@
     "message": "Your appointment APT-2026-000130 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:23:38.538999"
   },
   {
@@ -4218,7 +4218,7 @@
     "message": "Your appointment APT-2026-000131 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:23:38.690135"
   },
   {
@@ -4252,7 +4252,7 @@
     "message": "Your appointment APT-2026-000132 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 09:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:23:39.104890"
   },
   {
@@ -4275,7 +4275,7 @@
     "message": "Your appointment APT-2026-000133 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-12 at 08:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:23:39.192218"
   },
   {
@@ -4298,7 +4298,7 @@
     "message": "Your appointment APT-2026-000134 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-21 at 09:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:23:39.281210"
   },
   {
@@ -4321,7 +4321,7 @@
     "message": "Your appointment APT-2026-000135 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-15 at 05:30 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:23:39.356124"
   },
   {
@@ -4344,7 +4344,7 @@
     "message": "Your appointment APT-2026-000136 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-22 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:16.987482"
   },
   {
@@ -4367,7 +4367,7 @@
     "message": "Your appointment APT-2026-000137 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:17.391073"
   },
   {
@@ -4390,7 +4390,7 @@
     "message": "Your appointment APT-2026-000138 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:17.536292"
   },
   {
@@ -4413,7 +4413,7 @@
     "message": "Your appointment APT-2026-000139 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-06 at 12:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:18.158059"
   },
   {
@@ -4436,7 +4436,7 @@
     "message": "Your appointment APT-2026-000139 with Dr. Sneha Reddy is now 'Next in Line'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:18.211408"
   },
   {
@@ -4447,7 +4447,7 @@
     "message": "Your appointment APT-2026-000139 with Dr. Sneha Reddy is now 'In Consultation'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:18.252071"
   },
   {
@@ -4458,7 +4458,7 @@
     "message": "Your appointment APT-2026-000139 with Dr. Sneha Reddy is now 'Completed'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:18.286568"
   },
   {
@@ -4469,7 +4469,7 @@
     "message": "Your appointment APT-2026-000140 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-25 at 10:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:18.960170"
   },
   {
@@ -4503,7 +4503,7 @@
     "message": "Your appointment APT-2026-000141 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:19.397493"
   },
   {
@@ -4526,7 +4526,7 @@
     "message": "Your appointment APT-2026-000142 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-12 at 09:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:19.469646"
   },
   {
@@ -4549,7 +4549,7 @@
     "message": "Your appointment APT-2026-000143 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-21 at 10:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:19.551740"
   },
   {
@@ -4572,7 +4572,7 @@
     "message": "Your appointment APT-2026-000144 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-22 at 09:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:24:19.621658"
   },
   {
@@ -4595,7 +4595,7 @@
     "message": "Your appointment APT-2026-000145 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-22 at 11:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:38.693261"
   },
   {
@@ -4618,7 +4618,7 @@
     "message": "Your appointment APT-2026-000146 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:39.126075"
   },
   {
@@ -4641,7 +4641,7 @@
     "message": "Your appointment APT-2026-000147 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 12:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:39.264594"
   },
   {
@@ -4664,7 +4664,7 @@
     "message": "Your appointment APT-2026-000148 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-06 at 04:00 PM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:40.005453"
   },
   {
@@ -4687,7 +4687,7 @@
     "message": "Your appointment APT-2026-000148 with Dr. Sneha Reddy is now 'Next in Line'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:40.084947"
   },
   {
@@ -4698,7 +4698,7 @@
     "message": "Your appointment APT-2026-000148 with Dr. Sneha Reddy is now 'In Consultation'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:40.135844"
   },
   {
@@ -4709,7 +4709,7 @@
     "message": "Your appointment APT-2026-000148 with Dr. Sneha Reddy is now 'Completed'.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:40.182339"
   },
   {
@@ -4720,7 +4720,7 @@
     "message": "Your appointment APT-2026-000149 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-25 at 11:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:40.873055"
   },
   {
@@ -4754,7 +4754,7 @@
     "message": "Your appointment APT-2026-000150 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 11:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:41.356902"
   },
   {
@@ -4777,7 +4777,7 @@
     "message": "Your appointment APT-2026-000151 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-12 at 10:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:41.439897"
   },
   {
@@ -4800,7 +4800,7 @@
     "message": "Your appointment APT-2026-000152 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-21 at 11:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:41.524460"
   },
   {
@@ -4823,7 +4823,7 @@
     "message": "Your appointment APT-2026-000153 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-22 at 10:30 AM.",
     "type": "appointment",
     "link": "/dashboard/patient/appointments",
-    "is_read": false,
+    "is_read": true,
     "created_at": "2026-11-21T01:52:41.599690"
   },
   {
@@ -4837,5 +4837,587 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-21T01:52:41.617503"
+  },
+  {
+    "id": "notif-apt-pat-154",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000154 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-11-27 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:49.218260"
+  },
+  {
+    "id": "notif-apt-org-154",
+    "user_id": null,
+    "organization_id": "clinic-001",
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-11-27 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:49.229138"
+  },
+  {
+    "id": "notif-apt-pat-154",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000154 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:49.754165"
+  },
+  {
+    "id": "notif-apt-org-154",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-11 at 10:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:49.778244"
+  },
+  {
+    "id": "notif-apt-pat-155",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000155 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:49.934132"
+  },
+  {
+    "id": "notif-apt-org-155",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-20 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:49.956783"
+  },
+  {
+    "id": "notif-welcome-54",
+    "user_id": "usr-patient-54",
+    "role": "patient",
+    "title": "Welcome to Centralized Healthcare",
+    "message": "Your centralized Health ID HC-2026-000054 and Patient ID PAT-2026-000054 have been generated.",
+    "type": "system",
+    "link": "/dashboard/patient",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:50.346969"
+  },
+  {
+    "id": "notif-apt-pat-156",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000156 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:50.424854"
+  },
+  {
+    "id": "notif-apt-org-156",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-11 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:50.441869"
+  },
+  {
+    "id": "notif-apt-pat-157",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000157 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-12 at 05:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:50.503534"
+  },
+  {
+    "id": "notif-apt-org-157",
+    "user_id": null,
+    "organization_id": "clinic-001",
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2027-01-12 at 05:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:50.525250"
+  },
+  {
+    "id": "notif-apt-pat-158",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000158 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-21 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:50.596513"
+  },
+  {
+    "id": "notif-apt-org-158",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-21 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:50.622402"
+  },
+  {
+    "id": "notif-apt-pat-159",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000159 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-22 at 11:30 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:50.704740"
+  },
+  {
+    "id": "notif-apt-org-159",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-22 at 11:30 AM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:50.731050"
+  },
+  {
+    "id": "notif-apt-pat-160",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000160 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-06 at 05:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:51.438045"
+  },
+  {
+    "id": "notif-apt-org-160",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-06 at 05:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:40:51.453414"
+  },
+  {
+    "id": "notif-apt-status-1795209051.499598",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: Next in Line",
+    "message": "Your appointment APT-2026-000160 with Dr. Sneha Reddy is now 'Next in Line'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:51.499608"
+  },
+  {
+    "id": "notif-apt-status-1795209051.539513",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: In Consultation",
+    "message": "Your appointment APT-2026-000160 with Dr. Sneha Reddy is now 'In Consultation'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:51.539522"
+  },
+  {
+    "id": "notif-apt-status-1795209051.581542",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: Completed",
+    "message": "Your appointment APT-2026-000160 with Dr. Sneha Reddy is now 'Completed'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:40:51.581551"
+  },
+  {
+    "id": "notif-apt-pat-161",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000161 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-22 at 11:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:41:13.514787"
+  },
+  {
+    "id": "notif-apt-org-161",
+    "user_id": null,
+    "organization_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Suresh Varma, MD for 2027-02-22 at 11:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:41:13.535894"
+  },
+  {
+    "id": "notif-apt-pat-162",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000162 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-25 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:41:14.316005"
+  },
+  {
+    "id": "notif-apt-org-162",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-25 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:41:14.338523"
+  },
+  {
+    "id": "test-notif-1795209074",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Clinical Follow-up Reminder",
+    "message": "Your prescription follow-up is scheduled for next week.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": true,
+    "created_at": "2026-11-21T02:41:14.605674"
+  },
+  {
+    "id": "notif-apt-pat-163",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000163 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-11-26 at 10:30 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:41:17.319231"
+  },
+  {
+    "id": "notif-apt-org-163",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2026-11-26 at 10:30 AM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:41:17.339559"
+  },
+  {
+    "id": "notif-apt-pat-163",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000163 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-22 at 11:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:33.820328"
+  },
+  {
+    "id": "notif-apt-org-163",
+    "user_id": null,
+    "organization_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Suresh Varma, MD for 2027-02-22 at 11:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:33.829852"
+  },
+  {
+    "id": "notif-apt-pat-164",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000164 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:34.406954"
+  },
+  {
+    "id": "notif-apt-org-164",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-11 at 10:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:34.425914"
+  },
+  {
+    "id": "notif-apt-pat-165",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000165 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-20 at 05:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:34.581278"
+  },
+  {
+    "id": "notif-apt-org-165",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-20 at 05:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:34.598577"
+  },
+  {
+    "id": "notif-apt-pat-166",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000166 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-06 at 06:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:35.352257"
+  },
+  {
+    "id": "notif-apt-org-166",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-06 at 06:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:35.367723"
+  },
+  {
+    "id": "notif-apt-status-1795209455.408433",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: Next in Line",
+    "message": "Your appointment APT-2026-000166 with Dr. Sneha Reddy is now 'Next in Line'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:35.408444"
+  },
+  {
+    "id": "notif-apt-status-1795209455.45523",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: In Consultation",
+    "message": "Your appointment APT-2026-000166 with Dr. Sneha Reddy is now 'In Consultation'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:35.455238"
+  },
+  {
+    "id": "notif-apt-status-1795209455.49612",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: Completed",
+    "message": "Your appointment APT-2026-000166 with Dr. Sneha Reddy is now 'Completed'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:35.496128"
+  },
+  {
+    "id": "notif-apt-pat-167",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000167 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-25 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.243375"
+  },
+  {
+    "id": "notif-apt-org-167",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-25 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.266804"
+  },
+  {
+    "id": "notif-welcome-55",
+    "user_id": "usr-patient-55",
+    "role": "patient",
+    "title": "Welcome to Centralized Healthcare",
+    "message": "Your centralized Health ID HC-2026-000055 and Patient ID PAT-2026-000055 have been generated.",
+    "type": "system",
+    "link": "/dashboard/patient",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.766388"
+  },
+  {
+    "id": "notif-apt-pat-168",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000168 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.842316"
+  },
+  {
+    "id": "notif-apt-org-168",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-11 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.864925"
+  },
+  {
+    "id": "notif-apt-pat-169",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000169 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2027-01-12 at 06:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.935216"
+  },
+  {
+    "id": "notif-apt-org-169",
+    "user_id": null,
+    "organization_id": "clinic-001",
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2027-01-12 at 06:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:36.956070"
+  },
+  {
+    "id": "notif-apt-pat-170",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000170 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-21 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:37.033723"
+  },
+  {
+    "id": "notif-apt-org-170",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-21 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:37.054616"
+  },
+  {
+    "id": "notif-apt-pat-171",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000171 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2027-01-22 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:37.119962"
+  },
+  {
+    "id": "notif-apt-org-171",
+    "user_id": null,
+    "organization_id": "hosp-001",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Rajesh Sharma for 2027-01-22 at 02:30 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:37.138472"
+  },
+  {
+    "id": "notif-apt-pat-172",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000172 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-11-27 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:37.369239"
+  },
+  {
+    "id": "notif-apt-org-172",
+    "user_id": null,
+    "organization_id": "clinic-001",
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-11-27 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T02:47:37.390993"
   }
 ]

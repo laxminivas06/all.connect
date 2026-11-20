@@ -205,43 +205,21 @@ export const MyAppointmentsPage = () => {
     }
   };
 
-  const handleOpenPrescription = (appt) => {
-    // Find matching prescription
+  const getPrescriptionForAppt = (appt) => {
+    if (!appt) return null;
     const apptId = appt.appointment_id || appt.id;
-    const matchedRx = prescriptions.find(
+    return prescriptions.find(
       (p) =>
         p.appointment_id === apptId ||
-        (p.doctor_name && p.doctor_name === appt.doctor_name && p.consultation_date === appt.appointment_date)
+        (p.doctor_id && p.doctor_id === appt.doctor_id && p.consultation_date === appt.appointment_date)
     );
+  };
 
+  const handleOpenPrescription = (appt) => {
+    // Retrieve genuine doctor-issued prescription only
+    const matchedRx = getPrescriptionForAppt(appt);
     if (matchedRx) {
       setPrescriptionModalData(matchedRx);
-    } else {
-      // Create readable summary view if not stored in separate prescription entity
-      setPrescriptionModalData({
-        id: `RX-${apptId}`,
-        doctor_name: appt.doctor_name,
-        organization_name: appt.hospital_name || appt.organization_name,
-        consultation_date: appt.appointment_date,
-        diagnosis: appt.chief_complaint || 'Routine General Consultation',
-        medicines: [
-          {
-            name: 'Paracetamol 650mg',
-            dosage: '1 tablet',
-            frequency: 'Twice daily after meals',
-            duration: '3 days',
-            instructions: 'As needed for discomfort'
-          },
-          {
-            name: 'Vitamin C & Zinc Supp',
-            dosage: '1 capsule',
-            frequency: 'Once daily after breakfast',
-            duration: '10 days',
-            instructions: 'Immunity support'
-          }
-        ],
-        advice: 'Adequate rest, hydrate well, and report back if symptoms persist after 5 days.'
-      });
     }
   };
 
@@ -373,16 +351,39 @@ export const MyAppointmentsPage = () => {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* APPOINTMENTS LIST / RESPONSIVE CARDS */}
+        {/* APPOINTMENTS LIST / RESPONSIVE UNIFORM CARDS */}
         {/* ------------------------------------------------------------- */}
         {!loading && activeAppointments.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
             {activeAppointments.map((appt) => {
               const status = String(appt.status || 'Confirmed').toLowerCase();
-              const isConfirmed = ['confirmed', 'waiting', 'in consultation'].includes(status);
               const isCompleted = status === 'completed';
               const isCancelled = status === 'cancelled';
-              const isPending = ['pending', 'requested'].includes(status);
+              const canModify = !isCompleted && !isCancelled;
+              const hasIssuedRx = Boolean(getPrescriptionForAppt(appt));
+
+              const statusBadge = (() => {
+                switch (status) {
+                  case 'completed':
+                    return { label: 'Completed', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+                  case 'confirmed':
+                    return { label: 'Confirmed', cls: 'bg-blue-50 text-blue-700 border-blue-200' };
+                  case 'checked in':
+                    return { label: 'Checked In', cls: 'bg-indigo-50 text-indigo-700 border-indigo-200' };
+                  case 'waiting':
+                    return { label: 'Waiting', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
+                  case 'in consultation':
+                    return { label: 'In Consultation', cls: 'bg-purple-50 text-purple-700 border-purple-200' };
+                  case 'cancelled':
+                    return { label: 'Cancelled', cls: 'bg-rose-50 text-rose-700 border-rose-200' };
+                  case 'rescheduled':
+                    return { label: 'Rescheduled', cls: 'bg-cyan-50 text-cyan-700 border-cyan-200' };
+                  case 'pending':
+                  case 'requested':
+                  default:
+                    return { label: 'Pending', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
+                }
+              })();
 
               const doctorInitials = (appt.doctor_name || 'Dr. Specialist')
                 .replace(/^Dr\.?\s*/i, '')
@@ -393,7 +394,7 @@ export const MyAppointmentsPage = () => {
               return (
                 <div
                   key={appt.id || appt.appointment_id}
-                  className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-md transition flex flex-col justify-between space-y-5"
+                  className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-md transition flex flex-col justify-between h-full space-y-4"
                 >
                   <div className="space-y-4">
                     {/* Card Top Row: Tokens, ID, Status */}
@@ -410,17 +411,9 @@ export const MyAppointmentsPage = () => {
                       </div>
 
                       <span
-                        className={`text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider ${
-                          isCompleted
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                            : isConfirmed
-                            ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                            : isCancelled
-                            ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                            : 'bg-amber-50 text-amber-700 border border-amber-200'
-                        }`}
+                        className={`text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border ${statusBadge.cls}`}
                       >
-                        {appt.status || 'Confirmed'}
+                        {statusBadge.label}
                       </span>
                     </div>
 
@@ -440,31 +433,31 @@ export const MyAppointmentsPage = () => {
                         <p className="text-xs text-slate-500 flex items-center gap-1.5 truncate">
                           <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                           <span className="truncate">
-                            {appt.hospital_name || appt.organization_name || 'Hospital'}
+                            {appt.hospital_name || appt.organization_name || 'Hospital Facility'}
                           </span>
                         </p>
                       </div>
                     </div>
 
-                    {/* Schedule & Payment Meta Grid */}
+                    {/* Schedule & Information Meta Grid */}
                     <div className="grid grid-cols-2 gap-2.5 p-3.5 bg-slate-50/90 rounded-2xl border border-slate-100 text-xs">
                       <div>
                         <span className="text-slate-400 font-medium block text-[10px] uppercase">
                           Appointment Date
                         </span>
                         <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
-                          <Calendar className="w-3.5 h-3.5 text-blue-600" />
-                          {appt.appointment_date || 'Date TBD'}
+                          <Calendar className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                          <span className="truncate">{appt.appointment_date || 'Date TBD'}</span>
                         </span>
                       </div>
 
                       <div>
                         <span className="text-slate-400 font-medium block text-[10px] uppercase">
-                          Time Slot
+                          Appointment Time
                         </span>
                         <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
-                          <Clock className="w-3.5 h-3.5 text-blue-600" />
-                          {appt.appointment_time || 'Time TBD'}
+                          <Clock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                          <span className="truncate">{appt.appointment_time || 'Time TBD'}</span>
                         </span>
                       </div>
 
@@ -472,23 +465,23 @@ export const MyAppointmentsPage = () => {
                         <span className="text-slate-400 font-medium block text-[10px] uppercase">
                           Consultation Mode
                         </span>
-                        <span className="font-bold text-slate-700 mt-0.5 block">
+                        <span className="font-bold text-slate-700 mt-0.5 block truncate">
                           {appt.appointment_type || 'In-Person Consultation'}
                         </span>
                       </div>
 
                       <div>
                         <span className="text-slate-400 font-medium block text-[10px] uppercase">
-                          Payment Status
+                          Appointment Status
                         </span>
-                        <span className="font-extrabold text-emerald-600 mt-0.5 block">
-                          {appt.payment_status || `₹${appt.consultation_fee || 500} Paid`}
+                        <span className="font-extrabold text-slate-900 mt-0.5 block truncate">
+                          {statusBadge.label}
                         </span>
                       </div>
                     </div>
 
                     {appt.chief_complaint && (
-                      <p className="text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-100 italic">
+                      <p className="text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-100 italic truncate">
                         <strong>Reason:</strong> {appt.chief_complaint}
                       </p>
                     )}
@@ -496,18 +489,18 @@ export const MyAppointmentsPage = () => {
 
                   {/* Actions Bar */}
                   <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
-                    {/* View Details Button */}
+                    {/* View Details Button (Always Available) */}
                     <button
                       type="button"
                       onClick={() => setDetailsModalAppt(appt)}
                       className="flex-1 min-w-[120px] py-2 px-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs text-center transition flex items-center justify-center gap-1.5"
                     >
                       <QrCode className="w-3.5 h-3.5 text-blue-600" />
-                      <span>View Pass</span>
+                      <span>View Details</span>
                     </button>
 
-                    {/* Reschedule (for upcoming / pending) */}
-                    {(isConfirmed || isPending) && (
+                    {/* Reschedule (shown ONLY for pending/upcoming, NEVER for completed or cancelled) */}
+                    {canModify && (
                       <button
                         type="button"
                         onClick={() => handleOpenReschedule(appt)}
@@ -518,8 +511,8 @@ export const MyAppointmentsPage = () => {
                       </button>
                     )}
 
-                    {/* Cancel (for upcoming / pending) */}
-                    {(isConfirmed || isPending) && (
+                    {/* Cancel (shown ONLY for pending/upcoming, NEVER for completed or cancelled) */}
+                    {canModify && (
                       <button
                         type="button"
                         onClick={() => handleOpenCancel(appt)}
@@ -530,8 +523,8 @@ export const MyAppointmentsPage = () => {
                       </button>
                     )}
 
-                    {/* View Prescription (for completed) */}
-                    {isCompleted && (
+                    {/* View Prescription: ONLY for completed AND ONLY when doctor has actually issued a prescription */}
+                    {isCompleted && hasIssuedRx && (
                       <button
                         type="button"
                         onClick={() => handleOpenPrescription(appt)}

@@ -683,5 +683,29 @@
     "entity_id": "PAT-2026-000053",
     "is_active": true,
     "created_at": "2026-11-21T01:52:41.276081"
+  },
+  {
+    "id": "usr-patient-54",
+    "username": "isolated_1795209050",
+    "email": "isolated_1795209050@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795209050",
+    "hashed_password": "abfb86aabf241130a9160cf21ee617f2$f89c6813de85a58135f88267307eeffbcdd2123e8138fe7229d6200648b73b98",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000054",
+    "is_active": true,
+    "created_at": "2026-11-21T02:40:50.337254"
+  },
+  {
+    "id": "usr-patient-55",
+    "username": "isolated_1795209456",
+    "email": "isolated_1795209456@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795209456",
+    "hashed_password": "5cfcb69041814288e41f9fc3d6003ab7$7dce05159e46cf0d51b89bf78a30c0ad22abe60e8421ca5168072be802fc9e7f",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000055",
+    "is_active": true,
+    "created_at": "2026-11-21T02:47:36.756737"
   }
 ]

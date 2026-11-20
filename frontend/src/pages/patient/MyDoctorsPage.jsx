@@ -221,13 +221,6 @@ export const MyDoctorsPage = () => {
                           </p>
                         </div>
                       </div>
-
-                      {/* Associated Visits Badge */}
-                      {doc.total_consultations > 0 && (
-                        <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
-                          {doc.total_consultations} {doc.total_consultations === 1 ? 'Visit' : 'Visits'}
-                        </span>
-                      )}
                     </div>
 
                     {/* Status Pill */}
@@ -236,7 +229,7 @@ export const MyDoctorsPage = () => {
                         <div className="p-3 bg-amber-50 border border-amber-200/90 rounded-2xl space-y-1">
                           <div className="flex items-center gap-1.5 text-xs font-black text-amber-800">
                             <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                            <span>Currently Unavailable – On Leave</span>
+                            <span>Doctor is currently unavailable – On Leave.</span>
                           </div>
                           {doc.leave_start && doc.leave_end && (
                             <p className="text-[11px] text-amber-700 pl-5 font-semibold">
@@ -252,17 +245,17 @@ export const MyDoctorsPage = () => {
                       ) : isAvailable ? (
                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Available for Appointments</span>
+                          <span>Available</span>
                         </div>
                       ) : (
                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-slate-100 text-slate-600 border border-slate-200">
                           <Clock className="w-3.5 h-3.5 text-slate-500" />
-                          <span>Currently Offline</span>
+                          <span>Unavailable</span>
                         </div>
                       )}
                     </div>
 
-                    {/* Facility & Experience Details */}
+                    {/* Facility, Qualification & Mode Details */}
                     <div className="space-y-2 pt-2 border-t border-slate-100 text-xs">
                       <div className="flex items-center justify-between text-slate-600">
                         <span className="text-slate-400 font-medium flex items-center gap-1">
@@ -277,34 +270,22 @@ export const MyDoctorsPage = () => {
                       <div className="flex items-center justify-between text-slate-600">
                         <span className="text-slate-400 font-medium flex items-center gap-1">
                           <Award className="w-3.5 h-3.5 text-slate-400" />
-                          Experience:
+                          Qualification:
                         </span>
                         <span className="font-bold text-slate-800">
-                          {doc.experience_years ? `${doc.experience_years} Years` : '10+ Years Experience'}
+                          {doc.qualifications || 'MBBS, MD'}
                         </span>
                       </div>
 
                       <div className="flex items-center justify-between text-slate-600">
                         <span className="text-slate-400 font-medium flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-slate-400" />
-                          Consultation Fee:
+                          <Stethoscope className="w-3.5 h-3.5 text-slate-400" />
+                          Consultation Mode:
                         </span>
-                        <span className="font-extrabold text-slate-900 text-sm">
-                          ₹{doc.consultation_fee || 500}
+                        <span className="font-bold text-slate-800">
+                          {doc.consultation_modes || doc.consultation_type || 'In-Person Consultation'}
                         </span>
                       </div>
-
-                      {doc.last_consultation_date && (
-                        <div className="flex items-center justify-between text-slate-600 pt-1">
-                          <span className="text-slate-400 font-medium flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 text-blue-500" />
-                            Last Visit:
-                          </span>
-                          <span className="font-bold text-blue-600">
-                            {doc.last_consultation_date}
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </div>
 

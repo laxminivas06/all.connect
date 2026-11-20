@@ -32,7 +32,8 @@ import {
   Clock,
   ShieldCheck,
   Activity,
-  Layers
+  Layers,
+  FileCheck
 } from 'lucide-react';
 
 export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
@@ -56,6 +57,7 @@ export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
       'overview',
       'appointments',
       'queue',
+      'consultations',
       'doctors',
       'doctor-assignments',
       'doctor-availability',
@@ -108,6 +110,7 @@ export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
     { key: 'overview', label: 'Overview', icon: LayoutDashboard },
     { key: 'appointments', label: 'Appointments', icon: Calendar },
     { key: 'queue', label: 'Live Queue', icon: Clock },
+    { key: 'consultations', label: 'Consultations', icon: FileCheck },
     { key: 'doctors', label: 'Doctors', icon: Stethoscope },
     { key: 'doctor-assignments', label: 'Assignments', icon: UserCheck },
     { key: 'doctor-availability', label: 'Availability', icon: Calendar },
@@ -135,6 +138,10 @@ export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
     queue: {
       title: 'Live OPD Consultation Queue',
       description: 'Monitor waiting room arrival times, token dispatch, active triage consultations, and patient discharge.'
+    },
+    consultations: {
+      title: 'Outpatient Consultations & Clinical Encounters',
+      description: 'Monitor active triage consultations, review doctor clinical findings, prescriptions, and completed patient encounters.'
     },
     doctors: {
       title: isHospital ? 'Medical Specialists & Roster' : 'Clinical Practitioners & Staff',
@@ -207,7 +214,7 @@ export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
         <p className="text-xs text-rose-600">{error}</p>
         <button
           onClick={fetchDashboardData}
-          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm"
         >
           <RefreshCw className="w-4 h-4" />
           <span>Retry Connection</span>
@@ -219,39 +226,39 @@ export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
       
-      {/* Super Admin Design System - Top Hero Banner */}
-      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      {/* Light Healthcare Theme Hero Banner */}
+      <div className="bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-1.5">
           <div className="flex items-center space-x-2">
-            <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 uppercase tracking-wide flex items-center gap-1">
-              <Building2 className="w-3.5 h-3.5 text-blue-400" />
+            <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200 uppercase tracking-wide flex items-center gap-1">
+              <Building2 className="w-3.5 h-3.5 text-blue-600" />
               {isHospital ? 'HOSPITAL CLINICAL ADMINISTRATION' : 'OUTPATIENT CLINIC MANAGEMENT'}
             </span>
-            <span className="text-xs text-slate-400">• {org?.name || 'Healthcare Facility'}</span>
+            <span className="text-xs text-slate-500 font-semibold">• {org?.name || 'Healthcare Facility'}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             {currentMeta.title}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl font-medium">
             {currentMeta.description}
           </p>
         </div>
 
         {/* Quick Hospital Telemetry Widget */}
-        <div className="flex items-center space-x-3 bg-slate-800/90 px-5 py-3 rounded-2xl border border-slate-700 shadow-inner shrink-0">
+        <div className="flex items-center space-x-3 bg-white px-5 py-3 rounded-2xl border border-slate-200 shadow-sm shrink-0">
           <div>
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Today's Collections</span>
-            <span className="text-xl font-black text-emerald-400">₹{(kpis?.today_collection || 0).toLocaleString()}</span>
+            <span className="text-[10px] uppercase font-bold text-slate-500 block">Today's Collections</span>
+            <span className="text-xl font-black text-emerald-600">₹{(kpis?.today_collection || 0).toLocaleString()}</span>
           </div>
-          <div className="border-l border-slate-700 pl-3">
-            <span className="text-[10px] uppercase font-bold text-slate-400 block">Today's Load</span>
-            <span className="text-xl font-black text-blue-400">{kpis?.total_appointments_today || 0} Consults</span>
+          <div className="border-l border-slate-200 pl-3">
+            <span className="text-[10px] uppercase font-bold text-slate-500 block">Today's Load</span>
+            <span className="text-xl font-black text-blue-600">{kpis?.total_appointments_today || 0} Consults</span>
           </div>
           <button
             onClick={fetchDashboardData}
             title="Refresh Telemetry"
-            className="p-2 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-slate-300 hover:text-white transition ml-1"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition ml-1"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -304,6 +311,15 @@ export const OrganisationDashboard = ({ orgType = 'hospital' }) => {
           orgType={orgType}
           data={data}
           initialFilter="queue"
+          onRefresh={fetchDashboardData}
+        />
+      )}
+
+      {activeTab === 'consultations' && (
+        <AppointmentsTab
+          orgType={orgType}
+          data={data}
+          initialFilter="consultations"
           onRefresh={fetchDashboardData}
         />
       )}

@@ -231,7 +231,7 @@ export const SubscriptionTab = ({
 
       {/* Modal: Upgrade Request */}
       {upgradeModalOpen && selectedPlanForUpgrade && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
             <h3 className="font-black text-base text-slate-900">
               Confirm Upgrade Request: {selectedPlanForUpgrade.name}

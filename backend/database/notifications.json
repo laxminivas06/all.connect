@@ -5862,5 +5862,141 @@
     "link": "/dashboard/patient/prescriptions",
     "is_read": false,
     "created_at": "2026-11-21T03:28:49.850739"
+  },
+  {
+    "id": "notif-apt-pat-182",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000182 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-11-27 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:11.974526"
+  },
+  {
+    "id": "notif-apt-org-182",
+    "user_id": null,
+    "organization_id": "clinic-001",
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-11-27 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:11.986415"
+  },
+  {
+    "id": "notif-apt-pat-182",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000182 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-07 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:12.999575"
+  },
+  {
+    "id": "notif-apt-org-182",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-07 at 04:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.025883"
+  },
+  {
+    "id": "notif-apt-status-1795214593.090272",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: Next in Line",
+    "message": "Your appointment APT-2026-000182 with Dr. Sneha Reddy is now 'Next in Line'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.090286"
+  },
+  {
+    "id": "notif-apt-status-1795214593.144314",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: In Consultation",
+    "message": "Your appointment APT-2026-000182 with Dr. Sneha Reddy is now 'In Consultation'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.144331"
+  },
+  {
+    "id": "notif-apt-status-1795214593.215233",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Status Updated: Completed",
+    "message": "Your appointment APT-2026-000182 with Dr. Sneha Reddy is now 'Completed'.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.215244"
+  },
+  {
+    "id": "notif-apt-pat-183",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000183 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-11 at 10:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.601783"
+  },
+  {
+    "id": "notif-apt-org-183",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-11 at 10:00 AM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.623820"
+  },
+  {
+    "id": "notif-apt-pat-184",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000184 with Dr. Sneha Reddy at Yashoda Super Speciality Hospital is confirmed for 2027-01-21 at 12:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.788813"
+  },
+  {
+    "id": "notif-apt-org-184",
+    "user_id": null,
+    "organization_id": "hosp-002",
+    "role": "hospital",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. Sneha Reddy for 2027-01-21 at 12:00 PM.",
+    "type": "appointment",
+    "link": "/dashboard/hospital/appointments",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:13.816802"
+  },
+  {
+    "id": "notif-rx-156",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Digital Prescription Issued (PRE-2026-000156)",
+    "message": "Dr. Rajesh Sharma has published your digital prescription. You can now order medicines online or download the copy.",
+    "type": "prescription",
+    "link": "/dashboard/patient/prescriptions",
+    "is_read": false,
+    "created_at": "2026-11-21T04:13:14.120366"
   }
 ]

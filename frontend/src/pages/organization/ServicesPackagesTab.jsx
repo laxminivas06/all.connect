@@ -29,7 +29,21 @@ export const ServicesPackagesTab = ({
   const effectivePackages = packages.length > 0 ? packages : (data?.offers || []);
   const effectiveDoctors = doctors.length > 0 ? doctors : (data?.doctors || []);
 
-  const [activeSubSection, setActiveSubSection] = useState(initialSubTab); // 'packages' | 'services'
+  // Split services into Clinical Services vs Procedures cleanly
+  const clinicalServices = effectiveServices.filter(s => {
+    const cat = (s.category || '').toLowerCase();
+    return cat.includes('consultation') || cat.includes('clinical') || (!cat.includes('procedure') && !cat.includes('surgery') && !cat.includes('diagnostic'));
+  });
+
+  const procedureServices = effectiveServices.filter(s => {
+    const cat = (s.category || '').toLowerCase();
+    return cat.includes('procedure') || cat.includes('surgery') || cat.includes('diagnostic') || cat.includes('scan') || cat.includes('therapy');
+  });
+
+  // 'services' | 'procedures' | 'packages'
+  const [activeSubSection, setActiveSubSection] = useState(
+    initialSubTab === 'packages' ? 'packages' : initialSubTab === 'procedures' ? 'procedures' : 'services'
+  );
 
   // Package Form State
   const [packageModalOpen, setPackageModalOpen] = useState(false);
@@ -205,16 +219,6 @@ export const ServicesPackagesTab = ({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-3">
         <div className="flex items-center space-x-2">
           <button
-            onClick={() => setActiveSubSection('packages')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              activeSubSection === 'packages'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-            }`}
-          >
-            Health Checkup Packages ({effectivePackages.length})
-          </button>
-          <button
             onClick={() => setActiveSubSection('services')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
               activeSubSection === 'services'
@@ -222,7 +226,27 @@ export const ServicesPackagesTab = ({
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
             }`}
           >
-            Clinical Services ({effectiveServices.length})
+            Clinical Services ({clinicalServices.length})
+          </button>
+          <button
+            onClick={() => setActiveSubSection('procedures')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+              activeSubSection === 'procedures'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Procedures ({procedureServices.length})
+          </button>
+          <button
+            onClick={() => setActiveSubSection('packages')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+              activeSubSection === 'packages'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Packages ({effectivePackages.length})
           </button>
         </div>
 
@@ -234,9 +258,47 @@ export const ServicesPackagesTab = ({
             <PlusCircle className="w-4 h-4" />
             <span>Create Health Package</span>
           </button>
+        ) : activeSubSection === 'procedures' ? (
+          <button
+            onClick={() => {
+              setEditingServiceId(null);
+              setServiceForm({
+                name: '',
+                category: 'Procedures',
+                department: 'General Surgery',
+                associated_doctor_id: '',
+                associated_doctor_name: '',
+                consultation_fee: 1500,
+                duration_minutes: 30,
+                availability: 'Monday to Saturday (09:00 AM - 04:00 PM)',
+                description: 'Procedural medical intervention, minor surgery, or diagnostic examination.',
+                terms: 'Prior evaluation and appointment required.'
+              });
+              setServiceModalOpen(true);
+            }}
+            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm flex items-center space-x-1.5 self-start sm:self-auto transition"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>Add Procedure</span>
+          </button>
         ) : (
           <button
-            onClick={handleOpenAddService}
+            onClick={() => {
+              setEditingServiceId(null);
+              setServiceForm({
+                name: '',
+                category: 'Clinical Services',
+                department: 'General Medicine',
+                associated_doctor_id: '',
+                associated_doctor_name: '',
+                consultation_fee: 500,
+                duration_minutes: 15,
+                availability: 'Monday to Saturday (09:00 AM - 06:00 PM)',
+                description: 'Clinical examination and prescription management.',
+                terms: 'Advance booking required.'
+              });
+              setServiceModalOpen(true);
+            }}
             className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-sm flex items-center space-x-1.5 self-start sm:self-auto transition"
           >
             <PlusCircle className="w-4 h-4" />
@@ -313,15 +375,15 @@ export const ServicesPackagesTab = ({
       {activeSubSection === 'services' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <p>Define independent clinical consultations, procedural services, diagnostic tests, and charges.</p>
+            <p>Independent clinical outpatient consultations, general medical evaluations, and follow-up bays.</p>
           </div>
 
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-            {effectiveServices.length === 0 ? (
+            {clinicalServices.length === 0 ? (
               <div className="p-12 text-center">
                 <Sparkles className="w-10 h-10 text-slate-300 mx-auto mb-2" />
                 <h4 className="text-sm font-bold text-slate-700">No clinical services defined yet</h4>
-                <p className="text-xs text-slate-400 mt-1">Add your organization's services to display in the discovery index.</p>
+                <p className="text-xs text-slate-400 mt-1">Add your organization's outpatient consultation services.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -338,14 +400,14 @@ export const ServicesPackagesTab = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {effectiveServices.map(srv => (
+                    {clinicalServices.map(srv => (
                       <tr key={srv.id} className="hover:bg-slate-50/60 transition">
                         <td className="py-3 px-4">
                           <span className="font-extrabold text-slate-900 text-sm block">{srv.name}</span>
                           <span className="text-[11px] text-slate-500 line-clamp-1">{srv.description}</span>
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-bold text-slate-800 block">{srv.category}</span>
+                          <span className="font-bold text-slate-800 block">{srv.category || 'Clinical Services'}</span>
                           <span className="text-[10px] text-slate-400">{srv.department}</span>
                         </td>
                         <td className="py-3 px-4 font-medium text-slate-700">
@@ -384,9 +446,84 @@ export const ServicesPackagesTab = ({
         </div>
       )}
 
+      {/* SUB-SECTION 3: PROCEDURES */}
+      {activeSubSection === 'procedures' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between text-xs text-slate-500">
+            <p>Medical interventions, surgical day-care procedures, diagnostic imaging, and therapeutic services.</p>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            {procedureServices.length === 0 ? (
+              <div className="p-12 text-center">
+                <Sparkles className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+                <h4 className="text-sm font-bold text-slate-700">No procedures defined yet</h4>
+                <p className="text-xs text-slate-400 mt-1">Add surgical and diagnostic procedures performed at your facility.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-400 font-bold uppercase text-[10px]">
+                      <th className="py-3 px-4">Procedure Name</th>
+                      <th className="py-3 px-4">Category / Dept</th>
+                      <th className="py-3 px-4">Attending Specialist</th>
+                      <th className="py-3 px-4">Procedure Fee</th>
+                      <th className="py-3 px-4">Duration</th>
+                      <th className="py-3 px-4">Availability</th>
+                      <th className="py-3 px-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {procedureServices.map(srv => (
+                      <tr key={srv.id} className="hover:bg-slate-50/60 transition">
+                        <td className="py-3 px-4">
+                          <span className="font-extrabold text-slate-900 text-sm block">{srv.name}</span>
+                          <span className="text-[11px] text-slate-500 line-clamp-1">{srv.description}</span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className="font-bold text-indigo-700 block">{srv.category || 'Procedures'}</span>
+                          <span className="text-[10px] text-slate-400">{srv.department}</span>
+                        </td>
+                        <td className="py-3 px-4 font-medium text-slate-700">
+                          {srv.associated_doctor_name || 'Department Specialist'}
+                        </td>
+                        <td className="py-3 px-4 font-black text-indigo-700 text-sm">
+                          ₹{srv.consultation_fee}
+                        </td>
+                        <td className="py-3 px-4 text-slate-600">
+                          {srv.duration_minutes || 30} mins
+                        </td>
+                        <td className="py-3 px-4 text-slate-500 text-[11px]">
+                          {srv.availability}
+                        </td>
+                        <td className="py-3 px-4 text-right space-x-2 whitespace-nowrap">
+                          <button
+                            onClick={() => handleOpenEditService(srv)}
+                            className="text-slate-600 hover:text-blue-600 font-bold"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteService(srv.id)}
+                            className="text-rose-600 hover:text-rose-800 font-bold"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Modal: Package Create / Edit */}
       {packageModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <h3 className="font-black text-base text-slate-900">
@@ -516,13 +653,13 @@ export const ServicesPackagesTab = ({
         </div>
       )}
 
-      {/* Modal: Clinical Service Create / Edit */}
+      {/* Modal: Clinical Service / Procedure Create / Edit */}
       {serviceModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-xl border border-slate-200 space-y-4 my-8">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <h3 className="font-black text-base text-slate-900">
-                {editingServiceId ? 'Edit Clinical Service' : 'Add Clinical Service'}
+                {editingServiceId ? 'Edit Service / Procedure' : serviceForm.category === 'Procedures' ? 'Add Procedure' : 'Add Clinical Service'}
               </h3>
               <button onClick={() => setServiceModalOpen(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
@@ -531,7 +668,7 @@ export const ServicesPackagesTab = ({
 
             <form onSubmit={handleServiceSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Service Name *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Service / Procedure Name *</label>
                 <input
                   type="text"
                   required
@@ -544,13 +681,17 @@ export const ServicesPackagesTab = ({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Category</label>
-                  <input
-                    type="text"
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Category *</label>
+                  <select
                     value={serviceForm.category}
                     onChange={(e) => setServiceForm({ ...serviceForm, category: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500"
-                  />
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 bg-white"
+                  >
+                    <option value="Clinical Services">Clinical Services</option>
+                    <option value="Procedures">Procedures</option>
+                    <option value="Diagnostics">Diagnostics</option>
+                    <option value="General Consultation">General Consultation</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Department</label>

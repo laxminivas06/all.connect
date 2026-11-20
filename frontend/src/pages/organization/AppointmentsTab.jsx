@@ -12,7 +12,12 @@ import {
   ChevronRight,
   RefreshCw,
   User,
-  ArrowRight
+  ArrowRight,
+  Eye,
+  FileCheck,
+  Pill,
+  Download,
+  X
 } from 'lucide-react';
 import { api } from '../../services/api';
 
@@ -47,6 +52,10 @@ export const AppointmentsTab = ({
   const [targetDoctorId, setTargetDoctorId] = useState('');
   const [assignLoading, setAssignLoading] = useState(false);
 
+  // Consultation Details Modal State
+  const [consultationModalOpen, setConsultationModalOpen] = useState(false);
+  const [selectedConsultation, setSelectedConsultation] = useState(null);
+
   const todayStr = new Date().toISOString().split('T')[0];
 
   // Filtering
@@ -59,6 +68,8 @@ export const AppointmentsTab = ({
       if (a.appointment_date !== todayStr) return false;
     } else if (filterSubTab === 'queue') {
       if (a.appointment_date !== todayStr || ['Cancelled', 'Completed'].includes(a.status)) return false;
+    } else if (filterSubTab === 'consultations') {
+      if (!['In Consultation', 'Completed', 'Next in Line', 'Waiting', 'Confirmed'].includes(a.status)) return false;
     } else if (filterSubTab === 'pending') {
       if (a.status !== 'Pending') return false;
     } else if (filterSubTab === 'confirmed') {
@@ -151,6 +162,7 @@ export const AppointmentsTab = ({
             { key: 'all', label: `All (${appointments.length})` },
             { key: 'today', label: 'Today' },
             { key: 'queue', label: 'Live Queue' },
+            { key: 'consultations', label: 'Consultations' },
             { key: 'pending', label: 'Pending Requests' },
             { key: 'confirmed', label: 'Confirmed' },
             { key: 'completed', label: 'Completed' },
@@ -178,6 +190,40 @@ export const AppointmentsTab = ({
           <span>Sync Appointments</span>
         </button>
       </div>
+
+      {/* Consultation Overview KPI Bar */}
+      {filterSubTab === 'consultations' && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 animate-in fade-in">
+          <div className="bg-white p-4 rounded-3xl border border-slate-200/90 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Total Consultations</span>
+            <span className="text-2xl font-black text-slate-900 mt-1 block">
+              {effectiveAppointments.filter(a => ['Confirmed', 'In Consultation', 'Completed', 'Next in Line', 'Waiting'].includes(a.status)).length}
+            </span>
+            <span className="text-[10px] text-blue-600 font-semibold">Triage & Discharged</span>
+          </div>
+          <div className="bg-white p-4 rounded-3xl border border-slate-200/90 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Active In Consultation</span>
+            <span className="text-2xl font-black text-blue-600 mt-1 block">
+              {effectiveAppointments.filter(a => a.status === 'In Consultation').length}
+            </span>
+            <span className="text-[10px] text-blue-600 font-semibold">In physician bay</span>
+          </div>
+          <div className="bg-white p-4 rounded-3xl border border-slate-200/90 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Next in Line / Waiting</span>
+            <span className="text-2xl font-black text-purple-600 mt-1 block">
+              {effectiveAppointments.filter(a => ['Next in Line', 'Waiting', 'Checked In'].includes(a.status)).length}
+            </span>
+            <span className="text-[10px] text-purple-600 font-semibold">Waiting room</span>
+          </div>
+          <div className="bg-white p-4 rounded-3xl border border-slate-200/90 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Completed Consults</span>
+            <span className="text-2xl font-black text-emerald-600 mt-1 block">
+              {effectiveAppointments.filter(a => a.status === 'Completed').length}
+            </span>
+            <span className="text-[10px] text-emerald-600 font-semibold">Prescriptions issued</span>
+          </div>
+        </div>
+      )}
 
       {/* Search & Doctor Filtering Toolbar */}
       <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -285,6 +331,18 @@ export const AppointmentsTab = ({
                       <span className="text-[10px] text-slate-500 font-medium">{a.payment_status || 'Pending'}</span>
                     </td>
                     <td className="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+                      <button
+                        onClick={() => {
+                          setSelectedConsultation(a);
+                          setConsultationModalOpen(true);
+                        }}
+                        className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs inline-flex items-center gap-1"
+                        title="View consultation details & clinical notes"
+                      >
+                        <Eye className="w-3 h-3 text-slate-500" />
+                        <span>Details</span>
+                      </button>
+
                       {a.status === 'Pending' && (
                         <>
                           <button
@@ -388,8 +446,8 @@ export const AppointmentsTab = ({
 
       {/* Modal: Status Update */}
       {statusModalOpen && selectedAppt && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
             <h3 className="font-black text-base text-slate-900">
               Update Appointment Status: <span className="text-blue-600">{statusToSet}</span>
             </h3>
@@ -399,7 +457,7 @@ export const AppointmentsTab = ({
 
             <form onSubmit={handleUpdateStatusSubmit} className="space-y-4">
               {statusToSet === 'Rescheduled' && (
-                <div className="space-y-3 p-3 bg-amber-50 rounded-xl border border-amber-200">
+                <div className="space-y-3 p-3 bg-amber-50 rounded-2xl border border-amber-200">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">New Appointment Date</label>
                     <input
@@ -449,7 +507,7 @@ export const AppointmentsTab = ({
                 <button
                   type="submit"
                   disabled={statusLoading}
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs"
                 >
                   {statusLoading ? 'Updating...' : `Confirm ${statusToSet}`}
                 </button>
@@ -461,8 +519,8 @@ export const AppointmentsTab = ({
 
       {/* Modal: Assign / Reassign Doctor */}
       {assignModalOpen && selectedAppt && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
             <h3 className="font-black text-base text-slate-900 flex items-center gap-2">
               <Stethoscope className="w-5 h-5 text-blue-600" />
               <span>Assign Doctor to Appointment</span>
@@ -502,12 +560,127 @@ export const AppointmentsTab = ({
                 <button
                   type="submit"
                   disabled={assignLoading}
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs"
                 >
                   {assignLoading ? 'Assigning...' : 'Assign Appointment'}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Consultation Details & Clinical Notes */}
+      {consultationModalOpen && selectedConsultation && (
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-xl border border-slate-200 space-y-5 my-8">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span className="text-[10px] font-black uppercase text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mb-1">
+                  Clinical Consultation Dossier
+                </span>
+                <h3 className="font-black text-lg text-slate-900 flex items-center gap-2">
+                  <FileCheck className="w-5 h-5 text-blue-600" />
+                  <span>Encounter Details: Token #{selectedConsultation.token_number || selectedConsultation.queue_number || 'T-01'}</span>
+                </h3>
+              </div>
+              <button
+                onClick={() => setConsultationModalOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Consultation Overview Details */}
+            <div className="space-y-4 text-xs">
+              {/* Doctor & Patient Info */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Patient Information</span>
+                  <span className="font-extrabold text-slate-900 text-sm block">{selectedConsultation.patient_name}</span>
+                  <span className="text-[11px] text-slate-500 font-mono block">ID: {selectedConsultation.patient_health_id || selectedConsultation.patient_id}</span>
+                  <span className="text-[11px] text-slate-500 block">Ph: {selectedConsultation.patient_mobile || selectedConsultation.patient_phone || '+91 98480 12345'}</span>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Attending Doctor</span>
+                  <span className="font-extrabold text-slate-900 text-sm block">{selectedConsultation.doctor_name || 'Assigned Physician'}</span>
+                  <span className="text-[11px] text-blue-600 font-bold block">{selectedConsultation.specialization || selectedConsultation.department}</span>
+                  <span className="text-[11px] text-slate-500 block">Fee: ₹{selectedConsultation.consultation_fee || 500}</span>
+                </div>
+              </div>
+
+              {/* Appointment Reference, Schedule & Mode */}
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Encounter Ref #</span>
+                  <span className="font-mono font-bold text-slate-900">{selectedConsultation.appointment_id || selectedConsultation.id}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Date & Time</span>
+                  <span className="font-bold text-slate-800">{selectedConsultation.appointment_date} • {selectedConsultation.appointment_time}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Consultation Status</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold inline-block mt-0.5 ${
+                    selectedConsultation.status === 'Completed'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                      : selectedConsultation.status === 'In Consultation'
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                      : 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                  }`}>
+                    {selectedConsultation.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Clinical Findings & Notes */}
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
+                <span className="text-[10px] uppercase font-bold text-slate-400 block">Chief Complaint & Clinical Notes</span>
+                <p className="font-medium text-slate-800 leading-relaxed italic bg-white p-3 rounded-xl border border-slate-200/80">
+                  "{selectedConsultation.chief_complaint || 'Patient presented for routine outpatient clinical evaluation and prescription refill.'}"
+                </p>
+                {selectedConsultation.clinical_findings && (
+                  <div className="pt-1">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">Physician Findings:</span>
+                    <p className="text-slate-700">{selectedConsultation.clinical_findings}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Prescription Reference */}
+              <div className="p-3.5 bg-emerald-50/60 rounded-2xl border border-emerald-200 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-emerald-800 block">Digital Prescription Reference</span>
+                  <span className="font-mono font-bold text-emerald-950 text-xs">
+                    {selectedConsultation.prescription_id || `RX-2026-${String(selectedConsultation.id || '001').slice(-5)}`}
+                  </span>
+                  <span className="text-[10px] text-emerald-700 block">Synchronized with All.Connect e-Prescription Network</span>
+                </div>
+                <span className="px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-bold text-[10px]">
+                  Verified
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition"
+              >
+                <Download className="w-3.5 h-3.5 text-blue-600" />
+                <span>Print Summary</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setConsultationModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

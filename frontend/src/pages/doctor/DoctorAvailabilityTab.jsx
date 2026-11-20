@@ -5,9 +5,12 @@ import {
   Save,
   CheckCircle2,
   AlertCircle,
-  Sparkles,
-  ShieldCheck,
-  Building2
+  Video,
+  UserCheck,
+  Building2,
+  AlertTriangle,
+  PauseCircle,
+  PlayCircle
 } from 'lucide-react';
 
 export const DoctorAvailabilityTab = ({ data, onSaveSchedule }) => {
@@ -29,6 +32,14 @@ export const DoctorAvailabilityTab = ({ data, onSaveSchedule }) => {
   const [breakEnd, setBreakEnd] = useState('02:00 PM');
   const [slotDuration, setSlotDuration] = useState('15');
   const [dailyCapacity, setDailyCapacity] = useState('25');
+
+  // Online & In-Person consultation availability toggles
+  const [onlineConsultation, setOnlineConsultation] = useState(true);
+  const [inPersonConsultation, setInPersonConsultation] = useState(true);
+  const [temporaryUnavailable, setTemporaryUnavailable] = useState(
+    doctor.is_on_leave || doctor.is_available === false
+  );
+
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState(null);
 
@@ -40,21 +51,35 @@ export const DoctorAvailabilityTab = ({ data, onSaveSchedule }) => {
     e.preventDefault();
     setSaving(true);
     setNotice(null);
+
     try {
       const activeDays = Object.keys(days).filter((d) => days[d]);
+      
+      const payload = {
+        available_days: activeDays,
+        morning_shift: morningShift,
+        evening_shift: eveningShift,
+        break_time: `${breakStart} - ${breakEnd}`,
+        slot_duration: parseInt(slotDuration, 10),
+        max_daily_patients: parseInt(dailyCapacity, 10),
+        online_consultation_available: onlineConsultation,
+        in_person_consultation_available: inPersonConsultation,
+        is_available: !temporaryUnavailable,
+        temporary_unavailable: temporaryUnavailable
+      };
+
       if (onSaveSchedule) {
-        await onSaveSchedule({
-          available_days: activeDays,
-          morning_shift: morningShift,
-          evening_shift: eveningShift,
-          break_time: `${breakStart} - ${breakEnd}`,
-          slot_duration: parseInt(slotDuration, 10),
-          max_daily_patients: parseInt(dailyCapacity, 10)
-        });
+        await onSaveSchedule(payload);
       }
-      setNotice({ type: 'success', message: 'OPD availability and consultation timings updated successfully!' });
+      setNotice({
+        type: 'success',
+        message: 'Doctor availability, shift hours, and consultation modes updated successfully!'
+      });
     } catch (err) {
-      setNotice({ type: 'error', message: err.message || 'Failed to update schedule' });
+      setNotice({
+        type: 'error',
+        message: err.message || 'Failed to update schedule'
+      });
     } finally {
       setSaving(false);
     }
@@ -67,10 +92,10 @@ export const DoctorAvailabilityTab = ({ data, onSaveSchedule }) => {
         <div>
           <h2 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-600" />
-            <span>OPD Shift Timings & Consultation Slot Schedule</span>
+            <span>OPD Availability & Working Hours Management</span>
           </h2>
           <p className="text-xs text-slate-500">
-            Define active clinic working days, morning and evening shifts, slot durations, and daily quotas
+            Define active clinic working days, morning and evening shifts, consultation modes, and slot capacity
           </p>
         </div>
       </div>
@@ -93,6 +118,85 @@ export const DoctorAvailabilityTab = ({ data, onSaveSchedule }) => {
       )}
 
       <form onSubmit={handleSave} className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs space-y-6">
+        
+        {/* Temporary Unavailability Quick Toggle */}
+        <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-between gap-4">
+          <div className="space-y-0.5">
+            <span className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+              {temporaryUnavailable ? (
+                <PauseCircle className="w-4 h-4 text-amber-600" />
+              ) : (
+                <PlayCircle className="w-4 h-4 text-emerald-600" />
+              )}
+              Temporary Practice Unavailability
+            </span>
+            <p className="text-[11px] text-slate-500">
+              Temporarily pause new outpatient appointments without altering confirmed schedule bookings.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setTemporaryUnavailable(!temporaryUnavailable)}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+              temporaryUnavailable
+                ? 'bg-amber-600 text-white shadow-xs'
+                : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+            }`}
+          >
+            {temporaryUnavailable ? 'Temporarily Paused' : 'Normal Active'}
+          </button>
+        </div>
+
+        {/* Consultation Modes (In-Person & Online) */}
+        <div className="space-y-3">
+          <label className="font-extrabold text-sm text-slate-900 block">Consultation Modes Availability</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div
+              onClick={() => setInPersonConsultation(!inPersonConsultation)}
+              className={`p-4 rounded-2xl border cursor-pointer transition flex items-center justify-between ${
+                inPersonConsultation
+                  ? 'border-blue-500 bg-blue-50/50'
+                  : 'border-slate-200 bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-xl ${inPersonConsultation ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 block">In-Person OPD Consultations</span>
+                  <span className="text-[11px] text-slate-500">Patients visit hospital or clinic workstation</span>
+                </div>
+              </div>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${inPersonConsultation ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                {inPersonConsultation ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
+
+            <div
+              onClick={() => setOnlineConsultation(!onlineConsultation)}
+              className={`p-4 rounded-2xl border cursor-pointer transition flex items-center justify-between ${
+                onlineConsultation
+                  ? 'border-teal-500 bg-teal-50/50'
+                  : 'border-slate-200 bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-xl ${onlineConsultation ? 'bg-teal-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
+                  <Video className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs text-slate-900 block">Online Video Consultations</span>
+                  <span className="text-[11px] text-slate-500">Tele-consultation appointments</span>
+                </div>
+              </div>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${onlineConsultation ? 'bg-teal-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                {onlineConsultation ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Working Days */}
         <div className="space-y-3">
           <label className="font-extrabold text-sm text-slate-900 block">Weekly Working Days *</label>
@@ -188,7 +292,7 @@ export const DoctorAvailabilityTab = ({ data, onSaveSchedule }) => {
             className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2"
           >
             <Save className="w-4 h-4" />
-            <span>{saving ? 'Saving Availability...' : 'Save Availability & Slots'}</span>
+            <span>{saving ? 'Saving Availability...' : 'Save Availability & Schedule'}</span>
           </button>
         </div>
       </form>

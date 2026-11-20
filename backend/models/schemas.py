@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 from pydantic import BaseModel, Field
 
 # AUTH
@@ -62,15 +62,17 @@ class MedicineItem(BaseModel):
     frequency: str
     duration: str
     instructions: Optional[str] = ""
+    quantity: Optional[str] = ""
 
 class PrescriptionCreateRequest(BaseModel):
     appointment_id: Optional[str] = None
     patient_id: str
     diagnosis: str
-    symptoms: Optional[str] = ""
-    vitals: Optional[Dict[str, str]] = {}
+    symptoms: Optional[Union[List[str], str]] = ""
+    vitals: Optional[Union[Dict[str, Any], str]] = {}
     medicines: List[MedicineItem]
     advice: Optional[str] = ""
+    additional_instructions: Optional[str] = ""
     follow_up_date: Optional[str] = None
 
 class UploadPrescriptionOCRRequest(BaseModel):

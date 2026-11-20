@@ -2163,5 +2163,93 @@
     "type": "uploaded_ocr",
     "file_image": "prescription_sample_scan.jpg",
     "created_at": "2026-11-19T19:18:04.416476"
+  },
+  {
+    "id": "PRE-2026-000154",
+    "prescription_id": "PRE-2026-000154",
+    "appointment_id": "appt-seed-001",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "health_id": "HC-2026-000001",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-21",
+    "diagnosis": "Acute Bronchitis and allergic rhinitis",
+    "symptoms": [
+      "Dry Cough",
+      "Throat Irritation"
+    ],
+    "vitals": "BP: 120/80 mmHg | HR: 74 bpm | SpO2: 98%",
+    "medicines": [
+      {
+        "name": "Amoxicillin 500mg",
+        "dosage": "500mg",
+        "frequency": "1-0-1",
+        "duration": "5 Days",
+        "instructions": "Take after meals",
+        "quantity": "10 Tablets"
+      },
+      {
+        "name": "Cetirizine 10mg",
+        "dosage": "10mg",
+        "frequency": "0-0-1",
+        "duration": "7 Days",
+        "instructions": "Take at night before bed",
+        "quantity": "7 Tablets"
+      }
+    ],
+    "advice": "Drink warm water and avoid cold beverages.",
+    "additional_instructions": "Perform complete CBC and chest X-ray PA view. Steam inhalation twice daily. Follow up after 5 days if cough persists.",
+    "follow_up_date": "2026-11-26",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-21T03:28:27.502395"
+  },
+  {
+    "id": "PRE-2026-000155",
+    "prescription_id": "PRE-2026-000155",
+    "appointment_id": "appt-seed-001",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "health_id": "HC-2026-000001",
+    "doctor_id": "doc-001",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "doctor_qualifications": "MBBS, MD (General Medicine), DM (Cardiology)",
+    "organization_id": "hosp-001",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "consultation_date": "2026-11-21",
+    "diagnosis": "Acute Bronchitis and allergic rhinitis",
+    "symptoms": [
+      "Dry Cough",
+      "Throat Irritation"
+    ],
+    "vitals": "BP: 120/80 mmHg | HR: 74 bpm | SpO2: 98%",
+    "medicines": [
+      {
+        "name": "Amoxicillin 500mg",
+        "dosage": "500mg",
+        "frequency": "1-0-1",
+        "duration": "5 Days",
+        "instructions": "Take after meals",
+        "quantity": "10 Tablets"
+      },
+      {
+        "name": "Cetirizine 10mg",
+        "dosage": "10mg",
+        "frequency": "0-0-1",
+        "duration": "7 Days",
+        "instructions": "Take at night before bed",
+        "quantity": "7 Tablets"
+      }
+    ],
+    "advice": "Drink warm water and avoid cold beverages.",
+    "additional_instructions": "Perform complete CBC and chest X-ray PA view. Steam inhalation twice daily. Follow up after 5 days if cough persists.",
+    "follow_up_date": "2026-11-26",
+    "status": "Authorized & Published",
+    "type": "digital",
+    "created_at": "2026-11-21T03:28:49.831209"
   }
 ]

@@ -449,6 +449,53 @@ def verify_patient_card(
         "message": "Authentic All.Connect Digital Patient ID Card successfully verified."
     }
 
+@router.get("/search")
+def search_patients(
+    query: str = Query("", description="Search by patient name, ID, or phone"),
+    current_user: Dict[str, Any] = Depends(get_current_user_payload)
+):
+    role = current_user.get("role")
+    if role not in ["doctor", "hospital", "clinic", "super_admin"]:
+        raise HTTPException(status_code=403, detail="Practitioner permissions required to search patient registry")
+
+    q = query.strip().lower()
+    all_patients = find_all("patients")
+    
+    if not q:
+        matches = all_patients[:50]
+    else:
+        matches = [
+            p for p in all_patients
+            if q in str(p.get("full_name", "")).lower()
+            or q in str(p.get("name", "")).lower()
+            or q in str(p.get("patient_id", "")).lower()
+            or q in str(p.get("id", "")).lower()
+            or q in str(p.get("health_id", "")).lower()
+            or q in str(p.get("phone", "")).lower()
+            or q in str(p.get("mobile", "")).lower()
+        ]
+
+    results = []
+    for p in matches:
+        results.append({
+            "id": p.get("id") or p.get("patient_id"),
+            "patient_id": p.get("patient_id") or p.get("id"),
+            "health_id": p.get("health_id"),
+            "full_name": p.get("full_name") or p.get("name"),
+            "name": p.get("full_name") or p.get("name"),
+            "age": p.get("age", 32),
+            "gender": p.get("gender", "Male"),
+            "dob": p.get("dob", ""),
+            "phone": p.get("phone") or p.get("mobile", ""),
+            "email": p.get("email", ""),
+            "blood_group": p.get("blood_group", "O+"),
+            "allergies": p.get("allergies", []),
+            "chronic_conditions": p.get("chronic_conditions", []),
+            "emergency_contact": p.get("emergency_contact", "")
+        })
+
+    return {"patients": results, "total": len(results)}
+
 @router.get("/{patient_id}")
 def get_patient_profile(patient_id: str, current_user: Dict[str, Any] = Depends(get_current_user_payload)):
     patient = find_one("patients", lambda p: p.get("patient_id") == patient_id or p.get("health_id") == patient_id)

@@ -197,15 +197,21 @@ class TestDoctorPortalAndLeaveManagement(unittest.TestCase):
 
     def test_06_token_number_generation_and_queue_workflow(self):
         """Verify appointment booking creates sequential token number T-XX and queue status transitions."""
-        # Find next valid working day for doc-002 (Mon=0, Wed=2, Thu=3)
+        # Find next valid working day with open slots for doc-002 (Mon=0, Wed=2, Thu=3)
         target_dt = datetime.now() + timedelta(days=45)
-        while target_dt.weekday() not in [0, 2, 3]:
+        open_slots = []
+        target_date = ""
+        for _ in range(60):
+            if target_dt.weekday() in [0, 2, 3]:
+                candidate_date = target_dt.strftime("%Y-%m-%d")
+                resp_slots = client.get(f"/api/doctors/doc-002/daily-slots?date={candidate_date}")
+                candidate_slots = [s["time"] for s in resp_slots.json().get("slots", []) if s.get("available")]
+                if candidate_slots:
+                    target_date = candidate_date
+                    open_slots = candidate_slots
+                    break
             target_dt += timedelta(days=1)
-        target_date = target_dt.strftime("%Y-%m-%d")
 
-        # Get available slot
-        resp_slots = client.get(f"/api/doctors/doc-002/daily-slots?date={target_date}")
-        open_slots = [s["time"] for s in resp_slots.json().get("slots", []) if s.get("available")]
         self.assertTrue(len(open_slots) > 0, f"Expected open slots for doc-002 on {target_date}")
         slot_time = open_slots[0]
 

@@ -86,16 +86,12 @@ export const Sidebar = ({ role, isOpen, onClose }) => {
     ],
     doctor: [
       { to: '/dashboard/doctor', end: true, label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/dashboard/doctor/appointments', label: 'My Appointments', icon: Calendar },
       { to: '/dashboard/doctor/patients', label: 'Patient Management', icon: Users },
-      { to: '/dashboard/doctor/records', label: 'Patient Medical Records', icon: FolderHeart },
       { to: '/dashboard/doctor/prescriptions', label: 'Prescriptions', icon: FileText },
-      { to: '/dashboard/doctor/history', label: 'Consultation History', icon: FileCheck },
       { to: '/dashboard/doctor/availability', label: 'Doctor Availability', icon: Clock },
       { to: '/dashboard/doctor/leave', label: 'Leave Management', icon: Calendar },
       { to: '/dashboard/doctor/notifications', label: 'Notifications', icon: Bell },
-      { to: '/dashboard/doctor/profile', label: 'My Profile', icon: User },
-      { to: '/dashboard/doctor/settings', label: 'Settings', icon: Settings }
+      { to: '/dashboard/doctor/profile', label: 'My Profile', icon: User }
     ],
     pharmacy: [
       { to: '/dashboard/pharmacy', end: true, label: 'Overview', icon: LayoutDashboard },

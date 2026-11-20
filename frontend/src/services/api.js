@@ -44,6 +44,7 @@ export const api = {
   getMyDoctors: () => request('/patients/me/doctors'),
   updateMyPatientProfile: (data) => request('/patients/me', { method: 'PUT', body: JSON.stringify(data) }),
   updateConsent: (data) => request('/patients/consent', { method: 'PUT', body: JSON.stringify(data) }),
+  searchPatients: (query = '') => request(`/patients/search?query=${encodeURIComponent(query)}`),
   getPatientProfile: (patientId) => request(`/patients/${patientId}`),
   getMyPatientQrToken: () => request('/patients/me/qr-token'),
   refreshMyPatientQrToken: () => request('/patients/me/qr-token/refresh', { method: 'POST' }),

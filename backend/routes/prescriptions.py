@@ -79,6 +79,7 @@ def create_digital_prescription(req: PrescriptionCreateRequest, current_user: Di
         "vitals": req.vitals or {},
         "medicines": meds_dict,
         "advice": req.advice or "Take all medicines as prescribed. Maintain adequate hydration.",
+        "additional_instructions": req.additional_instructions or "",
         "follow_up_date": req.follow_up_date,
         "status": "Authorized & Published",
         "type": "digital",

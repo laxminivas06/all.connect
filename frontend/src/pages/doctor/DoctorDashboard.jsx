@@ -7,26 +7,20 @@ import { useAuth } from '../../context/AuthContext';
 import { DoctorOverviewTab } from './DoctorOverviewTab';
 import { DoctorAppointmentsTab } from './DoctorAppointmentsTab';
 import { DoctorPatientsTab } from './DoctorPatientsTab';
-import { DoctorRecordsTab } from './DoctorRecordsTab';
 import { DoctorPrescriptionsTab } from './DoctorPrescriptionsTab';
-import { DoctorHistoryTab } from './DoctorHistoryTab';
 import { DoctorAvailabilityTab } from './DoctorAvailabilityTab';
 import { DoctorLeaveTab } from './DoctorLeaveTab';
 import { DoctorNotificationsTab } from './DoctorNotificationsTab';
 import { DoctorProfileTab } from './DoctorProfileTab';
-import { DoctorSettingsTab } from './DoctorSettingsTab';
 
 import {
   LayoutDashboard,
   Calendar,
   Users,
-  FolderHeart,
   FileText,
-  FileCheck,
   Clock,
   Bell,
   User,
-  Settings,
   RefreshCw,
   AlertCircle,
   Stethoscope,
@@ -55,20 +49,22 @@ export const DoctorDashboard = () => {
     const firstSegment = subPath.split('/')[0];
     const validTabs = [
       'overview',
-      'appointments',
       'patients',
-      'records',
       'prescriptions',
-      'history',
       'availability',
       'leave',
       'notifications',
       'profile',
-      'settings'
+      'appointments'
     ];
 
     if (!firstSegment || firstSegment === '') {
       setActiveTab('overview');
+    } else if (firstSegment === 'records' || firstSegment === 'history' || firstSegment === 'consultations') {
+      // Duplicate legacy panels mapped to unified Patient Management
+      setActiveTab('patients');
+    } else if (firstSegment === 'settings') {
+      setActiveTab('profile');
     } else if (validTabs.includes(firstSegment)) {
       setActiveTab(firstSegment);
     } else {
@@ -164,19 +160,15 @@ export const DoctorDashboard = () => {
     }
   };
 
-  // Nav Items matching the 11 modules
+  // Primary 7 navigation items
   const navItems = [
     { key: 'overview', label: 'Dashboard', icon: LayoutDashboard },
-    { key: 'appointments', label: 'My Appointments', icon: Calendar },
     { key: 'patients', label: 'Patient Management', icon: Users },
-    { key: 'records', label: 'Medical Records', icon: FolderHeart },
     { key: 'prescriptions', label: 'Prescriptions', icon: FileText },
-    { key: 'history', label: 'Consultation History', icon: FileCheck },
     { key: 'availability', label: 'Doctor Availability', icon: Clock },
     { key: 'leave', label: 'Leave Management', icon: Calendar },
     { key: 'notifications', label: 'Notifications', icon: Bell },
-    { key: 'profile', label: 'My Profile', icon: User },
-    { key: 'settings', label: 'Settings', icon: Settings }
+    { key: 'profile', label: 'My Profile', icon: User }
   ];
 
   // Metadata per page matching the Hospital Admin Console design system
@@ -185,29 +177,17 @@ export const DoctorDashboard = () => {
       title: 'Doctor Clinical Workstation',
       description: 'Real-time outpatient consultation bay, live token dispatch queue, and patient triage metrics.'
     },
-    appointments: {
-      title: 'Outpatient Appointments & Schedule',
-      description: 'Manage confirmed patient visits, triage pending booking requests, and transition consultation statuses.'
-    },
     patients: {
       title: 'Patient Directory & Clinical Dossiers',
-      description: 'Review longitudinal medical dossiers, past consultation logs, and recorded allergy histories.'
-    },
-    records: {
-      title: 'Diagnostic Reports & Investigation Records',
-      description: 'Certified laboratory tests, pathology examinations, and diagnostic imaging documents.'
+      description: 'Comprehensive patient directory, medical histories, previous visits, prescriptions, and diagnostic reports.'
     },
     prescriptions: {
       title: 'Digital Prescription Generator & Rx Orders',
       description: 'Author, electronically sign, and issue certified digital prescriptions with instant pharmacy routing.'
     },
-    history: {
-      title: 'Consultation History & Treatment Audit',
-      description: 'Comprehensive historical log of treated patients, clinical outcomes, and past consultations.'
-    },
     availability: {
       title: 'OPD Shift Hours & Slot Capacities',
-      description: 'Configure weekly clinic working days, morning and evening shifts, and daily patient quotas.'
+      description: 'Configure weekly clinic working days, morning and evening shifts, slot durations, and consultation modes.'
     },
     leave: {
       title: 'Doctor Leave & Vacation Administration',
@@ -221,9 +201,9 @@ export const DoctorDashboard = () => {
       title: 'Medical Credentials & Doctor Profile',
       description: 'Certified qualifications, State Medical Council registration, OPD consultation fees, and practice bio.'
     },
-    settings: {
-      title: 'Consultation Suite & Practice Settings',
-      description: 'Manage clinic room location, patient queue alerts, and login security credentials.'
+    appointments: {
+      title: 'Outpatient Appointments & Schedule',
+      description: 'Manage confirmed patient visits, triage pending booking requests, and transition consultation statuses.'
     }
   };
 
@@ -378,22 +358,10 @@ export const DoctorDashboard = () => {
         />
       )}
 
-      {activeTab === 'records' && (
-        <DoctorRecordsTab
-          data={data}
-        />
-      )}
-
       {activeTab === 'prescriptions' && (
         <DoctorPrescriptionsTab
           data={data}
           onSaveRx={handleSavePrescription}
-        />
-      )}
-
-      {activeTab === 'history' && (
-        <DoctorHistoryTab
-          data={data}
         />
       )}
 
@@ -424,12 +392,6 @@ export const DoctorDashboard = () => {
         <DoctorProfileTab
           data={data}
           onSaveProfile={handleSaveProfile}
-        />
-      )}
-
-      {activeTab === 'settings' && (
-        <DoctorSettingsTab
-          data={data}
         />
       )}
     </div>

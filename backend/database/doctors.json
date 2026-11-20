@@ -118,10 +118,10 @@
     "consultation_hours": "09:30 AM - 01:30 PM",
     "full_name": "Dr. Sneha Reddy",
     "is_on_leave": false,
-    "leave_start": null,
-    "leave_end": null,
-    "leave_reason": null,
-    "leave_status": "Cancelled",
+    "leave_start": "2027-01-25",
+    "leave_end": "2027-01-28",
+    "leave_reason": "Conference",
+    "leave_status": "Approved",
     "leave_history": [
       {
         "id": "lev-1795193165",
@@ -626,6 +626,222 @@
         "status": "Cancelled",
         "applied_by": "doctor",
         "created_at": "2026-11-21T02:47:35.230582"
+      },
+      {
+        "id": "lev-1795211345",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:19:05.640178"
+      },
+      {
+        "id": "lev-1795211345",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:19:05.700829"
+      },
+      {
+        "id": "lev-1795211345",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:19:05.754266"
+      },
+      {
+        "id": "lev-1795211345",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:19:05.809192"
+      },
+      {
+        "id": "lev-1795211346",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:19:06.144996"
+      },
+      {
+        "id": "lev-1795211346",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:19:06.320700"
+      },
+      {
+        "id": "lev-1795211470",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:21:10.393675"
+      },
+      {
+        "id": "lev-1795211470",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:21:10.473625"
+      },
+      {
+        "id": "lev-1795211470",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:21:10.535038"
+      },
+      {
+        "id": "lev-1795211470",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:21:10.607916"
+      },
+      {
+        "id": "lev-1795211471",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:21:11.487763"
+      },
+      {
+        "id": "lev-1795211471",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:21:11.708497"
+      },
+      {
+        "id": "lev-1795211529",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:22:09.265916"
+      },
+      {
+        "id": "lev-1795211529",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:22:09.346098"
+      },
+      {
+        "id": "lev-1795211529",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:22:09.415164"
+      },
+      {
+        "id": "lev-1795211529",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:22:09.489579"
+      },
+      {
+        "id": "lev-1795211530",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:22:10.233218"
+      },
+      {
+        "id": "lev-1795211530",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:22:10.406587"
+      },
+      {
+        "id": "lev-1795211927",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:28:47.933940"
+      },
+      {
+        "id": "lev-1795211927",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:28:47.990455"
+      },
+      {
+        "id": "lev-1795211928",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:28:48.047354"
+      },
+      {
+        "id": "lev-1795211928",
+        "start_date": "2026-12-21",
+        "end_date": "2026-12-24",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:28:48.108871"
+      },
+      {
+        "id": "lev-1795211929",
+        "start_date": "2026-11-23",
+        "end_date": "2026-11-26",
+        "reason": "Personal Leave",
+        "status": "Approved",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:28:49.132522"
+      },
+      {
+        "id": "lev-1795211929",
+        "start_date": "2027-01-25",
+        "end_date": "2027-01-28",
+        "reason": "Conference",
+        "status": "Approved",
+        "applied_by": "doctor",
+        "created_at": "2026-11-21T03:28:49.300908"
       }
     ],
     "is_available": true

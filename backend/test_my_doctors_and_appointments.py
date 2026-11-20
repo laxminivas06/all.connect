@@ -144,14 +144,21 @@ class TestMyDoctorsAndAppointments(unittest.TestCase):
 
     def test_04_cancel_appointment_endpoint(self):
         """Test cancelling an appointment via PUT /api/appointments/{id}/cancel."""
-        # Find next valid working day
+        # Find next valid working day with open slots
         dt = datetime.now() + timedelta(days=60)
-        while dt.weekday() not in [0, 2, 3]:
+        open_slots = []
+        d_str = ""
+        for _ in range(60):
+            if dt.weekday() in [0, 2, 3]:
+                cand_str = dt.strftime("%Y-%m-%d")
+                resp_slots = client.get(f"/api/doctors/doc-002/daily-slots?date={cand_str}")
+                cand_slots = [s["time"] for s in resp_slots.json().get("slots", []) if s.get("available")]
+                if cand_slots:
+                    d_str = cand_str
+                    open_slots = cand_slots
+                    break
             dt += timedelta(days=1)
-        d_str = dt.strftime("%Y-%m-%d")
 
-        resp_slots = client.get(f"/api/doctors/doc-002/daily-slots?date={d_str}")
-        open_slots = [s["time"] for s in resp_slots.json().get("slots", []) if s.get("available")]
         self.assertTrue(len(open_slots) > 0)
 
         booking_payload = {

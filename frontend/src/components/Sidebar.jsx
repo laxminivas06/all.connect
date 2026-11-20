@@ -32,7 +32,8 @@ import {
   User,
   KeyRound,
   Package,
-  HardDrive
+  HardDrive,
+  Bell
 } from 'lucide-react';
 
 export const Sidebar = ({ role, isOpen, onClose }) => {
@@ -84,13 +85,16 @@ export const Sidebar = ({ role, isOpen, onClose }) => {
       { to: '/dashboard/clinic/settings', label: 'Settings', icon: Settings }
     ],
     doctor: [
-      { to: '/dashboard/doctor', end: true, label: 'Overview', icon: LayoutDashboard },
+      { to: '/dashboard/doctor', end: true, label: 'Dashboard', icon: LayoutDashboard },
       { to: '/dashboard/doctor/appointments', label: 'My Appointments', icon: Calendar },
-      { to: '/dashboard/doctor/requests', label: 'Appointment Requests', icon: Inbox },
-      { to: '/dashboard/doctor/patients', label: 'Patient Details', icon: Users },
-      { to: '/dashboard/doctor/consultation', label: 'Consultation & Rx', icon: FileCheck },
-      { to: '/dashboard/doctor/availability', label: 'Availability & Slots', icon: Clock },
-      { to: '/dashboard/doctor/profile', label: 'Doctor Profile', icon: User },
+      { to: '/dashboard/doctor/patients', label: 'Patient Management', icon: Users },
+      { to: '/dashboard/doctor/records', label: 'Patient Medical Records', icon: FolderHeart },
+      { to: '/dashboard/doctor/prescriptions', label: 'Prescriptions', icon: FileText },
+      { to: '/dashboard/doctor/history', label: 'Consultation History', icon: FileCheck },
+      { to: '/dashboard/doctor/availability', label: 'Doctor Availability', icon: Clock },
+      { to: '/dashboard/doctor/leave', label: 'Leave Management', icon: Calendar },
+      { to: '/dashboard/doctor/notifications', label: 'Notifications', icon: Bell },
+      { to: '/dashboard/doctor/profile', label: 'My Profile', icon: User },
       { to: '/dashboard/doctor/settings', label: 'Settings', icon: Settings }
     ],
     pharmacy: [

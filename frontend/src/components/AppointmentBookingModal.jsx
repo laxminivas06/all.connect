@@ -751,12 +751,17 @@ const AppointmentBookingModalContent = ({
             </div>
           )}
 
-          {/* STEP 4: TIME SLOT & CAPACITY SELECTION */}
+          {/* STEP 4: TIME SLOT & CAPACITY SELECTION (BOOKMYSHOW STYLE) */}
           {step === 4 && dailySlotsData && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-extrabold text-slate-900">Step 4: Select Time Slot</h4>
+                  <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                    <span>Step 4: Select Appointment Slot</span>
+                    <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black tracking-wider uppercase">
+                      Live Slots
+                    </span>
+                  </h4>
                   <p className="text-xs text-slate-500">
                     {dailySlotsData.day_name}, {dailySlotsData.date} • {consultationMode}
                   </p>
@@ -770,56 +775,231 @@ const AppointmentBookingModalContent = ({
                 </button>
               </div>
 
-              {/* Capacity Banner */}
-              <div className="p-3.5 bg-blue-50/70 rounded-2xl border border-blue-200 flex items-center justify-between text-xs">
-                <div>
-                  <span className="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider block">Daily OPD Capacity</span>
-                  <p className="font-extrabold text-slate-900">
-                    {dailySlotsData.booked_count} of {dailySlotsData.total_capacity} Slots Booked
+              {/* Doctor On Leave Notice */}
+              {dailySlotsData.is_on_leave ? (
+                <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                    <h5 className="font-extrabold text-sm text-amber-800">
+                      Doctor Currently Unavailable – On Leave
+                    </h5>
+                  </div>
+                  <p className="text-xs text-amber-800 leading-relaxed">
+                    {selectedDoctor ? getDoctorDisplayName(selectedDoctor) : 'Doctor'} is on scheduled leave
+                    {dailySlotsData.leave_start && dailySlotsData.leave_end ? (
+                      <> from <span className="font-bold">{dailySlotsData.leave_start}</span> to <span className="font-bold">{dailySlotsData.leave_end}</span></>
+                    ) : ' on this date'}.
+                    {dailySlotsData.leave_reason ? ` (${dailySlotsData.leave_reason})` : ''}
                   </p>
+                  <p className="text-[11px] text-amber-700">
+                    Appointment slots are automatically protected and locked during approved leave periods. Please select a date after leave ends or consult another available specialist.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setStep(3)}
+                    className="mt-2 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition inline-flex items-center gap-1.5"
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Select Another Date</span>
+                  </button>
                 </div>
-                <span className={`px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                  dailySlotsData.day_status === 'Available' ? 'bg-emerald-100 text-emerald-800' :
-                  (dailySlotsData.day_status === 'Limited Slots' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800')
-                }`}>
-                  {dailySlotsData.day_status}
-                </span>
-              </div>
-
-              {/* Slot Grid with Availability Status */}
-              <div>
-                <label className="block text-xs font-extrabold text-slate-700 mb-2">Available Consultation Time Slots</label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  {dailySlotsData.slots.map(s => {
-                    const isSelected = selectedSlot === s.time;
-                    return (
-                      <button
-                        key={s.time}
-                        type="button"
-                        disabled={!s.available}
-                        onClick={() => handleSlotSelect(s.time)}
-                        className={`p-2.5 rounded-xl border text-center transition flex flex-col items-center justify-center ${
-                          isSelected
-                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                            : (s.available
-                                ? 'bg-white hover:bg-blue-50 text-slate-800 border-slate-200 hover:border-blue-400 cursor-pointer'
-                                : 'bg-slate-100 text-slate-400 border-slate-100 cursor-not-allowed opacity-60')
-                        }`}
-                      >
-                        <span className="font-black text-xs">{s.time}</span>
-                        <span className={`text-[9px] font-bold mt-0.5 ${
-                          isSelected ? 'text-blue-100' : (
-                            s.status === 'Available' ? 'text-emerald-600' :
-                            (s.status === 'Limited' ? 'text-amber-600' : 'text-slate-400')
-                          )
-                        }`}>
-                          {s.status}
+              ) : (
+                <>
+                  {/* BookMyShow Style Cinema/Bay OPD Header & Capacity */}
+                  <div className="p-3.5 bg-slate-900 text-white rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs shadow-md">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-400/30 flex items-center justify-center font-bold">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] uppercase font-black tracking-widest text-blue-300 block">
+                          OPD Consultation Bay
                         </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                        <p className="font-extrabold text-sm text-white">
+                          {selectedDoctor ? getDoctorDisplayName(selectedDoctor) : 'Specialist'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] text-slate-300">
+                        {dailySlotsData.booked_count} of {dailySlotsData.total_capacity} Booked
+                      </span>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                        dailySlotsData.day_status === 'Available' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                        (dailySlotsData.day_status === 'Limited Slots' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30')
+                      }`}>
+                        {dailySlotsData.day_status}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* BookMyShow Visual Legend */}
+                  <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold text-slate-600">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3 h-3 rounded-md bg-emerald-500 border border-emerald-600" />
+                      <span>Available</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3 h-3 rounded-md bg-blue-600 border border-blue-700" />
+                      <span>Selected</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3 h-3 rounded-md bg-rose-500 border border-rose-600" />
+                      <span>Already Booked</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3 h-3 rounded-md bg-amber-400 border border-amber-500" />
+                      <span>Limited</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3 h-3 rounded-md bg-slate-200 border border-slate-300" />
+                      <span>Unavailable</span>
+                    </div>
+                  </div>
+
+                  {/* Structured BookMyShow Slot Grid: Morning & Afternoon/Evening */}
+                  <div className="space-y-4 pt-1">
+                    {/* Morning Slots */}
+                    <div>
+                      <div className="text-[11px] font-black text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                        <span>Morning Shift (09:00 AM – 01:00 PM)</span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        {dailySlotsData.slots
+                          .filter(s => s.time.includes('AM') || s.time.startsWith('12:'))
+                          .map((s, idx) => {
+                            const isSelected = selectedSlot === s.time;
+                            const isBooked = s.status === 'Booked';
+                            const isAvailable = s.available && !isBooked;
+                            const isLimited = s.status === 'Limited';
+
+                            return (
+                              <button
+                                key={s.time}
+                                type="button"
+                                disabled={!isAvailable}
+                                onClick={() => handleSlotSelect(s.time)}
+                                className={`relative p-3 rounded-xl border text-center transition flex flex-col items-center justify-center group ${
+                                  isSelected
+                                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/25 ring-2 ring-blue-500 ring-offset-1 transform -translate-y-0.5'
+                                    : (isBooked
+                                        ? 'bg-rose-50 text-rose-400 border-rose-200 cursor-not-allowed opacity-80'
+                                        : (isAvailable
+                                            ? 'bg-white hover:bg-emerald-50 text-slate-800 border-slate-200 hover:border-emerald-400 hover:shadow-xs cursor-pointer'
+                                            : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'))
+                                }`}
+                              >
+                                <span className={`text-[9px] font-bold tracking-tight block ${
+                                  isSelected ? 'text-blue-200' : 'text-slate-400'
+                                }`}>
+                                  Slot #{idx + 1}
+                                </span>
+                                <span className="font-black text-xs sm:text-sm mt-0.5">{s.time}</span>
+                                <span className={`text-[9px] font-black uppercase mt-1 px-1.5 py-0.5 rounded ${
+                                  isSelected
+                                    ? 'bg-white/20 text-white'
+                                    : (isBooked
+                                        ? 'bg-rose-100 text-rose-700'
+                                        : (isLimited
+                                            ? 'bg-amber-100 text-amber-800'
+                                            : (isAvailable ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500')))
+                                }`}>
+                                  {isSelected ? 'Selected' : (isBooked ? 'Booked' : (isLimited ? 'Limited' : (isAvailable ? 'Available' : 'Unavailable')))}
+                                </span>
+                              </button>
+                            );
+                          })}
+                      </div>
+                    </div>
+
+                    {/* Afternoon & Evening Slots */}
+                    <div>
+                      <div className="text-[11px] font-black text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-indigo-500" />
+                        <span>Afternoon & Evening Shift (01:00 PM – 08:00 PM)</span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        {dailySlotsData.slots
+                          .filter(s => s.time.includes('PM') && !s.time.startsWith('12:'))
+                          .map((s, idx) => {
+                            const isSelected = selectedSlot === s.time;
+                            const isBooked = s.status === 'Booked';
+                            const isAvailable = s.available && !isBooked;
+                            const isLimited = s.status === 'Limited';
+
+                            return (
+                              <button
+                                key={s.time}
+                                type="button"
+                                disabled={!isAvailable}
+                                onClick={() => handleSlotSelect(s.time)}
+                                className={`relative p-3 rounded-xl border text-center transition flex flex-col items-center justify-center group ${
+                                  isSelected
+                                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/25 ring-2 ring-blue-500 ring-offset-1 transform -translate-y-0.5'
+                                    : (isBooked
+                                        ? 'bg-rose-50 text-rose-400 border-rose-200 cursor-not-allowed opacity-80'
+                                        : (isAvailable
+                                            ? 'bg-white hover:bg-emerald-50 text-slate-800 border-slate-200 hover:border-emerald-400 hover:shadow-xs cursor-pointer'
+                                            : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'))
+                                }`}
+                              >
+                                <span className={`text-[9px] font-bold tracking-tight block ${
+                                  isSelected ? 'text-blue-200' : 'text-slate-400'
+                                }`}>
+                                  Slot #{idx + 9}
+                                </span>
+                                <span className="font-black text-xs sm:text-sm mt-0.5">{s.time}</span>
+                                <span className={`text-[9px] font-black uppercase mt-1 px-1.5 py-0.5 rounded ${
+                                  isSelected
+                                    ? 'bg-white/20 text-white'
+                                    : (isBooked
+                                        ? 'bg-rose-100 text-rose-700'
+                                        : (isLimited
+                                            ? 'bg-amber-100 text-amber-800'
+                                            : (isAvailable ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500')))
+                                }`}>
+                                  {isSelected ? 'Selected' : (isBooked ? 'Booked' : (isLimited ? 'Limited' : (isAvailable ? 'Available' : 'Unavailable')))}
+                                </span>
+                              </button>
+                            );
+                          })}
+                      </div>
+                    </div>
+
+                    {/* BookMyShow Style Selected Pass Preview */}
+                    {selectedSlot && (
+                      <div className="mt-4 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-2">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-md shadow-blue-500/20">
+                            ✓
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider block">
+                              Selected Slot Reserved
+                            </span>
+                            <p className="font-extrabold text-sm text-slate-900">
+                              {dailySlotsData.date} at {selectedSlot} • {consultationMode}
+                            </p>
+                            <p className="text-[11px] text-slate-500">
+                              Est. Token: <span className="font-bold text-blue-600">T-0{(dailySlotsData.booked_count || 0) + 1}</span> • Fee: <span className="font-bold text-slate-900">₹{selectedDoctor?.consultation_fee || 600}</span>
+                            </p>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => setStep(5)}
+                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-1.5"
+                        >
+                          <span>Proceed to Summary</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           )}
 

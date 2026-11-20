@@ -145,6 +145,9 @@ export const DoctorsTab = ({
   const [availForm, setAvailForm] = useState({
     is_available: true,
     is_on_leave: false,
+    leave_start: '',
+    leave_end: '',
+    leave_reason: '',
     available_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     working_hours: '09:30 AM - 05:30 PM',
     break_times: '01:00 PM - 02:00 PM',
@@ -160,6 +163,9 @@ export const DoctorsTab = ({
     setAvailForm({
       is_available: doc.is_available !== false,
       is_on_leave: doc.is_on_leave === true,
+      leave_start: doc.leave_start || '',
+      leave_end: doc.leave_end || '',
+      leave_reason: doc.leave_reason || '',
       available_days: doc.available_days || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
       working_hours: doc.working_hours || '09:30 AM - 05:30 PM',
       break_times: doc.break_times || '01:00 PM - 02:00 PM',
@@ -290,7 +296,9 @@ export const DoctorsTab = ({
                       ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                       : 'bg-amber-50 text-amber-700 border border-amber-200'
                     }`}>
-                    {doc.is_on_leave ? 'On Leave' : doc.is_available !== false ? 'Available' : 'Unavailable'}
+                    {doc.is_on_leave
+                      ? (doc.leave_start && doc.leave_end ? `On Leave: ${doc.leave_start} to ${doc.leave_end}` : 'On Leave')
+                      : doc.is_available !== false ? 'Available' : 'Unavailable'}
                   </span>
                 </div>
 
@@ -643,6 +651,45 @@ export const DoctorsTab = ({
                   />
                 </div>
               </div>
+
+              {/* Leave Details Panel if on leave */}
+              {availForm.is_on_leave && (
+                <div className="p-3.5 bg-rose-50/70 rounded-xl border border-rose-200 space-y-3">
+                  <span className="text-[11px] font-black text-rose-800 uppercase tracking-wider block">
+                    Doctor Leave Period & Reason
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-600 mb-1">Leave Start Date</label>
+                      <input
+                        type="date"
+                        value={availForm.leave_start}
+                        onChange={(e) => setAvailForm({ ...availForm, leave_start: e.target.value })}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-600 mb-1">Leave End Date</label>
+                      <input
+                        type="date"
+                        value={availForm.leave_end}
+                        onChange={(e) => setAvailForm({ ...availForm, leave_end: e.target.value })}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-600 mb-1">Leave Reason</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Annual Medical Conference / Personal Leave"
+                      value={availForm.leave_reason}
+                      onChange={(e) => setAvailForm({ ...availForm, leave_reason: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white"
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Working Days Selector */}
               <div>

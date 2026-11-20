@@ -51,8 +51,19 @@
       "Angina Pectoris"
     ],
     "consultation_type": "Both",
-    "consultation_hours": "09:30 AM - 01:30 PM",
-    "full_name": "Dr. Rajesh Sharma"
+    "consultation_hours": "09:30 AM - 05:30 PM",
+    "full_name": "Dr. Rajesh Sharma",
+    "is_available": true,
+    "is_on_leave": false,
+    "working_hours": "09:30 AM - 05:30 PM",
+    "break_times": "01:00 PM - 02:00 PM",
+    "appointment_duration": 15,
+    "slot_duration_minutes": 15,
+    "slot_limits": 25,
+    "max_daily_patients": 25,
+    "leave_start": null,
+    "leave_end": null,
+    "leave_reason": null
   },
   {
     "id": "doc-002",
@@ -105,7 +116,159 @@
     ],
     "consultation_type": "Both",
     "consultation_hours": "09:30 AM - 01:30 PM",
-    "full_name": "Dr. Sneha Reddy"
+    "full_name": "Dr. Sneha Reddy",
+    "is_on_leave": false,
+    "leave_start": null,
+    "leave_end": null,
+    "leave_reason": null,
+    "leave_status": "Cancelled",
+    "leave_history": [
+      {
+        "id": "lev-1795193165",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:16:05.188642"
+      },
+      {
+        "id": "lev-1795193165",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:16:05.314867"
+      },
+      {
+        "id": "lev-1795193165",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:16:05.557976"
+      },
+      {
+        "id": "lev-1795193165",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:16:05.740304"
+      },
+      {
+        "id": "lev-1795193846",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:27:26.836270"
+      },
+      {
+        "id": "lev-1795193846",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:27:26.995171"
+      },
+      {
+        "id": "lev-1795193847",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:27:27.209482"
+      },
+      {
+        "id": "lev-1795193847",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:27:27.494138"
+      },
+      {
+        "id": "lev-1795194074",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:31:14.279150"
+      },
+      {
+        "id": "lev-1795194074",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:31:14.489479"
+      },
+      {
+        "id": "lev-1795194074",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:31:14.724533"
+      },
+      {
+        "id": "lev-1795194074",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:31:14.896780"
+      },
+      {
+        "id": "lev-1795194395",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Attending Medical Cardiology Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:36:35.234708"
+      },
+      {
+        "id": "lev-1795194395",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Personal Leave",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:36:35.472353"
+      },
+      {
+        "id": "lev-1795194395",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Conference",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:36:35.670769"
+      },
+      {
+        "id": "lev-1795194395",
+        "start_date": "2026-12-20",
+        "end_date": "2026-12-23",
+        "reason": "Family Function",
+        "status": "Cancelled",
+        "applied_by": "doctor",
+        "created_at": "2026-11-20T22:36:35.852155"
+      }
+    ],
+    "is_available": true
   },
   {
     "id": "doc-003",
@@ -2544,5 +2707,34 @@
     "bio": "Medical specialist providing comprehensive clinical care.",
     "is_active": true,
     "created_at": "2026-11-20T11:57:53.192196"
+  },
+  {
+    "id": "doc-049",
+    "full_name": "Dr. Suresh Varma, MD",
+    "qualification": "MBBS, MD",
+    "specialty": "General Medicine",
+    "registration_number": "TSMC-2024-8049",
+    "experience_years": 10,
+    "consultation_fee": 600,
+    "hospital_id": "hosp-001",
+    "hospital_name": "Apollo Health City - Jubilee Hills",
+    "clinic_affiliations": [],
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "time_slots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "04:00 PM"
+    ],
+    "verification_status": "verified",
+    "account_status": "active",
+    "rating": 4.9,
+    "total_reviews": 0
   }
 ]

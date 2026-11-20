@@ -166,7 +166,9 @@ export const OverviewTab = ({
           </div>
           <div className="mt-2 flex items-baseline justify-between">
             <span className="text-2xl font-black text-slate-900">{kpis.patients_waiting || 0}</span>
-            <span className="text-[10px] font-semibold text-purple-600">Waiting Room</span>
+            <span className="text-[10px] font-semibold text-purple-600">
+              {kpis.patients_currently_consulting || kpis.patients_consulting || 0} in consult
+            </span>
           </div>
         </div>
 
@@ -196,8 +198,8 @@ export const OverviewTab = ({
           </div>
           <div className="mt-2 flex items-baseline justify-between">
             <span className="text-2xl font-black text-teal-700">{kpis.available_doctors || 0}</span>
-            <span className="text-[10px] font-bold text-teal-600">
-              {kpis.unavailable_doctors || 0} Unavailable
+            <span className="text-[10px] font-bold text-rose-600">
+              {kpis.doctors_currently_on_leave || kpis.doctors_on_leave || 0} On Leave
             </span>
           </div>
         </div>
@@ -316,7 +318,7 @@ export const OverviewTab = ({
                     <tr key={q.id || q.appointment_id} className="hover:bg-slate-50/80 transition">
                       <td className="py-2.5 font-black text-slate-900">
                         <span className="px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 font-extrabold text-xs">
-                          #{q.queue_number || 1}
+                          {q.token_number || `T-${String(q.queue_number || 1).padStart(2, '0')}`}
                         </span>
                       </td>
                       <td className="py-2.5">

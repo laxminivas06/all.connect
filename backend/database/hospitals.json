@@ -2928,5 +2928,88 @@
     "registered_at": "2026-11-20",
     "created_at": "2026-11-20T11:57:48.111365",
     "verification_remarks": "Verified state clinical establishment licence TS-2026"
+  },
+  {
+    "id": "hosp-038",
+    "name": "MaxCure Super Speciality Hospital",
+    "organization_type": "hospital",
+    "hospital_category": "Multi-Speciality Hospital",
+    "hospital_type": "Multi-Speciality Hospital",
+    "tagline": "Compassionate Healthcare with Cutting-Edge Technology",
+    "rating": 4.8,
+    "reviews_count": 50,
+    "bed_capacity": 200,
+    "emergency_24x7": true,
+    "departments": [
+      "General Medicine",
+      "Emergency & Critical Care",
+      "Cardiology",
+      "Orthopedics"
+    ],
+    "logo_url": "",
+    "cover_image_url": "",
+    "website": "",
+    "registration_number": "TS-DHS-2026-0038",
+    "contact_phone": "+91 40 6811 0000",
+    "phone": "+91 40 6811 0000",
+    "emergency_phone": "1066",
+    "email": "info@hosp-038.health",
+    "description": "Leading medical healthcare centre in Hyderabad",
+    "address": "",
+    "locality": "Begumpet",
+    "area": "Begumpet",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "",
+    "country": "India",
+    "latitude": 17.4239,
+    "longitude": 78.4483,
+    "coordinates": {
+      "lat": 17.4239,
+      "lng": 78.4483
+    },
+    "subscription_plan": "hospital_enterprise",
+    "billing_cycle": "annual",
+    "subscription_start_date": "2026-11-20",
+    "subscription_expiry_date": "2027-11-20",
+    "payment_status": "Paid",
+    "registration_status": "completed",
+    "verification_status": "verified",
+    "subscription_status": "active",
+    "account_status": "active",
+    "publishing_status": "published",
+    "appointment_availability_status": "enabled",
+    "verification_documents": [
+      {
+        "document_id": "DOC-1795194497",
+        "original_name": "TS-Clinical-Licence.pdf",
+        "file_name": "hospital_TS-Clinical-Licence_1795194497.pdf",
+        "file_size": 56,
+        "file_size_formatted": "0.1 KB",
+        "content_type": "application/pdf",
+        "document_type": "clinical_licence",
+        "org_type": "hospital",
+        "uploaded_at": "2026-11-20T22:38:17.724535",
+        "view_url": "/api/admin/documents/view/hospital_TS-Clinical-Licence_1795194497.pdf",
+        "download_url": "/api/admin/documents/download/hospital_TS-Clinical-Licence_1795194497.pdf"
+      }
+    ],
+    "admin_remarks": "Verified state clinical establishment licence TS-2026",
+    "verification_history": [
+      {
+        "action": "submitted",
+        "timestamp": "2026-11-20T22:38:17.821311",
+        "remarks": "Registration submitted for verification"
+      },
+      {
+        "action": "approve",
+        "timestamp": "2026-11-20T22:38:17.945836",
+        "remarks": "Verified state clinical establishment licence TS-2026",
+        "reviewer": "Super Admin"
+      }
+    ],
+    "registered_at": "2026-11-20",
+    "created_at": "2026-11-20T22:38:17.821321",
+    "verification_remarks": "Verified state clinical establishment licence TS-2026"
   }
 ]

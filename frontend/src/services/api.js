@@ -88,6 +88,9 @@ export const api = {
   getDoctorSchedule: (doctorId) => request(`/doctors/${doctorId}/schedule`),
   getDoctorDailySlots: (doctorId, date, mode = 'In-Person') => request(`/doctors/${doctorId}/daily-slots?date=${encodeURIComponent(date)}&mode=${encodeURIComponent(mode)}`),
   getDoctorMonthAvailability: (doctorId, year, month) => request(`/doctors/${doctorId}/month-availability?year=${year}&month=${month}`),
+  applyDoctorLeave: (doctorId, data) => request(`/doctors/${doctorId}/leave`, { method: 'POST', body: JSON.stringify(data) }),
+  cancelDoctorLeave: (doctorId) => request(`/doctors/${doctorId}/leave/cancel`, { method: 'PUT' }),
+  getDoctorLeaves: (doctorId) => request(`/doctors/${doctorId}/leaves`),
 
   // Appointments
   getAppointments: (status) => request(`/appointments${status ? `?status=${status}` : ''}`),

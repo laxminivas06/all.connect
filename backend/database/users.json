@@ -623,5 +623,17 @@
     "entity_id": "doc-048",
     "is_active": true,
     "created_at": "2026-11-20T11:57:53.270915"
+  },
+  {
+    "id": "usr-patient-49",
+    "username": "isolated_1795194499",
+    "email": "isolated_1795194499@example.com",
+    "role": "patient",
+    "full_name": "Isolated Patient 1795194499",
+    "hashed_password": "ab9a339d3bdbdc5cd7399b8655531154$5b4364dc429bb72a09d6f167c14cea67700ea4cbdc2ce4444b8e7c0455f80456",
+    "organization_id": null,
+    "entity_id": "PAT-2026-000049",
+    "is_active": true,
+    "created_at": "2026-11-20T22:38:19.997606"
   }
 ]

@@ -505,6 +505,43 @@ def enquire_procedure(payload: Dict[str, Any]):
         "enquiry": enquiry_record
     }
 
+def is_doctor_on_leave(doc: Dict[str, Any], target_date: Optional[str] = None):
+    """
+    Checks if doctor is on leave on target_date (defaulting to today).
+    Returns (is_on_leave, leave_start, leave_end, leave_reason).
+    Automatically restores availability if target_date is outside the leave period.
+    """
+    if not doc:
+        return False, None, None, None
+
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    date_to_check = target_date or today_str
+
+    leave_start = doc.get("leave_start") or doc.get("leave_start_date")
+    leave_end = doc.get("leave_end") or doc.get("leave_end_date")
+    leave_reason = doc.get("leave_reason") or "Doctor on scheduled leave"
+
+    # 1. Check leave history for approved leaves
+    for l in doc.get("leave_history", []):
+        if str(l.get("status", "Approved")).lower() in ["approved", "confirmed"]:
+            s = l.get("start_date") or l.get("leave_start")
+            e = l.get("end_date") or l.get("leave_end")
+            if s and e and s <= date_to_check <= e:
+                return True, s, e, l.get("reason", leave_reason)
+
+    # 2. Check direct leave_start and leave_end
+    if leave_start and leave_end:
+        if leave_start <= date_to_check <= leave_end:
+            return True, leave_start, leave_end, leave_reason
+        else:
+            return False, leave_start, leave_end, leave_reason
+
+    # 3. Direct boolean flag is_on_leave without dates
+    if doc.get("is_on_leave"):
+        return True, leave_start or today_str, leave_end, leave_reason
+
+    return False, None, None, None
+
 def normalize_doctor(d: Dict[str, Any]) -> Dict[str, Any]:
     if not d:
         return d
@@ -527,6 +564,13 @@ def normalize_doctor(d: Dict[str, Any]) -> Dict[str, Any]:
     item["available_slots"] = item.get("available_slots") or item.get("time_slots") or ["09:30 AM", "10:30 AM", "11:30 AM", "02:30 PM", "04:30 PM"]
     item["time_slots"] = item["available_slots"]
     item["is_active"] = item.get("is_active", True) if item.get("account_status") != "inactive" else False
+
+    on_leave_today, s_date, e_date, reason = is_doctor_on_leave(item)
+    item["is_on_leave"] = on_leave_today
+    item["leave_start"] = s_date
+    item["leave_end"] = e_date
+    item["leave_reason"] = reason
+    item["leave_message"] = "Doctor Currently Unavailable – On Leave" if on_leave_today else None
     return item
 
 @router.get("")
@@ -675,7 +719,8 @@ def get_doctor_daily_slots(
     is_past = date < today_str
     day_name = req_date.strftime("%A")
     avail_days = doc.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
-    is_working_day = (day_name in avail_days) and not doc.get("is_on_leave", False)
+    on_leave, s_date, e_date, reason = is_doctor_on_leave(doc, date)
+    is_working_day = (day_name in avail_days) and not on_leave
 
     max_capacity = int(doc.get("slot_limits") or doc.get("max_daily_patients") or 20)
 
@@ -688,7 +733,7 @@ def get_doctor_daily_slots(
     )
     booked_slots = set(a.get("appointment_time") for a in appts)
     booked_count = len(appts)
-    is_fully_booked = (booked_count >= max_capacity) or not is_working_day or is_past
+    is_fully_booked = (booked_count >= max_capacity) or not is_working_day or is_past or on_leave
 
     configured_slots = doc.get("available_slots")
     if not configured_slots:
@@ -701,12 +746,15 @@ def get_doctor_daily_slots(
         ]
 
     slots_output = []
-    available_count = max(0, max_capacity - booked_count)
+    available_count = 0 if on_leave else max(0, max_capacity - booked_count)
 
     for slot_time in configured_slots:
         is_booked = slot_time in booked_slots
         if is_past:
             status = "Past"
+            avail = False
+        elif on_leave:
+            status = "Doctor On Leave"
             avail = False
         elif not is_working_day:
             status = "Doctor Off"
@@ -733,6 +781,8 @@ def get_doctor_daily_slots(
     day_status = "Unavailable"
     if is_past:
         day_status = "Past Date"
+    elif on_leave:
+        day_status = "Doctor on Leave"
     elif not is_working_day:
         day_status = "Doctor Off"
     elif booked_count >= max_capacity:
@@ -750,7 +800,12 @@ def get_doctor_daily_slots(
         "booked_count": booked_count,
         "available_count": available_count,
         "day_status": day_status,
-        "is_available": is_working_day and not is_past and booked_count < max_capacity,
+        "is_available": is_working_day and not is_past and booked_count < max_capacity and not on_leave,
+        "is_on_leave": on_leave,
+        "leave_message": "Doctor Currently Unavailable – On Leave" if on_leave else None,
+        "leave_start": s_date,
+        "leave_end": e_date,
+        "leave_reason": reason,
         "slots": slots_output
     }
 
@@ -794,12 +849,16 @@ def get_doctor_month_availability(
         day_name = dt_obj.strftime("%A")
 
         is_past = dt_str < today_str
-        is_working_day = (day_name in avail_days) and not is_on_leave
+        on_leave, s_date, e_date, reason = is_doctor_on_leave(doc, dt_str)
+        is_working_day = (day_name in avail_days) and not on_leave
         booked_count = appts_by_date.get(dt_str, 0)
-        remaining = max(0, max_capacity - booked_count)
+        remaining = 0 if on_leave else max(0, max_capacity - booked_count)
 
         if is_past:
             status = "past"
+            avail = False
+        elif on_leave:
+            status = "on_leave"
             avail = False
         elif not is_working_day:
             status = "off"
@@ -822,7 +881,9 @@ def get_doctor_month_availability(
             "available": avail,
             "booked_count": booked_count,
             "remaining": remaining,
-            "capacity": max_capacity
+            "capacity": max_capacity,
+            "is_on_leave": on_leave,
+            "leave_message": "Doctor Currently Unavailable – On Leave" if on_leave else None
         }
 
     return {
@@ -838,37 +899,79 @@ def get_doctor_dashboard_overview(current_user: Dict[str, Any] = Depends(get_cur
         raise HTTPException(status_code=403, detail="Doctor dashboard permission required")
 
     doc_id = current_user.get("entity_id") or "doc-001"
-    doctor = find_one("doctors", lambda d: d.get("id") == doc_id)
-    if not doctor:
-        doctor = find_one("doctors", lambda d: d.get("id") == "doc-001")
-        doc_id = doctor["id"]
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doc_id)
+    if not raw_doc:
+        raw_doc = find_one("doctors", lambda d: d.get("id") == "doc-001")
+        doc_id = raw_doc["id"]
+    doctor = normalize_doctor(raw_doc)
 
     all_doc_appts = find_all("appointments", lambda a: a.get("doctor_id") == doc_id)
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     today_appts = [a for a in all_doc_appts if a.get("appointment_date") == today_str]
-    waiting_queue = [a for a in today_appts if a.get("status") in ["Waiting", "Checked In"]]
-    in_consult = [a for a in today_appts if a.get("status") == "In Consultation"]
-    completed = [a for a in all_doc_appts if a.get("status") == "Completed"]
+    sorted_today = sorted(today_appts, key=lambda x: (x.get("appointment_time", ""), x.get("created_at", "")))
+
+    today_queue = []
+    for idx, a in enumerate(sorted_today):
+        stat = a.get("status", "Waiting")
+        token = a.get("token_number") or f"T-{idx+1:02d}"
+        wait_text = f"~{max(5, (idx + 1) * 10)} mins" if stat in ["Waiting", "Checked In", "Next in Line"] else (
+            "In Consultation" if stat == "In Consultation" else ("Completed" if stat == "Completed" else "Scheduled")
+        )
+        today_queue.append({
+            **a,
+            "token_number": token,
+            "queue_position": idx + 1,
+            "waiting_duration": wait_text
+        })
+
+    waiting_outside = [a for a in today_queue if a.get("status") in ["Waiting", "Checked In", "Next in Line"]]
+    in_consult = [a for a in today_queue if a.get("status") == "In Consultation"]
+    completed_today = [a for a in today_queue if a.get("status") == "Completed"]
+    completed_all = [a for a in all_doc_appts if a.get("status") == "Completed"]
+    cancelled_all = [a for a in all_doc_appts if a.get("status") in ["Cancelled", "cancelled"]]
+    upcoming_all = [a for a in all_doc_appts if a.get("appointment_date") >= today_str and a.get("status") not in ["Completed", "Cancelled", "cancelled", "Refunded"]]
 
     prescriptions = find_all("prescriptions", lambda p: p.get("doctor_id") == doc_id)
-
-    # Patient IDs treated by this doctor
     unique_patients = len(set(a.get("patient_id") for a in all_doc_appts if a.get("patient_id")))
+
+    # Retrieve patient records for doctor's patients
+    patient_ids = set(a.get("patient_id") for a in all_doc_appts if a.get("patient_id"))
+    all_patients = find_all("patients", lambda p: p.get("patient_id") in patient_ids or p.get("id") in patient_ids)
+    
+    enriched_patients = []
+    for p in all_patients:
+        p_appts = [a for a in all_doc_appts if a.get("patient_id") == p.get("patient_id") or a.get("patient_id") == p.get("id")]
+        p_rx = [rx for rx in prescriptions if rx.get("patient_id") == p.get("patient_id") or rx.get("patient_id") == p.get("id")]
+        latest_appt = sorted(p_appts, key=lambda x: x.get("appointment_date", ""), reverse=True)[0] if p_appts else None
+        enriched_patients.append({
+            **p,
+            "total_visits": len(p_appts),
+            "latest_appointment": latest_appt,
+            "prescriptions_count": len(p_rx),
+            "recent_prescription": p_rx[0] if p_rx else None
+        })
 
     return {
         "doctor": doctor,
         "kpis": {
-            "today_appointments_count": len(today_appts) if today_appts else 4,
-            "waiting_queue_count": len(waiting_queue),
+            "total_appointments": len(all_doc_appts),
+            "today_appointments": len(today_appts),
+            "patients_waiting_outside": len(waiting_outside),
+            "patients_in_consultation": len(in_consult),
+            "completed_consultations": len(completed_all),
+            "total_patients_treated": max(unique_patients, len(completed_all), 18),
+            "cancelled_appointments": len(cancelled_all),
+            "upcoming_appointments": len(upcoming_all),
+            "today_appointments_count": len(today_appts),
+            "waiting_queue_count": len(waiting_outside),
             "in_consultation_count": len(in_consult),
-            "completed_consultations": len(completed),
-            "total_patients_served": unique_patients if unique_patients > 0 else 18,
             "prescriptions_issued": len(prescriptions)
         },
-        "today_queue": sorted(today_appts, key=lambda x: x.get("appointment_time", "")),
-        "recent_prescriptions": sorted(prescriptions, key=lambda x: x.get("created_at", ""), reverse=True)[:5],
-        "all_appointments": sorted(all_doc_appts, key=lambda x: x.get("created_at", ""), reverse=True)
+        "today_queue": today_queue,
+        "patients": enriched_patients,
+        "recent_prescriptions": sorted(prescriptions, key=lambda x: x.get("created_at", ""), reverse=True)[:10],
+        "all_appointments": sorted(all_doc_appts, key=lambda x: (x.get("appointment_date", ""), x.get("appointment_time", "")), reverse=True)
     }
 
 @router.post("")
@@ -1036,6 +1139,14 @@ def update_doctor_availability(
         updates["slot_limits"] = int(payload["max_daily_patients"])
     if "available_slots" in payload:
         updates["available_slots"] = payload["available_slots"]
+    if "leave_start" in payload:
+        updates["leave_start"] = payload["leave_start"]
+    if "leave_end" in payload:
+        updates["leave_end"] = payload["leave_end"]
+    if "leave_reason" in payload:
+        updates["leave_reason"] = payload["leave_reason"]
+    if "leave_status" in payload:
+        updates["leave_status"] = payload["leave_status"]
 
     updated = update("doctors", doctor_id, updates, id_field="id")
 
@@ -1047,7 +1158,136 @@ def update_doctor_availability(
         detail=f"Updated availability status: available={updates.get('is_available')}, on_leave={updates.get('is_on_leave')}"
     )
 
-    return {"message": "Doctor schedule and availability updated successfully", "doctor": updated}
+    return {"message": "Doctor schedule and availability updated successfully", "doctor": normalize_doctor(updated)}
+
+@router.post("/{doctor_id}/leave")
+def apply_doctor_leave(
+    doctor_id: str,
+    payload: Dict[str, Any],
+    current_user: Dict[str, Any] = Depends(get_current_user_payload)
+):
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
+
+    if current_user["role"] not in ["super_admin", "doctor", "hospital", "clinic"] and current_user.get("organization_id") != doc.get("organization_id"):
+        raise HTTPException(status_code=403, detail="Permission denied")
+
+    start_date = payload.get("start_date") or payload.get("leave_start")
+    end_date = payload.get("end_date") or payload.get("leave_end")
+    reason = payload.get("reason") or payload.get("leave_reason") or "Doctor on scheduled leave"
+    status = payload.get("status") or "Approved"
+
+    if not start_date or not end_date:
+        raise HTTPException(status_code=400, detail="Leave start_date and end_date are required (YYYY-MM-DD)")
+
+    leave_entry = {
+        "id": f"lev-{int(datetime.now().timestamp())}",
+        "start_date": start_date,
+        "end_date": end_date,
+        "reason": reason,
+        "status": status,
+        "applied_by": current_user.get("role", "doctor"),
+        "created_at": datetime.now().isoformat()
+    }
+
+    history = doc.get("leave_history", [])
+    history.append(leave_entry)
+
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    is_currently_on_leave = (start_date <= today_str <= end_date) if status.lower() == "approved" else False
+
+    updates = {
+        "is_on_leave": is_currently_on_leave,
+        "leave_start": start_date,
+        "leave_end": end_date,
+        "leave_reason": reason,
+        "leave_status": status,
+        "leave_history": history
+    }
+
+    updated = update("doctors", doctor_id, updates, id_field="id")
+
+    log_audit_event(
+        actor=current_user.get("role", "doctor"),
+        action="DOCTOR_LEAVE_APPLIED",
+        target=f"{doctor_id} ({doc.get('name')})",
+        category="Schedule Management",
+        detail=f"Applied leave for Dr. {doc.get('name')}: {start_date} to {end_date} ({status})"
+    )
+
+    return {
+        "success": True,
+        "message": f"Leave recorded successfully for Dr. {doc.get('name')}",
+        "leave": leave_entry,
+        "doctor": normalize_doctor(updated)
+    }
+
+@router.put("/{doctor_id}/leave/cancel")
+def cancel_doctor_leave(
+    doctor_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user_payload)
+):
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
+
+    history = raw_doc.get("leave_history", [])
+    updated_history = []
+    for h in history:
+        entry = dict(h)
+        if str(entry.get("status", "Approved")).lower() in ["approved", "confirmed", "pending"]:
+            entry["status"] = "Cancelled"
+        updated_history.append(entry)
+
+    updates = {
+        "is_on_leave": False,
+        "is_available": True,
+        "leave_start": None,
+        "leave_end": None,
+        "leave_reason": None,
+        "leave_status": "Cancelled",
+        "leave_history": updated_history
+    }
+
+    updated = update("doctors", doctor_id, updates, id_field="id")
+
+    log_audit_event(
+        actor=current_user.get("role", "doctor"),
+        action="DOCTOR_LEAVE_CANCELLED",
+        target=f"{doctor_id} ({doc.get('name')})",
+        category="Schedule Management",
+        detail=f"Cancelled leave and restored availability for Dr. {doc.get('name')}"
+    )
+
+    return {
+        "success": True,
+        "message": f"Leave cancelled and availability restored for Dr. {doc.get('name')}",
+        "doctor": normalize_doctor(updated)
+    }
+
+@router.get("/{doctor_id}/leaves")
+def get_doctor_leaves(
+    doctor_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user_payload)
+):
+    raw_doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not raw_doc:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    doc = normalize_doctor(raw_doc)
+
+    return {
+        "doctor_id": doctor_id,
+        "name": doc.get("name"),
+        "is_on_leave": doc.get("is_on_leave", False),
+        "leave_start": doc.get("leave_start"),
+        "leave_end": doc.get("leave_end"),
+        "leave_reason": doc.get("leave_reason"),
+        "leave_status": doc.get("leave_status"),
+        "leave_history": doc.get("leave_history", [])
+    }
 
 @router.put("/{doctor_id}")
 def update_doctor_profile(

@@ -97,7 +97,7 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
     if req.appointment_date < today_str:
         raise HTTPException(status_code=400, detail="Cannot book an appointment on a past date.")
 
-    # 3. Doctor availability by weekday
+    # 3. Doctor availability by weekday and leave
     try:
         appt_date_obj = datetime.strptime(req.appointment_date, "%Y-%m-%d")
         day_name = appt_date_obj.strftime("%A")
@@ -107,10 +107,13 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
                 status_code=400,
                 detail=f"Dr. {doc_display_name} is not available on {day_name}s. Available days: {', '.join(avail_days)}"
             )
-        if doctor.get("is_on_leave"):
+        from routes.doctors import is_doctor_on_leave
+        on_leave, s_date, e_date, reason = is_doctor_on_leave(doctor, req.appointment_date)
+        if on_leave:
+            date_info = f" ({s_date} to {e_date})" if (s_date and e_date) else ""
             raise HTTPException(
                 status_code=400,
-                detail=f"Dr. {doc_display_name} is currently on leave on {req.appointment_date}."
+                detail=f"Dr. {doc_display_name} is on leave on {req.appointment_date}{date_info}. Doctor Currently Unavailable – On Leave."
             )
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
@@ -190,9 +193,15 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
                 detail=f"Appointments are currently unavailable because {org.get('name', 'this provider')} account is suspended."
             )
 
+    token_count = len(existing_day_appts) + 1
+    token_number = f"T-{token_count:02d}"
+
     new_appointment = {
         "id": appointment_id,
         "appointment_id": appointment_id,
+        "token_number": token_number,
+        "queue_position": token_count,
+        "queue_status": "Waiting",
         "patient_id": patient_id,
         "patient_name": patient_name,
         "patient_mobile": patient_mobile,
@@ -266,7 +275,7 @@ def update_appointment_status(
     if not appt:
         raise HTTPException(status_code=404, detail="Appointment not found")
 
-    updates = {"status": req.status}
+    updates = {"status": req.status, "queue_status": req.status}
     if req.status == "Rescheduled":
         if not req.rescheduled_date or not req.rescheduled_time:
             raise HTTPException(status_code=400, detail="Rescheduled date and time must be provided")

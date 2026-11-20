@@ -126,15 +126,59 @@ export const DoctorDetailPage = () => {
               <span className="text-[11px] text-slate-500 block mt-0.5">Per Outpatient Visit</span>
             </div>
 
-            <button
-              onClick={() => setBookingModalOpen(true)}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition flex items-center justify-center gap-2"
-            >
-              <Calendar className="w-4 h-4" />
-              <span>Book Appointment Slot</span>
-            </button>
+            {doctor.is_on_leave ? (
+              <button
+                disabled
+                type="button"
+                className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-amber-100 text-amber-800 border border-amber-300 font-extrabold text-xs cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <AlertCircle className="w-4 h-4 text-amber-700" />
+                <span>Unavailable – On Leave</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setBookingModalOpen(true)}
+                className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition flex items-center justify-center gap-2"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>Book Appointment Slot</span>
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Doctor On Leave Notice Banner */}
+        {doctor.is_on_leave && (
+          <div className="p-4 sm:p-5 rounded-3xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                <AlertCircle className="w-5 h-5 text-amber-700" />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-sm text-amber-900 flex items-center gap-2">
+                  <span>Doctor Currently Unavailable – On Leave</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[10px] font-black uppercase tracking-wider">
+                    Paused
+                  </span>
+                </h3>
+                <p className="text-xs text-amber-800 mt-1">
+                  {doctor.leave_start && doctor.leave_end ? (
+                    <>Scheduled leave from <strong>{doctor.leave_start}</strong> to <strong>{doctor.leave_end}</strong>.</>
+                  ) : (
+                    'Doctor is currently away on approved leave.'
+                  )}
+                  {doctor.leave_reason ? ` Reason: ${doctor.leave_reason}.` : ''}
+                </p>
+                <p className="text-[11px] text-amber-700 mt-0.5">
+                  Appointment bookings are temporarily paused during approved leave and will automatically restore once the doctor returns.
+                </p>
+              </div>
+            </div>
+            <span className="px-3 py-1.5 rounded-xl bg-amber-200 text-amber-900 text-xs font-black shrink-0">
+              CURRENTLY ON LEAVE
+            </span>
+          </div>
+        )}
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -204,14 +248,35 @@ export const DoctorDetailPage = () => {
               </div>
             )}
 
-            {/* Bookable Real-Time Slots Calendar */}
+            {/* Bookable Real-Time Slots Calendar (BookMyShow Style) */}
             <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-teal-600" />
-                <span>Available Consultation Slots</span>
-              </h3>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-teal-600" />
+                  <span>Available Consultation Slots</span>
+                </h3>
+                {/* Visual Legend */}
+                <div className="flex items-center gap-3 text-[10px] font-semibold text-slate-500">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Available
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Booked
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-slate-300" /> Unavailable
+                  </span>
+                </div>
+              </div>
 
-              {slot_calendar && slot_calendar.length > 0 ? (
+              {doctor.is_on_leave ? (
+                <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 text-center text-xs text-amber-900 space-y-1">
+                  <p className="font-extrabold text-sm text-amber-800">Doctor Currently Unavailable – On Leave</p>
+                  <p className="text-amber-700">
+                    Consultation slots are temporarily locked until {doctor.leave_end || 'the scheduled leave ends'}.
+                  </p>
+                </div>
+              ) : slot_calendar && slot_calendar.length > 0 ? (
                 <div className="space-y-4">
                   {/* Day Picker Pills */}
                   <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -236,7 +301,7 @@ export const DoctorDetailPage = () => {
                       <div className="text-xs font-semibold text-slate-500">
                         Available slots for {selectedDate.display}:
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                         {selectedDate.slots.map((s, idx) => (
                           <button
                             key={idx}
@@ -245,14 +310,18 @@ export const DoctorDetailPage = () => {
                               setSelectedSlot(s.time);
                               setBookingModalOpen(true);
                             }}
-                            className={`px-3 py-2.5 rounded-xl text-xs font-semibold border transition text-center ${
+                            className={`p-2.5 rounded-xl text-xs font-bold border transition text-center flex flex-col items-center justify-center ${
                               s.available
-                                ? 'bg-emerald-50/60 hover:bg-emerald-100/80 text-emerald-800 border-emerald-200 cursor-pointer'
+                                ? 'bg-emerald-50/70 hover:bg-emerald-100 text-emerald-800 border-emerald-200 hover:border-emerald-400 cursor-pointer shadow-xs'
                                 : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'
                             }`}
                           >
-                            <Clock className="w-3.5 h-3.5 inline mr-1 text-slate-400" />
-                            {s.time}
+                            <span>{s.time}</span>
+                            <span className={`text-[8px] uppercase font-black mt-0.5 ${
+                              s.available ? 'text-emerald-600' : 'text-slate-400'
+                            }`}>
+                              {s.available ? 'Open' : 'Booked'}
+                            </span>
                           </button>
                         ))}
                       </div>

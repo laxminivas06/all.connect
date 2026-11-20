@@ -236,7 +236,7 @@ export const AppointmentsTab = ({
                   <tr key={a.id || a.appointment_id} className="hover:bg-slate-50/60 transition">
                     <td className="py-3 px-4 font-black text-slate-900">
                       <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-extrabold text-xs">
-                        #{a.queue_number || idx + 1}
+                        {a.token_number || `T-${String(a.queue_number || idx + 1).padStart(2, '0')}`}
                       </span>
                     </td>
                     <td className="py-3 px-4">
@@ -311,21 +311,52 @@ export const AppointmentsTab = ({
                         </button>
                       )}
 
-                      {a.status === 'Checked In' && (
-                        <button
-                          onClick={() => handleOpenStatusModal(a, 'Waiting')}
-                          className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs"
-                        >
-                          Move to Waiting
-                        </button>
+                      {(a.status === 'Waiting' || a.status === 'Checked In') && (
+                        <>
+                          <button
+                            onClick={() => handleOpenStatusModal(a, 'Next in Line')}
+                            className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs"
+                          >
+                            Call Next
+                          </button>
+                          <button
+                            onClick={() => handleOpenStatusModal(a, 'In Consultation')}
+                            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
+                          >
+                            Begin Consult
+                          </button>
+                          <button
+                            onClick={() => handleOpenStatusModal(a, 'Skipped')}
+                            className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs"
+                          >
+                            Skip
+                          </button>
+                        </>
                       )}
 
-                      {a.status === 'Waiting' && (
+                      {a.status === 'Next in Line' && (
+                        <>
+                          <button
+                            onClick={() => handleOpenStatusModal(a, 'In Consultation')}
+                            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
+                          >
+                            Enter Room
+                          </button>
+                          <button
+                            onClick={() => handleOpenStatusModal(a, 'Skipped')}
+                            className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs"
+                          >
+                            Skip
+                          </button>
+                        </>
+                      )}
+
+                      {a.status === 'Skipped' && (
                         <button
-                          onClick={() => handleOpenStatusModal(a, 'In Consultation')}
-                          className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
+                          onClick={() => handleOpenStatusModal(a, 'Waiting')}
+                          className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs"
                         >
-                          Begin Consult
+                          Recall
                         </button>
                       )}
 

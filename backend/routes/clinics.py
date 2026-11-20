@@ -149,17 +149,27 @@ def get_clinic_dashboard_overview(current_user: Dict[str, Any] = Depends(get_cur
 
     is_single_doc = len(doctors) == 1
 
+    from routes.doctors import is_doctor_on_leave
+    docs_on_leave = len([d for d in doctors if is_doctor_on_leave(d)[0]])
+    docs_available = len([d for d in doctors if d.get("is_available", True) and not is_doctor_on_leave(d)[0]])
+    patients_consulting = len([a for a in today_appts if a.get("status") == "In Consultation"])
+
     kpis_data = {
+        "total_doctors": len(doctors),
+        "available_doctors": docs_available,
+        "doctors_on_leave": docs_on_leave,
+        "doctors_currently_on_leave": docs_on_leave,
+        "unavailable_doctors": len(doctors) - docs_available,
+        "total_appointments": len(appts),
         "total_appointments_today": len(today_appts),
         "today_appointments": len(today_appts),
-        "completed_consultations": len(completed_appts),
-        "pending_appointments": len(pending_appts),
         "patients_waiting": len(waiting_appts),
         "waiting_queue": len(waiting_appts),
+        "patients_consulting": patients_consulting,
+        "patients_currently_consulting": patients_consulting,
+        "completed_consultations": len(completed_appts),
+        "pending_appointments": len(pending_appts),
         "cancelled_appointments": len(cancelled_appts),
-        "total_doctors": len(doctors),
-        "available_doctors": len([d for d in doctors if d.get("is_available", True) and not d.get("is_on_leave", False)]),
-        "unavailable_doctors": len([d for d in doctors if not d.get("is_available", True) or d.get("is_on_leave", False)]),
         "today_collection": today_rev if today_rev > 0 else 2250,
         "today_revenue": today_rev if today_rev > 0 else 2250,
         "monthly_collection": monthly_rev if monthly_rev > 0 else 38500,

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Pagination } from '../../components/Pagination';
 import {
   FileCheck,
   Search,
@@ -21,6 +22,10 @@ export const DoctorHistoryTab = ({ data }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [timeFilter, setTimeFilter] = useState('all'); // all, today, week, month
 
+  // Pagination (10, 25, 50, 100)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const todayStr = new Date().toISOString().split('T')[0];
 
   const filteredHistory = completedAppointments.filter((a) => {
@@ -38,6 +43,12 @@ export const DoctorHistoryTab = ({ data }) => {
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredHistory.length / pageSize) || 1;
+  const paginatedHistory = filteredHistory.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="space-y-6">
@@ -99,7 +110,7 @@ export const DoctorHistoryTab = ({ data }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredHistory.map((appt) => (
+                {paginatedHistory.map((appt) => (
                   <tr key={appt.id || appt.appointment_id} className="hover:bg-slate-50/70 transition">
                     <td className="p-3 font-bold text-slate-900">
                       {appt.appointment_date} <span className="text-slate-400 block text-[11px] font-normal">{appt.appointment_time}</span>
@@ -121,6 +132,21 @@ export const DoctorHistoryTab = ({ data }) => {
                 ))}
               </tbody>
             </table>
+
+            {/* Pagination Controls */}
+            <div className="pt-4 border-t border-slate-100">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredHistory.length}
+                pageSize={pageSize}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(newSize) => {
+                  setPageSize(newSize);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
           </div>
         )}
       </div>

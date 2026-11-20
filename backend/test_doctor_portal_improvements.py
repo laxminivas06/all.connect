@@ -86,5 +86,35 @@ class TestDoctorPortalImprovements(unittest.TestCase):
         self.assertTrue(doc["is_available"])
         self.assertIn("available_days", doc)
 
+    def test_05_prescription_with_clinical_id_tests_and_recommendations(self):
+        """Test POST /api/prescriptions/create with dedicated clinical_id, additional tests, and recommendations."""
+        payload = {
+            "patient_id": "PAT-2026-000001",
+            "clinical_id": "CLN-2026-TEST-009",
+            "diagnosis": "Viral Pharyngitis",
+            "symptoms": ["Sore throat", "Fever"],
+            "medicines": [
+                {
+                    "name": "Paracetamol 650mg",
+                    "dosage": "650mg",
+                    "frequency": "TID",
+                    "duration": "3 days",
+                    "quantity": "9 tablets",
+                    "instructions": "After food"
+                }
+            ],
+            "tests": ["Complete Blood Count (CBC)", "Rapid Throat Swab"],
+            "additional_tests": "Complete Blood Count (CBC), Rapid Throat Swab",
+            "recommendations": "Warm saline gargle 3 times daily. Hydration 2.5L/day. Follow up in 5 days.",
+            "advice": "Warm saline gargle 3 times daily. Hydration 2.5L/day."
+        }
+        resp = client.post("/api/prescriptions/create", json=payload, headers=self.doctor_headers)
+        self.assertIn(resp.status_code, [200, 201])
+        data = resp.json()
+        rx = data.get("prescription", data)
+        self.assertEqual(rx["patient_id"], "PAT-2026-000001")
+        self.assertEqual(rx.get("clinical_id"), "CLN-2026-TEST-009")
+        self.assertEqual(rx.get("recommendations"), payload["recommendations"])
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../../services/api';
+import { Pagination } from '../../components/Pagination';
 import {
   Users,
   Search,
@@ -37,23 +39,30 @@ export const DoctorPatientsTab = ({ data, onSelectPatient }) => {
   const allAppointments = data?.all_appointments || data?.appointments || [];
   const doctorPrescriptions = data?.recent_prescriptions || data?.prescriptions || [];
 
-  // Search, Sort & Pagination State
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Search, Sort & Pagination State (10, 25, 50, 100)
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState('patient_id'); // 'patient_id', 'full_name', 'age'
   const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [pageSize, setPageSize] = useState(10);
 
-  // Selected Patient Details / More Info View State
-  const [selectedPatientId, setSelectedPatientId] = useState(null);
+  // Selected Patient Details / More Info View State with URL Persistence
+  const [selectedPatientId, setSelectedPatientId] = useState(searchParams.get('patient_id') || null);
   const [patientDetails, setPatientDetails] = useState(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [detailsError, setDetailsError] = useState(null);
   const [activeDetailsSection, setActiveDetailsSection] = useState('info'); // 'info', 'medical', 'appointments', 'prescriptions', 'reports'
 
   // More Info Loader
-  const handleOpenMoreInfo = async (patientId) => {
+  const handleOpenMoreInfo = async (patientId, updateUrl = true) => {
     setSelectedPatientId(patientId);
+    if (updateUrl) {
+      const nextParams = new URLSearchParams(searchParams);
+      nextParams.set('patient_id', patientId);
+      setSearchParams(nextParams);
+    }
     setLoadingDetails(true);
     setDetailsError(null);
     setActiveDetailsSection('info');
@@ -112,9 +121,23 @@ export const DoctorPatientsTab = ({ data, onSelectPatient }) => {
     }
   };
 
+  // Reload persistence: automatically load patient dossier if patient_id in URL
+  useEffect(() => {
+    const urlPatientId = searchParams.get('patient_id');
+    if (urlPatientId && (!patientDetails || selectedPatientId !== urlPatientId)) {
+      handleOpenMoreInfo(urlPatientId, false);
+    } else if (!urlPatientId && selectedPatientId) {
+      setSelectedPatientId(null);
+      setPatientDetails(null);
+    }
+  }, [searchParams]);
+
   const handleBackToList = () => {
     setSelectedPatientId(null);
     setPatientDetails(null);
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('patient_id');
+    setSearchParams(nextParams);
   };
 
   // Filter patients by Name or Patient ID
@@ -149,10 +172,10 @@ export const DoctorPatientsTab = ({ data, onSelectPatient }) => {
   });
 
   // Pagination
-  const totalPages = Math.ceil(sortedPatients.length / itemsPerPage) || 1;
+  const totalPages = Math.ceil(sortedPatients.length / pageSize) || 1;
   const paginatedPatients = sortedPatients.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
   );
 
   const handleSort = (field) => {
@@ -745,37 +768,20 @@ export const DoctorPatientsTab = ({ data, onSelectPatient }) => {
           </table>
         </div>
 
-        {/* Pagination Bar */}
-        {sortedPatients.length > itemsPerPage && (
-          <div className="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>
-              Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-              {Math.min(currentPage * itemsPerPage, sortedPatients.length)} of {sortedPatients.length} patients
-            </span>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <span className="font-bold text-slate-800 px-2">
-                Page {currentPage} of {totalPages}
-              </span>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Global Pagination Bar (10, 25, 50, 100) */}
+        <div className="p-4 border-t border-slate-100">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={sortedPatients.length}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setCurrentPage(1);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

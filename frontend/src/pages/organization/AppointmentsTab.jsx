@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Pagination } from '../../components/Pagination';
 import {
   Calendar,
   Clock,
@@ -34,9 +36,34 @@ export const AppointmentsTab = ({
   const actualDoctors = doctors.length > 0 ? doctors : (data?.doctors || []);
   const singleDoc = isSingleDoctor || data?.is_single_doctor;
 
-  const [filterSubTab, setFilterSubTab] = useState(initialFilter); // all, today, queue, pending, confirmed, completed, cancelled
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filterFromUrl = searchParams.get('filter');
+
+  const [filterSubTab, setFilterSubTab] = useState(filterFromUrl || initialFilter); // all, today, queue, consultations, pending, confirmed, completed, cancelled
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDoctorFilter, setSelectedDoctorFilter] = useState('all');
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Sync sub-tab with URL
+  useEffect(() => {
+    if (filterFromUrl && filterFromUrl !== filterSubTab) {
+      setFilterSubTab(filterFromUrl);
+      setCurrentPage(1);
+    }
+  }, [filterFromUrl]);
+
+  const handleSubTabChange = (tabKey) => {
+    setFilterSubTab(tabKey);
+    setCurrentPage(1);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('filter', tabKey);
+      return next;
+    });
+  };
 
   // Status Modal State
   const [statusModalOpen, setStatusModalOpen] = useState(false);
@@ -97,6 +124,28 @@ export const AppointmentsTab = ({
 
     return true;
   });
+
+  const paginatedAppointments = filteredAppointments.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  // Queue visual overview counts
+  const arrivedPatientsCount = effectiveAppointments.filter(a =>
+    ['Checked In', 'Waiting', 'Next in Line', 'In Consultation', 'Completed'].includes(a.status)
+  ).length;
+  const waitingPatientsCount = effectiveAppointments.filter(a =>
+    ['Waiting', 'Checked In', 'Next in Line'].includes(a.status)
+  ).length;
+  const consultingPatientsCount = effectiveAppointments.filter(a =>
+    a.status === 'In Consultation'
+  ).length;
+  const completedPatientsCount = effectiveAppointments.filter(a =>
+    a.status === 'Completed'
+  ).length;
+  const cancelledPatientsCount = effectiveAppointments.filter(a =>
+    a.status === 'Cancelled'
+  ).length;
 
   const handleOpenStatusModal = (appt, nextStatus) => {
     setSelectedAppt(appt);
@@ -170,7 +219,7 @@ export const AppointmentsTab = ({
           ].map(t => (
             <button
               key={t.key}
-              onClick={() => setFilterSubTab(t.key)}
+              onClick={() => handleSubTabChange(t.key)}
               className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition ${
                 filterSubTab === t.key
                   ? 'bg-blue-600 text-white shadow-sm'
@@ -190,6 +239,41 @@ export const AppointmentsTab = ({
           <span>Sync Appointments</span>
         </button>
       </div>
+
+      {/* Live Queue Visual Overview (Bookmark-Style Indicators) */}
+      {filterSubTab === 'queue' && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 animate-in fade-in">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 border-l-4 border-l-blue-600 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Total Arrived</span>
+            <span className="text-2xl font-black text-slate-900 mt-1 block">{arrivedPatientsCount}</span>
+            <span className="text-[10px] text-blue-600 font-semibold">Patients on premises</span>
+          </div>
+
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 border-l-4 border-l-purple-600 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Waiting Patients</span>
+            <span className="text-2xl font-black text-purple-700 mt-1 block">{waitingPatientsCount}</span>
+            <span className="text-[10px] text-purple-600 font-semibold">In waiting room</span>
+          </div>
+
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 border-l-4 border-l-amber-500 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">In Consultation</span>
+            <span className="text-2xl font-black text-amber-700 mt-1 block">{consultingPatientsCount}</span>
+            <span className="text-[10px] text-amber-600 font-semibold">In physician bay</span>
+          </div>
+
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 border-l-4 border-l-emerald-600 shadow-2xs">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Completed</span>
+            <span className="text-2xl font-black text-emerald-700 mt-1 block">{completedPatientsCount}</span>
+            <span className="text-[10px] text-emerald-600 font-semibold">Consultations finished</span>
+          </div>
+
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 border-l-4 border-l-rose-500 shadow-2xs col-span-2 sm:col-span-1">
+            <span className="text-[11px] font-bold text-slate-500 uppercase block">Cancelled</span>
+            <span className="text-2xl font-black text-rose-700 mt-1 block">{cancelledPatientsCount}</span>
+            <span className="text-[10px] text-rose-600 font-semibold">Missed / cancelled</span>
+          </div>
+        </div>
+      )}
 
       {/* Consultation Overview KPI Bar */}
       {filterSubTab === 'consultations' && (
@@ -267,8 +351,8 @@ export const AppointmentsTab = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-400 font-bold uppercase text-[10px]">
-                  <th className="py-3 px-4">Queue #</th>
+                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px] tracking-wider">
+                  <th className="py-3 px-4 w-24">Queue #</th>
                   <th className="py-3 px-4">Patient Information</th>
                   <th className="py-3 px-4">Assigned Doctor</th>
                   <th className="py-3 px-4">Schedule</th>
@@ -278,10 +362,10 @@ export const AppointmentsTab = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredAppointments.map((a, idx) => (
+                {paginatedAppointments.map((a, idx) => (
                   <tr key={a.id || a.appointment_id} className="hover:bg-slate-50/60 transition">
-                    <td className="py-3 px-4 font-black text-slate-900">
-                      <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-extrabold text-xs">
+                    <td className="py-3 px-4 font-black text-slate-900 w-24">
+                      <span className="inline-flex items-center justify-center min-w-[50px] px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-black text-xs border border-blue-200 shadow-2xs font-mono">
                         {a.token_number || `T-${String(a.queue_number || idx + 1).padStart(2, '0')}`}
                       </span>
                     </td>
@@ -330,117 +414,135 @@ export const AppointmentsTab = ({
                       <span className="font-extrabold text-slate-900 block">₹{a.consultation_fee || 500}</span>
                       <span className="text-[10px] text-slate-500 font-medium">{a.payment_status || 'Pending'}</span>
                     </td>
-                    <td className="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
-                      <button
-                        onClick={() => {
-                          setSelectedConsultation(a);
-                          setConsultationModalOpen(true);
-                        }}
-                        className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs inline-flex items-center gap-1"
-                        title="View consultation details & clinical notes"
-                      >
-                        <Eye className="w-3 h-3 text-slate-500" />
-                        <span>Details</span>
-                      </button>
-
-                      {a.status === 'Pending' && (
-                        <>
+                    <td className="py-3 px-4 text-right">
+                      <div className="flex flex-col items-end gap-1.5">
+                        {/* Row 1: Details */}
+                        <div>
                           <button
-                            onClick={() => handleOpenStatusModal(a, 'Confirmed')}
-                            className="px-2.5 py-1 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold text-xs"
+                            onClick={() => {
+                              setSelectedConsultation(a);
+                              setConsultationModalOpen(true);
+                            }}
+                            className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs inline-flex items-center gap-1 shadow-2xs transition"
+                            title="View consultation details & clinical notes"
                           >
-                            Accept
+                            <Eye className="w-3 h-3 text-slate-500" />
+                            <span>Details</span>
                           </button>
-                          <button
-                            onClick={() => handleOpenStatusModal(a, 'Cancelled')}
-                            className="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs"
-                          >
-                            Reject
-                          </button>
-                        </>
-                      )}
+                        </div>
 
-                      {a.status === 'Confirmed' && (
-                        <button
-                          onClick={() => handleOpenStatusModal(a, 'Checked In')}
-                          className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs"
-                        >
-                          Check In
-                        </button>
-                      )}
+                        {/* Row 2: Workflow Action (Check In / Begin / Enter / Complete) + Reschedule */}
+                        <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                          {a.status === 'Pending' && (
+                            <>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'Confirmed')}
+                                className="px-2.5 py-1 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold text-xs"
+                              >
+                                Accept
+                              </button>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'Cancelled')}
+                                className="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
 
-                      {(a.status === 'Waiting' || a.status === 'Checked In') && (
-                        <>
-                          <button
-                            onClick={() => handleOpenStatusModal(a, 'Next in Line')}
-                            className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs"
-                          >
-                            Call Next
-                          </button>
-                          <button
-                            onClick={() => handleOpenStatusModal(a, 'In Consultation')}
-                            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
-                          >
-                            Begin Consult
-                          </button>
-                          <button
-                            onClick={() => handleOpenStatusModal(a, 'Skipped')}
-                            className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs"
-                          >
-                            Skip
-                          </button>
-                        </>
-                      )}
+                          {a.status === 'Confirmed' && (
+                            <button
+                              onClick={() => handleOpenStatusModal(a, 'Checked In')}
+                              className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs"
+                            >
+                              Check In
+                            </button>
+                          )}
 
-                      {a.status === 'Next in Line' && (
-                        <>
-                          <button
-                            onClick={() => handleOpenStatusModal(a, 'In Consultation')}
-                            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
-                          >
-                            Enter Room
-                          </button>
-                          <button
-                            onClick={() => handleOpenStatusModal(a, 'Skipped')}
-                            className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs"
-                          >
-                            Skip
-                          </button>
-                        </>
-                      )}
+                          {(a.status === 'Waiting' || a.status === 'Checked In') && (
+                            <>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'Next in Line')}
+                                className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs"
+                              >
+                                Call Next
+                              </button>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'In Consultation')}
+                                className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
+                              >
+                                Begin Consult
+                              </button>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'Skipped')}
+                                className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs"
+                              >
+                                Skip
+                              </button>
+                            </>
+                          )}
 
-                      {a.status === 'Skipped' && (
-                        <button
-                          onClick={() => handleOpenStatusModal(a, 'Waiting')}
-                          className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs"
-                        >
-                          Recall
-                        </button>
-                      )}
+                          {a.status === 'Next in Line' && (
+                            <>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'In Consultation')}
+                                className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm"
+                              >
+                                Enter Room
+                              </button>
+                              <button
+                                onClick={() => handleOpenStatusModal(a, 'Skipped')}
+                                className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs"
+                              >
+                                Skip
+                              </button>
+                            </>
+                          )}
 
-                      {a.status === 'In Consultation' && (
-                        <button
-                          onClick={() => handleOpenStatusModal(a, 'Completed')}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm"
-                        >
-                          Complete
-                        </button>
-                      )}
+                          {a.status === 'Skipped' && (
+                            <button
+                              onClick={() => handleOpenStatusModal(a, 'Waiting')}
+                              className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs"
+                            >
+                              Recall
+                            </button>
+                          )}
 
-                      {a.status !== 'Completed' && a.status !== 'Cancelled' && (
-                        <button
-                          onClick={() => handleOpenStatusModal(a, 'Rescheduled')}
-                          className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
-                        >
-                          Reschedule
-                        </button>
-                      )}
+                          {a.status === 'In Consultation' && (
+                            <button
+                              onClick={() => handleOpenStatusModal(a, 'Completed')}
+                              className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm"
+                            >
+                              Complete
+                            </button>
+                          )}
+
+                          {a.status !== 'Completed' && a.status !== 'Cancelled' && (
+                            <button
+                              onClick={() => handleOpenStatusModal(a, 'Rescheduled')}
+                              className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
+                            >
+                              Reschedule
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+        )}
+
+        {filteredAppointments.length > 0 && (
+          <Pagination
+            totalItems={filteredAppointments.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+          />
         )}
       </div>
 

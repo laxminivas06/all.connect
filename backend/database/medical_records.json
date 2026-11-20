@@ -37,5 +37,99 @@
     "doctor_notes": "Normal baseline cardiac study.",
     "file_url": "/uploads/reports/sample_ecg_report.pdf",
     "created_at": "2026-01-18T10:15:00"
+  },
+  {
+    "id": "REC-PRE-2026-000157",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "record_type": "Prescription",
+    "category": "Prescription",
+    "title": "Digital Prescription - Acute Bronchitis and allergic rhinitis",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "date": "2026-11-21",
+    "prescription_id": "PRE-2026-000157",
+    "clinical_id": "appt-seed-001",
+    "medicines": [
+      {
+        "name": "Amoxicillin 500mg",
+        "dosage": "500mg",
+        "frequency": "1-0-1",
+        "duration": "5 Days",
+        "instructions": "Take after meals",
+        "quantity": "10 Tablets"
+      },
+      {
+        "name": "Cetirizine 10mg",
+        "dosage": "10mg",
+        "frequency": "0-0-1",
+        "duration": "7 Days",
+        "instructions": "Take at night before bed",
+        "quantity": "7 Tablets"
+      }
+    ],
+    "tests": [],
+    "recommendations": "Drink warm water and avoid cold beverages.",
+    "created_at": "2026-11-21T04:58:30.383505"
+  },
+  {
+    "id": "REC-PRE-2026-000158",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "record_type": "Prescription",
+    "category": "Prescription",
+    "title": "Digital Prescription - Acute Bronchitis and allergic rhinitis",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "date": "2026-11-21",
+    "prescription_id": "PRE-2026-000158",
+    "clinical_id": "appt-seed-001",
+    "medicines": [
+      {
+        "name": "Amoxicillin 500mg",
+        "dosage": "500mg",
+        "frequency": "1-0-1",
+        "duration": "5 Days",
+        "instructions": "Take after meals",
+        "quantity": "10 Tablets"
+      },
+      {
+        "name": "Cetirizine 10mg",
+        "dosage": "10mg",
+        "frequency": "0-0-1",
+        "duration": "7 Days",
+        "instructions": "Take at night before bed",
+        "quantity": "7 Tablets"
+      }
+    ],
+    "tests": [],
+    "recommendations": "Drink warm water and avoid cold beverages.",
+    "created_at": "2026-11-21T04:58:58.186315"
+  },
+  {
+    "id": "REC-PRE-2026-000159",
+    "patient_id": "PAT-2026-000001",
+    "patient_name": "Laxmi Narayana Sharma",
+    "record_type": "Prescription",
+    "category": "Prescription",
+    "title": "Digital Prescription - Viral Pharyngitis",
+    "doctor_name": "Dr. Rajesh Sharma",
+    "organization_name": "Yashoda Super Speciality Hospital",
+    "date": "2026-11-21",
+    "prescription_id": "PRE-2026-000159",
+    "clinical_id": "CLN-2026-TEST-009",
+    "medicines": [
+      {
+        "name": "Paracetamol 650mg",
+        "dosage": "650mg",
+        "frequency": "TID",
+        "duration": "3 days",
+        "instructions": "After food",
+        "quantity": "9 tablets"
+      }
+    ],
+    "tests": "Complete Blood Count (CBC), Rapid Throat Swab",
+    "recommendations": "Warm saline gargle 3 times daily. Hydration 2.5L/day. Follow up in 5 days.",
+    "created_at": "2026-11-21T04:58:58.363192"
   }
 ]

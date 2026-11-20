@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Pagination } from '../../components/Pagination';
 import {
   Stethoscope,
   PlusCircle,
@@ -46,12 +48,24 @@ export const DoctorsTab = ({
   const effectiveAppointments = appointments.length > 0 ? appointments : (data?.recent_appointments || []);
   const singleDoc = isSingleDoctor || data?.is_single_doctor;
 
-  // View mode: 'all' | 'assignments' | 'availability'
-  const [viewMode, setViewMode] = useState(initialView);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const doctorIdFromUrl = searchParams.get('doctor_id');
+  const tabFromUrl = searchParams.get('tab');
+
+  // View mode: 'all' | 'assignments' (separate availability sub-tab removed per requirements)
+  const [viewMode, setViewMode] = useState(
+    tabFromUrl === 'assignments' || initialView === 'assignments' ? 'assignments' : 'all'
+  );
   const [selectedDoctorForDetails, setSelectedDoctorForDetails] = useState(null);
   const [isEditingDoctor, setIsEditingDoctor] = useState(false);
   const [editFormData, setEditFormData] = useState({});
   const [editLoading, setEditLoading] = useState(false);
+
+  // Pagination states
+  const [doctorsPage, setDoctorsPage] = useState(1);
+  const [doctorsPageSize, setDoctorsPageSize] = useState(10);
+  const [assignmentsPage, setAssignmentsPage] = useState(1);
+  const [assignmentsPageSize, setAssignmentsPageSize] = useState(10);
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -249,8 +263,44 @@ export const DoctorsTab = ({
     });
   }, [assignmentsList, searchQuery, selectedDeptFilter, selectedStatusFilter]);
 
+  // Paginated Slices
+  const paginatedDoctors = useMemo(() => {
+    return filteredDoctors.slice(
+      (doctorsPage - 1) * doctorsPageSize,
+      doctorsPage * doctorsPageSize
+    );
+  }, [filteredDoctors, doctorsPage, doctorsPageSize]);
+
+  const paginatedAssignments = useMemo(() => {
+    return filteredAssignments.slice(
+      (assignmentsPage - 1) * assignmentsPageSize,
+      assignmentsPage * assignmentsPageSize
+    );
+  }, [filteredAssignments, assignmentsPage, assignmentsPageSize]);
+
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('tab', mode);
+      return next;
+    });
+  };
+
+  // Auto-restore selected doctor profile on reload
+  useEffect(() => {
+    if (doctorIdFromUrl) {
+      const doc = effectiveDoctors.find(d => d.id === doctorIdFromUrl);
+      if (doc && (!selectedDoctorForDetails || selectedDoctorForDetails.id !== doctorIdFromUrl)) {
+        handleOpenDoctorProfile(doc, false);
+      }
+    } else if (selectedDoctorForDetails && !doctorIdFromUrl) {
+      setSelectedDoctorForDetails(null);
+    }
+  }, [doctorIdFromUrl, effectiveDoctors]);
+
   // Actions
-  const handleOpenDoctorProfile = (doc) => {
+  const handleOpenDoctorProfile = (doc, updateUrl = true) => {
     setSelectedDoctorForDetails(doc);
     setEditFormData({
       name: doc.name || '',
@@ -274,6 +324,23 @@ export const DoctorsTab = ({
       leave_reason: doc.leave_reason || ''
     });
     setIsEditingDoctor(false);
+
+    if (updateUrl) {
+      setSearchParams(prev => {
+        const next = new URLSearchParams(prev);
+        next.set('doctor_id', doc.id);
+        return next;
+      });
+    }
+  };
+
+  const handleBackToList = () => {
+    setSelectedDoctorForDetails(null);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.delete('doctor_id');
+      return next;
+    });
   };
 
   const handleSaveDoctorProfile = async (e) => {
@@ -399,7 +466,7 @@ export const DoctorsTab = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white rounded-2xl border border-slate-200/90 shadow-2xs">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setSelectedDoctorForDetails(null)}
+              onClick={handleBackToList}
               className="p-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 transition flex items-center gap-1.5 text-xs font-bold"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -777,7 +844,7 @@ export const DoctorsTab = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
         <div className="flex items-center space-x-2 overflow-x-auto text-xs font-bold">
           <button
-            onClick={() => setViewMode('all')}
+            onClick={() => handleViewModeChange('all')}
             className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
               viewMode === 'all'
                 ? 'bg-blue-600 text-white shadow-xs'
@@ -789,7 +856,7 @@ export const DoctorsTab = ({
           </button>
 
           <button
-            onClick={() => setViewMode('assignments')}
+            onClick={() => handleViewModeChange('assignments')}
             className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
               viewMode === 'assignments'
                 ? 'bg-blue-600 text-white shadow-xs'
@@ -798,18 +865,6 @@ export const DoctorsTab = ({
           >
             <UserCheck className="w-3.5 h-3.5" />
             <span>Doctor Assignments ({effectiveAppointments.length})</span>
-          </button>
-
-          <button
-            onClick={() => setViewMode('availability')}
-            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
-              viewMode === 'availability'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-            }`}
-          >
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Doctor Availability</span>
           </button>
         </div>
 
@@ -924,7 +979,7 @@ export const DoctorsTab = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filteredDoctors.map(doc => {
+                  {paginatedDoctors.map(doc => {
                     const isAvail = doc.is_available !== false && !doc.is_on_leave;
                     return (
                       <tr key={doc.id} className="hover:bg-slate-50/70 transition">
@@ -1002,6 +1057,16 @@ export const DoctorsTab = ({
               </table>
             </div>
           )}
+
+          {filteredDoctors.length > 0 && (
+            <Pagination
+              totalItems={filteredDoctors.length}
+              pageSize={doctorsPageSize}
+              currentPage={doctorsPage}
+              onPageChange={setDoctorsPage}
+              onPageSizeChange={setDoctorsPageSize}
+            />
+          )}
         </div>
       )}
 
@@ -1032,7 +1097,7 @@ export const DoctorsTab = ({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filteredAssignments.map(item => (
+                  {paginatedAssignments.map(item => (
                     <tr key={item.assignment_id} className="hover:bg-slate-50/70 transition">
                       {/* 1. Assignment ID */}
                       <td className="py-3 px-4 font-mono font-bold text-slate-900">
@@ -1107,119 +1172,15 @@ export const DoctorsTab = ({
               </table>
             </div>
           )}
-        </div>
-      )}
 
-      {/* ------------------------------------------------------------- */}
-      {/* 3. DOCTOR AVAILABILITY: TABLE-BASED MANAGEMENT */}
-      {/* ------------------------------------------------------------- */}
-      {viewMode === 'availability' && (
-        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-          {filteredDoctors.length === 0 ? (
-            <div className="p-12 text-center space-y-2">
-              <Calendar className="w-10 h-10 text-slate-300 mx-auto" />
-              <h4 className="text-sm font-bold text-slate-800">No doctor availability records found</h4>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px] tracking-wider">
-                    <th className="py-3 px-4">Doctor ID</th>
-                    <th className="py-3 px-4">Doctor Name</th>
-                    <th className="py-3 px-4">Department</th>
-                    <th className="py-3 px-4">Working Days</th>
-                    <th className="py-3 px-4">Working Hours</th>
-                    <th className="py-3 px-4">Available Slots</th>
-                    <th className="py-3 px-4">Availability Status</th>
-                    <th className="py-3 px-4">Leave Status</th>
-                    <th className="py-3 px-4 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {filteredDoctors.map(doc => {
-                    const isAvail = doc.is_available !== false && !doc.is_on_leave;
-                    return (
-                      <tr key={doc.id} className="hover:bg-slate-50/70 transition">
-                        {/* 1. Doctor ID */}
-                        <td className="py-3 px-4 font-mono font-bold text-blue-600">
-                          {doc.id}
-                        </td>
-
-                        {/* 2. Doctor Name */}
-                        <td className="py-3 px-4">
-                          <span className="font-extrabold text-slate-900 block text-sm">{doc.name}</span>
-                          <span className="text-[10px] text-slate-400">{doc.qualifications}</span>
-                        </td>
-
-                        {/* 3. Department */}
-                        <td className="py-3 px-4 font-bold text-slate-800">
-                          {doc.department}
-                        </td>
-
-                        {/* 4. Working Days */}
-                        <td className="py-3 px-4 text-slate-700">
-                          <span className="line-clamp-1 font-medium">
-                            {Array.isArray(doc.available_days) ? doc.available_days.map(d => d.slice(0, 3)).join(', ') : 'Mon - Sat'}
-                          </span>
-                        </td>
-
-                        {/* 5. Working Hours */}
-                        <td className="py-3 px-4 font-medium text-slate-700">
-                          {doc.working_hours || '09:30 AM - 05:30 PM'}
-                        </td>
-
-                        {/* 6. Available Slots */}
-                        <td className="py-3 px-4">
-                          <span className="font-bold text-slate-900">
-                            {doc.slot_limits || doc.max_daily_patients || 25} slots
-                          </span>
-                          <span className="text-[10px] text-slate-400 block">({doc.appointment_duration || 15}m / patient)</span>
-                        </td>
-
-                        {/* 7. Availability Status Toggle */}
-                        <td className="py-3 px-4">
-                          <button
-                            type="button"
-                            onClick={() => handleQuickToggleAvailability(doc)}
-                            className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase transition flex items-center gap-1.5 ${
-                              isAvail
-                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
-                                : 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200'
-                            }`}
-                            title="Click to toggle Available / Unavailable"
-                          >
-                            <span className={`w-2 h-2 rounded-full ${isAvail ? 'bg-emerald-500' : 'bg-slate-400'}`} />
-                            <span>{isAvail ? 'Available' : 'Unavailable'}</span>
-                          </button>
-                        </td>
-
-                        {/* 8. Leave Status */}
-                        <td className="py-3 px-4">
-                          {doc.is_on_leave ? (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200 block text-center">
-                              On Leave
-                            </span>
-                          ) : (
-                            <span className="text-[11px] text-slate-400 font-medium">Active On-Duty</span>
-                          )}
-                        </td>
-
-                        {/* 9. Action */}
-                        <td className="py-3 px-4 text-right">
-                          <button
-                            onClick={() => handleOpenAvailability(doc)}
-                            className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition"
-                          >
-                            Update Schedule
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+          {filteredAssignments.length > 0 && (
+            <Pagination
+              totalItems={filteredAssignments.length}
+              pageSize={assignmentsPageSize}
+              currentPage={assignmentsPage}
+              onPageChange={setAssignmentsPage}
+              onPageSizeChange={setAssignmentsPageSize}
+            />
           )}
         </div>
       )}

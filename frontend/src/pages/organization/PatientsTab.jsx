@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Pagination } from '../../components/Pagination';
 import {
   Users,
   Search,
@@ -29,19 +31,49 @@ export const PatientsTab = ({ orgType = 'hospital', data }) => {
   const isHospital = orgType === 'hospital';
   const appointments = data?.recent_appointments || [];
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const patientIdFromUrl = searchParams.get('patient_id');
+
   // State
   const [searchTerm, setSearchTerm] = useState('');
   const [genderFilter, setGenderFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState('date-desc'); // date-desc, date-asc, name-asc, name-desc, age-asc, age-desc
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const [pageSize, setPageSize] = useState(10);
 
-  // Selected Patient for More Info View
-  const [selectedPatientId, setSelectedPatientId] = useState(null);
+  // Selected Patient for More Info View (persisted via searchParams)
+  const [selectedPatientId, setSelectedPatientId] = useState(patientIdFromUrl || null);
   const [patientDetails, setPatientDetails] = useState(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
   const [detailsError, setDetailsError] = useState(null);
+
+  // Sync patientIdFromUrl on navigation / browser back-forward / reload
+  useEffect(() => {
+    if (patientIdFromUrl && patientIdFromUrl !== selectedPatientId) {
+      setSelectedPatientId(patientIdFromUrl);
+    } else if (!patientIdFromUrl && selectedPatientId) {
+      setSelectedPatientId(null);
+    }
+  }, [patientIdFromUrl]);
+
+  const handleOpenPatientDetails = (pId) => {
+    setSelectedPatientId(pId);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('patient_id', pId);
+      return next;
+    });
+  };
+
+  const handleBackToList = () => {
+    setSelectedPatientId(null);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.delete('patient_id');
+      return next;
+    });
+  };
 
   // Derive unique patient records treated at this organization from actual appointments
   const patientsList = useMemo(() => {
@@ -176,7 +208,7 @@ export const PatientsTab = ({ orgType = 'hospital', data }) => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white rounded-3xl border border-slate-200/90 shadow-2xs">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setSelectedPatientId(null)}
+              onClick={handleBackToList}
               className="p-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 transition flex items-center gap-1.5 text-xs font-bold"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -560,7 +592,7 @@ export const PatientsTab = ({ orgType = 'hospital', data }) => {
                     {/* 8. Action - More Info */}
                     <td className="py-3 px-4 text-right">
                       <button
-                        onClick={() => setSelectedPatientId(patient.patient_id)}
+                        onClick={() => handleOpenPatientDetails(patient.patient_id)}
                         className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 text-slate-700 font-bold text-xs transition inline-flex items-center gap-1"
                       >
                         <Eye className="w-3.5 h-3.5" />
@@ -574,37 +606,14 @@ export const PatientsTab = ({ orgType = 'hospital', data }) => {
           </div>
         )}
 
-        {/* Pagination Bar */}
-        {totalPages > 1 && (
-          <div className="p-4 bg-slate-50/60 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-            <span className="text-slate-500 font-medium">
-              Showing <strong className="text-slate-900">{(currentPage - 1) * pageSize + 1}</strong> to <strong className="text-slate-900">{Math.min(currentPage * pageSize, totalItems)}</strong> of <strong className="text-slate-900">{totalItems}</strong> patients
-            </span>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold disabled:opacity-40 transition flex items-center gap-1"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-                <span>Previous</span>
-              </button>
-
-              <span className="px-3 py-1.5 font-bold text-slate-800">
-                Page {currentPage} of {totalPages}
-              </span>
-
-              <button
-                onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold disabled:opacity-40 transition flex items-center gap-1"
-              >
-                <span>Next</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
+        {totalItems > 0 && (
+          <Pagination
+            totalItems={totalItems}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+          />
         )}
       </div>
     </div>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Pagination } from '../../components/Pagination';
 import {
   Calendar,
   Users,
@@ -48,6 +49,14 @@ export const OverviewTab = ({
   } = data || {};
 
   const org = orgType === 'hospital' ? hospital : clinic;
+
+  // Pagination for Doctor-wise Appointment Distribution
+  const [doctorStatsPage, setDoctorStatsPage] = useState(1);
+  const [doctorStatsPageSize, setDoctorStatsPageSize] = useState(10);
+  const paginatedDoctorStats = doctor_stats.slice(
+    (doctorStatsPage - 1) * doctorStatsPageSize,
+    doctorStatsPage * doctorStatsPageSize
+  );
   const isHospital = orgType === 'hospital';
 
   // Synthetic 6-month revenue trend based on real today/monthly collections
@@ -436,7 +445,7 @@ export const OverviewTab = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {doctor_stats.map((d) => (
+              {paginatedDoctorStats.map((d) => (
                 <tr key={d.id} className="hover:bg-slate-50 transition">
                   <td className="py-3 font-bold text-slate-900">{d.name}</td>
                   <td className="py-3 text-slate-600">{d.specialization}</td>
@@ -462,6 +471,16 @@ export const OverviewTab = ({
             </tbody>
           </table>
         </div>
+
+        {doctor_stats.length > 0 && (
+          <Pagination
+            totalItems={doctor_stats.length}
+            pageSize={doctorStatsPageSize}
+            currentPage={doctorStatsPage}
+            onPageChange={setDoctorStatsPage}
+            onPageSizeChange={setDoctorStatsPageSize}
+          />
+        )}
       </div>
 
       {/* Grid: 6-Month Volume Trend & Recent Payments */}

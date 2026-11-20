@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
+import { Pagination } from '../../components/Pagination';
 import {
   FileText,
   Plus,
@@ -31,12 +32,15 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
 
   const [activeSubTab, setActiveSubTab] = useState('new'); // 'new' or 'history'
 
-  // Step 1: Patient Search & Selection State
+  // Step 1: Patient ID / Search & Selection State
   const [patientSearchTerm, setPatientSearchTerm] = useState('');
   const [patientSearchResults, setPatientSearchResults] = useState([]);
   const [searchingPatients, setSearchingPatients] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null); // { patient_id, full_name, age, gender, health_id }
   const [selectedApptId, setSelectedApptId] = useState('');
+
+  // Dedicated Clinical ID (Consultation / Clinical Visit ID - enter or select)
+  const [clinicalId, setClinicalId] = useState('');
 
   // Step 2: Prescription Information & Clinical Details
   const [systemRxId] = useState(`PRE-2026-${String(Date.now()).slice(-6)}`);
@@ -68,10 +72,20 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
     }
   ]);
 
-  // Step 3: Additional Instructions / Tests / Recommendations (Free-Text Box)
+  // Step 3: Additional Tests & Recommendations (Dedicated Fields)
+  const [additionalTests, setAdditionalTests] = useState(
+    'Complete Blood Count (CBC), Serum Electrolytes'
+  );
+  const [recommendations, setRecommendations] = useState(
+    'Avoid cold beverages and maintain hydration (2-3 L/day). Take complete bed rest for 48 hours. Follow-up after seven days if symptoms persist.'
+  );
   const [additionalInstructions, setAdditionalInstructions] = useState(
     'Blood test required: Complete Blood Count (CBC). Follow-up after seven days if symptoms persist. Avoid cold beverages and maintain hydration.'
   );
+
+  // Pagination for Issued Prescriptions Ledger
+  const [rxPage, setRxPage] = useState(1);
+  const [rxPageSize, setRxPageSize] = useState(10);
 
   // Step 4: Actions & Feedback
   const [saving, setSaving] = useState(false);
@@ -132,13 +146,19 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
     setPatientSearchResults([]);
     setErrorNotice(null);
 
-    // Auto-select related appointment if one exists for this patient
+    // Auto-select related appointment and clinical ID if one exists for this patient
     const pid = patient.patient_id || patient.id;
     const matchingAppt = appointments.find((a) => a.patient_id === pid && a.status !== 'Completed');
     if (matchingAppt) {
-      setSelectedApptId(matchingAppt.id || matchingAppt.appointment_id);
+      const aid = matchingAppt.id || matchingAppt.appointment_id;
+      setSelectedApptId(aid);
+      setClinicalId(aid);
       if (matchingAppt.chief_complaint) {
         setSymptoms(matchingAppt.chief_complaint);
+      }
+    } else {
+      if (!clinicalId) {
+        setClinicalId(`CLN-${String(Date.now()).slice(-6)}`);
       }
     }
   };
@@ -184,7 +204,7 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
   // Action 2: Preview Prescription
   const handlePreview = () => {
     if (!selectedPatient) {
-      setErrorNotice('Please search and select a verified patient first');
+      setErrorNotice('Please search and select or enter a verified patient ID first');
       return;
     }
     if (!diagnosis.trim()) {
@@ -195,12 +215,12 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
     setPreviewModalOpen(true);
   };
 
-  // Action 3: Issue Prescription (Backend Integration)
+  // Action 3: Save Prescription (Backend EHR Integration)
   const handleIssuePrescription = async (e) => {
     if (e) e.preventDefault();
 
-    if (!selectedPatient) {
-      setErrorNotice('Please search and select a verified patient before issuing');
+    if (!selectedPatient || !selectedPatient.patient_id) {
+      setErrorNotice('Please provide or select a verified Patient ID');
       return;
     }
     if (!diagnosis.trim()) {
@@ -208,7 +228,7 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
       return;
     }
     if (medicines.length === 0 || !medicines[0].name.trim()) {
-      setErrorNotice('Please specify at least one medication');
+      setErrorNotice('Please specify at least one medication in the prescription');
       return;
     }
 
@@ -217,15 +237,22 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
     setSuccessNotice(null);
 
     try {
+      const activeClinicalId = clinicalId || selectedApptId || `CLN-${String(Date.now()).slice(-6)}`;
+      const combinedAdvice = `${recommendations ? recommendations : ''}${additionalInstructions ? (recommendations ? '\n' + additionalInstructions : additionalInstructions) : ''}`;
+
       const rxPayload = {
         appointment_id: selectedApptId || null,
+        clinical_id: activeClinicalId,
         patient_id: selectedPatient.patient_id,
         diagnosis,
         symptoms,
         vitals: { bp, pulse, weight, temperature },
         medicines: medicines.filter((m) => m.name.trim() !== ''),
-        advice: additionalInstructions,
-        additional_instructions: additionalInstructions,
+        tests: additionalTests,
+        additional_tests: additionalTests,
+        recommendations: recommendations,
+        advice: combinedAdvice,
+        additional_instructions: combinedAdvice,
         follow_up_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
       };
 
@@ -244,11 +271,11 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
         consultation_date: rxDate
       });
 
-      setSuccessNotice(`Digital Prescription ${systemRxId} successfully issued and authorized! Automatically synced to patient portal.`);
+      setSuccessNotice(`Digital Prescription ${systemRxId} successfully saved & certified! Linked with Patient ID (${selectedPatient.patient_id}) and Clinical ID (${activeClinicalId}).`);
       setPreviewModalOpen(false);
     } catch (err) {
-      console.error('Failed to issue prescription:', err);
-      setErrorNotice(err.message || 'Error publishing digital prescription to patient record');
+      console.error('Failed to save prescription:', err);
+      setErrorNotice(err.message || 'Error saving prescription to medical records');
     } finally {
       setSaving(false);
     }
@@ -327,7 +354,7 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
       {activeSubTab === 'new' && (
         <div className="space-y-6">
           {/* ------------------------------------------------------------- */}
-          {/* STEP 1: FIND PATIENT */}
+          {/* STEP 1: PATIENT ID & IDENTIFICATION */}
           {/* ------------------------------------------------------------- */}
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-2xs space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -335,28 +362,80 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
                 <span className="w-6 h-6 rounded-full bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center">
                   1
                 </span>
-                <h3 className="font-extrabold text-base text-slate-900">Step 1: Find & Verify Patient</h3>
+                <h3 className="font-extrabold text-base text-slate-900">Step 1: Patient ID (Enter or Select)</h3>
               </div>
-              <span className="text-xs text-slate-400">Search patient database by Name or Patient ID</span>
+              <span className="text-xs text-slate-400">Enter Patient ID directly or search registered patient directory</span>
             </div>
 
-            {/* Patient Search Input */}
+            {/* Patient ID Input & Search */}
             {!selectedPatient ? (
               <div className="space-y-3">
-                <div className="relative">
-                  <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    placeholder="Enter Patient Name or Patient ID (e.g., Rajesh Sharma or PAT-2026-000001)..."
-                    value={patientSearchTerm}
-                    onChange={(e) => setPatientSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                  />
-                  {searchingPatients && (
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 animate-pulse">
-                      Searching...
-                    </div>
-                  )}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="relative flex-1">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Enter Patient ID (e.g. PAT-2026-000001) or search by patient name..."
+                      value={patientSearchTerm}
+                      onChange={(e) => setPatientSearchTerm(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const val = patientSearchTerm.trim();
+                          if (!val) return;
+                          const found = localPatients.find(
+                            (p) => String(p.patient_id || p.id).toLowerCase() === val.toLowerCase()
+                          );
+                          if (found) {
+                            handleSelectPatient(found);
+                          } else {
+                            setSelectedPatient({
+                              patient_id: val,
+                              full_name: `Patient (${val})`,
+                              age: 32,
+                              gender: 'Male',
+                              health_id: `HC-${val.slice(-6)}`
+                            });
+                            if (!clinicalId) setClinicalId(`CLN-${String(Date.now()).slice(-6)}`);
+                            setPatientSearchTerm('');
+                          }
+                        }
+                      }}
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    />
+                    {searchingPatients && (
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 animate-pulse">
+                        Searching...
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const val = patientSearchTerm.trim();
+                      if (!val) return;
+                      const found = localPatients.find(
+                        (p) => String(p.patient_id || p.id).toLowerCase() === val.toLowerCase()
+                      );
+                      if (found) {
+                        handleSelectPatient(found);
+                      } else {
+                        setSelectedPatient({
+                          patient_id: val,
+                          full_name: `Patient (${val})`,
+                          age: 32,
+                          gender: 'Male',
+                          health_id: `HC-${val.slice(-6)}`
+                        });
+                        if (!clinicalId) setClinicalId(`CLN-${String(Date.now()).slice(-6)}`);
+                        setPatientSearchTerm('');
+                      }
+                    }}
+                    className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition shrink-0"
+                  >
+                    Confirm Patient ID
+                  </button>
                 </div>
 
                 {/* Matching Results Dropdown */}
@@ -382,7 +461,7 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
                               {name}
                             </span>
                             <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
-                              <span>ID: {pid}</span>
+                              <span>Patient ID: {pid}</span>
                               <span>•</span>
                               <span>HID: {p.health_id || 'HC-PENDING'}</span>
                             </div>
@@ -469,19 +548,37 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
                 <span className="font-bold text-slate-800">{rxDate}</span>
               </div>
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">Related Appointment</span>
-                <select
-                  value={selectedApptId}
-                  onChange={(e) => setSelectedApptId(e.target.value)}
-                  className="w-full mt-0.5 px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800"
-                >
-                  <option value="">General OPD Visit</option>
-                  {appointments.slice(0, 6).map((a) => (
-                    <option key={a.id || a.appointment_id} value={a.id || a.appointment_id}>
-                      {a.appointment_id || a.id} - {a.patient_name || 'Patient'} ({a.appointment_date})
-                    </option>
-                  ))}
-                </select>
+                <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                  Clinical ID (Enter or Select) *
+                </span>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <input
+                    type="text"
+                    placeholder="e.g. CLN-2026-001 or select"
+                    value={clinicalId}
+                    onChange={(e) => {
+                      setClinicalId(e.target.value);
+                      setSelectedApptId(e.target.value);
+                    }}
+                    className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800"
+                  />
+                  <select
+                    value={selectedApptId}
+                    onChange={(e) => {
+                      setSelectedApptId(e.target.value);
+                      setClinicalId(e.target.value);
+                    }}
+                    className="w-28 px-1.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shrink-0"
+                    title="Select from consultation visits"
+                  >
+                    <option value="">Select Visit</option>
+                    {appointments.slice(0, 10).map((a) => (
+                      <option key={a.id || a.appointment_id} value={a.id || a.appointment_id}>
+                        {a.appointment_id || a.id}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -620,32 +717,56 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
           </div>
 
           {/* ------------------------------------------------------------- */}
-          {/* STEP 3: ADDITIONAL INSTRUCTIONS – FREE TEXT BOX */}
+          {/* STEP 3: ADDITIONAL TESTS & RECOMMENDATIONS */}
           {/* ------------------------------------------------------------- */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-2xs space-y-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-2xs space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center">
                   3
                 </span>
                 <h3 className="font-extrabold text-base text-slate-900">
-                  Additional Instructions / Tests / Recommendations
+                  Step 3: Additional Tests & Recommendations
                 </h3>
               </div>
-              <span className="text-xs text-slate-400">Normal unconstrained clinical free text</span>
+              <span className="text-xs text-slate-400">Clinical investigations and medical instructions</span>
             </div>
 
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Enter required diagnostic investigations (e.g., Complete Blood Count, Serum Electrolytes), dietary recommendations, activity restrictions, and follow-up guidance.
-            </p>
+            {/* Field 4: Additional Tests */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                <Stethoscope className="w-3.5 h-3.5 text-blue-600" />
+                <span>Additional Tests (Recommended Lab & Diagnostic Tests)</span>
+              </label>
+              <p className="text-[11px] text-slate-400">
+                Specify lab investigations, blood chemistry, pathology, or radiology examinations requested for evaluation.
+              </p>
+              <textarea
+                rows={2}
+                placeholder="e.g. Complete Blood Count (CBC), Fasting Blood Glucose, Serum Creatinine, 12-Lead ECG, Chest X-Ray PA View..."
+                value={additionalTests}
+                onChange={(e) => setAdditionalTests(e.target.value)}
+                className="w-full p-3.5 border border-slate-300 rounded-2xl font-medium text-xs sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 bg-white leading-relaxed"
+              />
+            </div>
 
-            <textarea
-              rows={4}
-              placeholder="e.g., Blood test required: Complete blood count (CBC). Follow-up after seven days. Avoid oily foods and hydrate adequately..."
-              value={additionalInstructions}
-              onChange={(e) => setAdditionalInstructions(e.target.value)}
-              className="w-full p-4 border border-slate-300 rounded-2xl font-medium text-xs sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 bg-white leading-relaxed"
-            />
+            {/* Field 5: Recommendations */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                <FileText className="w-3.5 h-3.5 text-blue-600" />
+                <span>Recommendations (Medical Advice & Lifestyle Instructions)</span>
+              </label>
+              <p className="text-[11px] text-slate-400">
+                Provide dietary guidelines, lifestyle precautions, follow-up timeline, and non-pharmacological directives.
+              </p>
+              <textarea
+                rows={3}
+                placeholder="e.g. Maintain strict oral hydration (2.5L/day), light semi-solid diet, rest for 48 hours, avoid strenuous activity, return to OPD in 5 days..."
+                value={recommendations}
+                onChange={(e) => setRecommendations(e.target.value)}
+                className="w-full p-3.5 border border-slate-300 rounded-2xl font-medium text-xs sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 bg-white leading-relaxed"
+              />
+            </div>
           </div>
 
           {/* ------------------------------------------------------------- */}
@@ -679,8 +800,8 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
                 disabled={saving}
                 className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition flex items-center gap-2 disabled:opacity-50"
               >
-                <FileCheck className="w-4 h-4" />
-                <span>{saving ? 'Authorizing & Publishing...' : 'Issue Prescription'}</span>
+                <Save className="w-4 h-4" />
+                <span>{saving ? 'Saving Prescription...' : 'Save Prescription'}</span>
               </button>
 
               <button
@@ -700,7 +821,7 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
       {/* SUB-TAB 2: PREVIOUSLY ISSUED PRESCRIPTIONS AUDIT HISTORY */}
       {/* ========================================================================= */}
       {activeSubTab === 'history' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs space-y-4">
+        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xs space-y-6">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h3 className="font-extrabold text-base text-slate-900">
               Authorized Digital Prescriptions Ledger ({existingRxList.length})
@@ -714,43 +835,69 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
             </div>
           ) : (
             <div className="space-y-4">
-              {existingRxList.map((rx) => (
-                <div key={rx.id} className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3 text-xs">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-200">
-                        {rx.id || rx.prescription_id}
-                      </span>
-                      <span className="font-bold text-slate-900 text-sm">{rx.patient_name}</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      Authorized & Published
-                    </span>
-                  </div>
-
-                  <p className="text-slate-700"><strong>Diagnosis:</strong> {rx.diagnosis}</p>
-                  
-                  {Array.isArray(rx.medicines) && (
-                    <div className="space-y-1 pt-1">
-                      <span className="text-[10px] font-bold uppercase text-slate-400">Medicines ({rx.medicines.length}):</span>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {rx.medicines.map((m, i) => (
-                          <div key={i} className="p-2 bg-white rounded-xl border border-slate-200 flex justify-between">
-                            <span className="font-semibold text-slate-800">{m.name}</span>
-                            <span className="text-slate-500">{m.dosage} ({m.frequency})</span>
-                          </div>
-                        ))}
+              {existingRxList
+                .slice((rxPage - 1) * rxPageSize, rxPage * rxPageSize)
+                .map((rx) => (
+                  <div key={rx.id || rx.prescription_id} className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3 text-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-200">
+                          {rx.id || rx.prescription_id}
+                        </span>
+                        <span className="font-bold text-slate-900 text-sm">{rx.patient_name}</span>
+                        {rx.clinical_id && (
+                          <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                            Clinical ID: {rx.clinical_id}
+                          </span>
+                        )}
                       </div>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                        Authorized & Published
+                      </span>
                     </div>
-                  )}
 
-                  {rx.advice && (
-                    <p className="text-[11px] text-slate-600 bg-white p-2.5 rounded-xl border border-slate-100 italic">
-                      <strong>Additional Instructions:</strong> {rx.advice}
-                    </p>
-                  )}
-                </div>
-              ))}
+                    <p className="text-slate-700"><strong>Diagnosis:</strong> {rx.diagnosis}</p>
+                    
+                    {Array.isArray(rx.medicines) && (
+                      <div className="space-y-1 pt-1">
+                        <span className="text-[10px] font-bold uppercase text-slate-400">Medicines ({rx.medicines.length}):</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {rx.medicines.map((m, i) => (
+                            <div key={i} className="p-2 bg-white rounded-xl border border-slate-200 flex justify-between">
+                              <span className="font-semibold text-slate-800">{m.name}</span>
+                              <span className="text-slate-500">{m.dosage} ({m.frequency})</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {rx.tests && (
+                      <p className="text-[11px] text-blue-800 bg-blue-50/80 p-2.5 rounded-xl border border-blue-100">
+                        <strong>Recommended Tests:</strong> {Array.isArray(rx.tests) ? rx.tests.join(', ') : rx.tests}
+                      </p>
+                    )}
+
+                    {(rx.recommendations || rx.advice) && (
+                      <p className="text-[11px] text-slate-600 bg-white p-2.5 rounded-xl border border-slate-100 italic">
+                        <strong>Recommendations:</strong> {rx.recommendations || rx.advice}
+                      </p>
+                    )}
+                  </div>
+                ))}
+
+              {/* Ledger Pagination */}
+              <Pagination
+                currentPage={rxPage}
+                totalPages={Math.ceil(existingRxList.length / rxPageSize) || 1}
+                totalItems={existingRxList.length}
+                pageSize={rxPageSize}
+                onPageChange={setRxPage}
+                onPageSizeChange={(newSize) => {
+                  setRxPageSize(newSize);
+                  setRxPage(1);
+                }}
+              />
             </div>
           )}
         </div>
@@ -819,12 +966,21 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
               </div>
             </div>
 
-            {/* Additional Instructions */}
-            {additionalInstructions && (
+            {/* Additional Tests & Recommendations Preview */}
+            {additionalTests && (
               <div className="text-xs space-y-1">
-                <span className="font-bold text-slate-700 block">Additional Instructions / Tests / Recommendations:</span>
+                <span className="font-bold text-slate-700 block">Recommended Diagnostic Tests:</span>
+                <p className="p-3 bg-blue-50/60 rounded-xl border border-blue-200 text-blue-900 leading-relaxed font-semibold">
+                  {additionalTests}
+                </p>
+              </div>
+            )}
+
+            {recommendations && (
+              <div className="text-xs space-y-1">
+                <span className="font-bold text-slate-700 block">Medical Recommendations & Advice:</span>
                 <p className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700 leading-relaxed italic">
-                  {additionalInstructions}
+                  {recommendations}
                 </p>
               </div>
             )}
@@ -844,8 +1000,8 @@ export const DoctorPrescriptionsTab = ({ data, onSaveRx }) => {
                 disabled={saving}
                 className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-1.5"
               >
-                <FileCheck className="w-4 h-4" />
-                <span>{saving ? 'Issuing...' : 'Confirm & Issue Prescription'}</span>
+                <Save className="w-4 h-4" />
+                <span>{saving ? 'Saving...' : 'Confirm & Save Prescription'}</span>
               </button>
             </div>
           </div>

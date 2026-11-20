@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Pagination } from '../../components/Pagination';
 import {
   Calendar,
   Clock,
@@ -28,9 +30,36 @@ export const DoctorAppointmentsTab = ({
   onRefresh,
   onOpenRx
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const appointments = data?.appointments || [];
-  const [activeCategory, setActiveCategory] = useState('all'); // all, upcoming, pending, completed, cancelled
+
+  const categoryParam = searchParams.get('category');
+  const [activeCategory, setActiveCategory] = useState(
+    categoryParam && ['all', 'upcoming', 'pending', 'completed', 'cancelled'].includes(categoryParam)
+      ? categoryParam
+      : 'all'
+  );
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Pagination state (10, 25, 50, 100)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat && ['all', 'upcoming', 'pending', 'completed', 'cancelled'].includes(cat) && cat !== activeCategory) {
+      setActiveCategory(cat);
+      setCurrentPage(1);
+    }
+  }, [searchParams]);
+
+  const handleSelectCategory = (catId) => {
+    setActiveCategory(catId);
+    setCurrentPage(1);
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set('category', catId);
+    setSearchParams(nextParams);
+  };
 
   // Rejection modal
   const [rejectModalAppt, setRejectModalAppt] = useState(null);
@@ -142,7 +171,7 @@ export const DoctorAppointmentsTab = ({
                 <button
                   key={cat.id}
                   type="button"
-                  onClick={() => setActiveCategory(cat.id)}
+                  onClick={() => handleSelectCategory(cat.id)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition shrink-0 select-none ${
                     isSelected
                       ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
@@ -182,7 +211,10 @@ export const DoctorAppointmentsTab = ({
             type="text"
             placeholder="Search by patient name, phone, token, or ID..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
             className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-2xs"
           />
         </div>
@@ -204,8 +236,11 @@ export const DoctorAppointmentsTab = ({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {filteredAppointments.map((appt) => {
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {filteredAppointments
+              .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+              .map((appt) => {
             const stat = appt.status || 'Confirmed';
             const isPending = ['pending', 'requested'].includes(stat.toLowerCase());
             const isInConsult = stat === 'In Consultation';
@@ -355,6 +390,20 @@ export const DoctorAppointmentsTab = ({
               </div>
             );
           })}
+          </div>
+
+          {/* Appointments Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredAppointments.length / pageSize) || 1}
+            totalItems={filteredAppointments.length}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setCurrentPage(1);
+            }}
+          />
         </div>
       )}
 

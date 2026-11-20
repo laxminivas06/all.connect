@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { PatientSubNav } from '../../components/patient/PatientSubNav';
+import { Pagination } from '../../components/Pagination';
 import {
   Calendar,
   Clock,
@@ -31,16 +32,25 @@ import {
 export const MyAppointmentsPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [appointments, setAppointments] = useState([]);
   const [prescriptions, setPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Selected horizontal category tab
-  // Options: 'upcoming', 'completed', 'cancelled', 'pending'
-  const [selectedCategory, setSelectedCategory] = useState('upcoming');
+  // Selected horizontal category tab with URL searchParam persistence
+  const categoryParam = searchParams.get('category');
+  const [selectedCategory, setSelectedCategory] = useState(
+    categoryParam && ['upcoming', 'completed', 'cancelled', 'pending'].includes(categoryParam)
+      ? categoryParam
+      : 'upcoming'
+  );
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Pagination state (10, 25, 50, 100)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Modals
   const [detailsModalAppt, setDetailsModalAppt] = useState(null);
@@ -61,6 +71,33 @@ export const MyAppointmentsPage = () => {
 
   // Horizontal scroll container ref
   const categoryScrollRef = useRef(null);
+
+  // Helper: Robust Date & Time parsing for strict chronological ordering
+  const parseAppointmentDateTime = (dateStr, timeStr) => {
+    if (!dateStr) return new Date(8640000000000000);
+    try {
+      const cleanDate = String(dateStr).trim();
+      let timePart = '00:00:00';
+      if (timeStr) {
+        const match = String(timeStr).trim().match(/(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?/i);
+        if (match) {
+          let hours = parseInt(match[1], 10);
+          const minutes = parseInt(match[2], 10);
+          const ampm = match[4]?.toUpperCase();
+          if (ampm === 'PM' && hours < 12) hours += 12;
+          if (ampm === 'AM' && hours === 12) hours = 0;
+          timePart = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
+        }
+      }
+      const dt = new Date(`${cleanDate}T${timePart}`);
+      if (!isNaN(dt.getTime())) return dt;
+      const fallback = new Date(cleanDate);
+      if (!isNaN(fallback.getTime())) return fallback;
+    } catch (e) {
+      // Fallback
+    }
+    return new Date(0);
+  };
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -86,6 +123,50 @@ export const MyAppointmentsPage = () => {
     fetchAppointments();
   }, [user]);
 
+  // Keep selectedCategory in sync with URL
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat && ['upcoming', 'completed', 'cancelled', 'pending'].includes(cat) && cat !== selectedCategory) {
+      setSelectedCategory(cat);
+      setCurrentPage(1);
+    }
+  }, [searchParams]);
+
+  // Restore details modal if appt_id is present in URL
+  useEffect(() => {
+    const targetApptId = searchParams.get('appt_id');
+    if (targetApptId && appointments.length > 0) {
+      const found = appointments.find(
+        (a) => String(a.appointment_id || a.id) === String(targetApptId)
+      );
+      if (found) {
+        setDetailsModalAppt(found);
+      }
+    }
+  }, [appointments, searchParams]);
+
+  const handleSelectCategory = (catId) => {
+    setSelectedCategory(catId);
+    setCurrentPage(1);
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set('category', catId);
+    setSearchParams(nextParams);
+  };
+
+  const handleOpenDetails = (appt) => {
+    setDetailsModalAppt(appt);
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set('appt_id', appt.appointment_id || appt.id);
+    setSearchParams(nextParams);
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsModalAppt(null);
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('appt_id');
+    setSearchParams(nextParams);
+  };
+
   // Scroll category bar smoothly left or right
   const scrollCategories = (direction) => {
     if (categoryScrollRef.current) {
@@ -94,26 +175,62 @@ export const MyAppointmentsPage = () => {
     }
   };
 
-  // Categorize appointments
-  const upcomingList = appointments.filter((a) => {
-    const s = String(a.status || '').toLowerCase();
-    return ['confirmed', 'waiting', 'in consultation', 'checked in'].includes(s);
-  });
+  // Categorize and chronologically sort appointments
+  // Upcoming: nearest upcoming appointment first (ascending chronological)
+  const upcomingList = useMemo(() => {
+    return appointments
+      .filter((a) => {
+        const s = String(a.status || '').toLowerCase();
+        return ['confirmed', 'waiting', 'in consultation', 'checked in'].includes(s);
+      })
+      .sort((a, b) => {
+        const timeA = parseAppointmentDateTime(a.appointment_date, a.appointment_time).getTime();
+        const timeB = parseAppointmentDateTime(b.appointment_date, b.appointment_time).getTime();
+        return timeA - timeB;
+      });
+  }, [appointments]);
 
-  const completedList = appointments.filter((a) => {
-    const s = String(a.status || '').toLowerCase();
-    return s === 'completed';
-  });
+  // Completed: chronological order
+  const completedList = useMemo(() => {
+    return appointments
+      .filter((a) => {
+        const s = String(a.status || '').toLowerCase();
+        return s === 'completed';
+      })
+      .sort((a, b) => {
+        const timeA = parseAppointmentDateTime(a.appointment_date, a.appointment_time).getTime();
+        const timeB = parseAppointmentDateTime(b.appointment_date, b.appointment_time).getTime();
+        return timeA - timeB;
+      });
+  }, [appointments]);
 
-  const cancelledList = appointments.filter((a) => {
-    const s = String(a.status || '').toLowerCase();
-    return s === 'cancelled';
-  });
+  // Cancelled: chronological order
+  const cancelledList = useMemo(() => {
+    return appointments
+      .filter((a) => {
+        const s = String(a.status || '').toLowerCase();
+        return s === 'cancelled';
+      })
+      .sort((a, b) => {
+        const timeA = parseAppointmentDateTime(a.appointment_date, a.appointment_time).getTime();
+        const timeB = parseAppointmentDateTime(b.appointment_date, b.appointment_time).getTime();
+        return timeA - timeB;
+      });
+  }, [appointments]);
 
-  const pendingList = appointments.filter((a) => {
-    const s = String(a.status || '').toLowerCase();
-    return ['pending', 'requested', 'rescheduled'].includes(s);
-  });
+  // Pending: nearest first
+  const pendingList = useMemo(() => {
+    return appointments
+      .filter((a) => {
+        const s = String(a.status || '').toLowerCase();
+        return ['pending', 'requested', 'rescheduled'].includes(s);
+      })
+      .sort((a, b) => {
+        const timeA = parseAppointmentDateTime(a.appointment_date, a.appointment_time).getTime();
+        const timeB = parseAppointmentDateTime(b.appointment_date, b.appointment_time).getTime();
+        return timeA - timeB;
+      });
+  }, [appointments]);
 
   // Filter based on active category and search
   const getActiveList = () => {
@@ -282,7 +399,7 @@ export const MyAppointmentsPage = () => {
                   <button
                     key={cat.id}
                     type="button"
-                    onClick={() => setSelectedCategory(cat.id)}
+                    onClick={() => handleSelectCategory(cat.id)}
                     className={`flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition shrink-0 select-none ${
                       isSelected
                         ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 scale-[1.01]'
@@ -324,7 +441,10 @@ export const MyAppointmentsPage = () => {
               type="text"
               placeholder="Search by doctor, hospital, token or ID..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition shadow-2xs"
             />
           </div>
@@ -354,190 +474,207 @@ export const MyAppointmentsPage = () => {
         {/* APPOINTMENTS LIST / RESPONSIVE UNIFORM CARDS */}
         {/* ------------------------------------------------------------- */}
         {!loading && activeAppointments.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
-            {activeAppointments.map((appt) => {
-              const status = String(appt.status || 'Confirmed').toLowerCase();
-              const isCompleted = status === 'completed';
-              const isCancelled = status === 'cancelled';
-              const canModify = !isCompleted && !isCancelled;
-              const hasIssuedRx = Boolean(getPrescriptionForAppt(appt));
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
+              {activeAppointments
+                .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+                .map((appt) => {
+                  const status = String(appt.status || 'Confirmed').toLowerCase();
+                  const isCompleted = status === 'completed';
+                  const isCancelled = status === 'cancelled';
+                  const canModify = !isCompleted && !isCancelled;
+                  const hasIssuedRx = Boolean(getPrescriptionForAppt(appt));
 
-              const statusBadge = (() => {
-                switch (status) {
-                  case 'completed':
-                    return { label: 'Completed', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
-                  case 'confirmed':
-                    return { label: 'Confirmed', cls: 'bg-blue-50 text-blue-700 border-blue-200' };
-                  case 'checked in':
-                    return { label: 'Checked In', cls: 'bg-indigo-50 text-indigo-700 border-indigo-200' };
-                  case 'waiting':
-                    return { label: 'Waiting', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
-                  case 'in consultation':
-                    return { label: 'In Consultation', cls: 'bg-purple-50 text-purple-700 border-purple-200' };
-                  case 'cancelled':
-                    return { label: 'Cancelled', cls: 'bg-rose-50 text-rose-700 border-rose-200' };
-                  case 'rescheduled':
-                    return { label: 'Rescheduled', cls: 'bg-cyan-50 text-cyan-700 border-cyan-200' };
-                  case 'pending':
-                  case 'requested':
-                  default:
-                    return { label: 'Pending', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
-                }
-              })();
+                  const statusBadge = (() => {
+                    switch (status) {
+                      case 'completed':
+                        return { label: 'Completed', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+                      case 'confirmed':
+                        return { label: 'Confirmed', cls: 'bg-blue-50 text-blue-700 border-blue-200' };
+                      case 'checked in':
+                        return { label: 'Checked In', cls: 'bg-indigo-50 text-indigo-700 border-indigo-200' };
+                      case 'waiting':
+                        return { label: 'Waiting', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
+                      case 'in consultation':
+                        return { label: 'In Consultation', cls: 'bg-purple-50 text-purple-700 border-purple-200' };
+                      case 'cancelled':
+                        return { label: 'Cancelled', cls: 'bg-rose-50 text-rose-700 border-rose-200' };
+                      case 'rescheduled':
+                        return { label: 'Rescheduled', cls: 'bg-cyan-50 text-cyan-700 border-cyan-200' };
+                      case 'pending':
+                      case 'requested':
+                      default:
+                        return { label: 'Pending', cls: 'bg-amber-50 text-amber-700 border-amber-200' };
+                    }
+                  })();
 
-              const doctorInitials = (appt.doctor_name || 'Dr. Specialist')
-                .replace(/^Dr\.?\s*/i, '')
-                .trim()
-                .charAt(0)
-                .toUpperCase() || 'D';
+                  const doctorInitials = (appt.doctor_name || 'Dr. Specialist')
+                    .replace(/^Dr\.?\s*/i, '')
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase() || 'D';
 
-              return (
-                <div
-                  key={appt.id || appt.appointment_id}
-                  className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-md transition flex flex-col justify-between h-full space-y-4"
-                >
-                  <div className="space-y-4">
-                    {/* Card Top Row: Tokens, ID, Status */}
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <div className="flex items-center gap-2">
-                        {appt.token_number && (
-                          <span className="text-xs font-black px-2.5 py-0.5 rounded-lg bg-blue-600 text-white shadow-2xs">
-                            Token: {appt.token_number}
-                          </span>
-                        )}
-                        <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
-                          {appt.appointment_id || appt.id}
-                        </span>
-                      </div>
-
-                      <span
-                        className={`text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border ${statusBadge.cls}`}
-                      >
-                        {statusBadge.label}
-                      </span>
-                    </div>
-
-                    {/* Doctor and Hospital Details */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-blue-500/20 shrink-0">
-                        {doctorInitials}
-                      </div>
-
-                      <div className="min-w-0 flex-1 space-y-0.5">
-                        <h3 className="font-extrabold text-base text-slate-900 truncate">
-                          {appt.doctor_name || 'Specialist Consultation'}
-                        </h3>
-                        <p className="text-xs font-bold text-blue-600">
-                          {appt.specialization || appt.department || 'General Medicine'}
-                        </p>
-                        <p className="text-xs text-slate-500 flex items-center gap-1.5 truncate">
-                          <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                          <span className="truncate">
-                            {appt.hospital_name || appt.organization_name || 'Hospital Facility'}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Schedule & Information Meta Grid */}
-                    <div className="grid grid-cols-2 gap-2.5 p-3.5 bg-slate-50/90 rounded-2xl border border-slate-100 text-xs">
-                      <div>
-                        <span className="text-slate-400 font-medium block text-[10px] uppercase">
-                          Appointment Date
-                        </span>
-                        <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
-                          <Calendar className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                          <span className="truncate">{appt.appointment_date || 'Date TBD'}</span>
-                        </span>
-                      </div>
-
-                      <div>
-                        <span className="text-slate-400 font-medium block text-[10px] uppercase">
-                          Appointment Time
-                        </span>
-                        <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
-                          <Clock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                          <span className="truncate">{appt.appointment_time || 'Time TBD'}</span>
-                        </span>
-                      </div>
-
-                      <div>
-                        <span className="text-slate-400 font-medium block text-[10px] uppercase">
-                          Consultation Mode
-                        </span>
-                        <span className="font-bold text-slate-700 mt-0.5 block truncate">
-                          {appt.appointment_type || 'In-Person Consultation'}
-                        </span>
-                      </div>
-
-                      <div>
-                        <span className="text-slate-400 font-medium block text-[10px] uppercase">
-                          Appointment Status
-                        </span>
-                        <span className="font-extrabold text-slate-900 mt-0.5 block truncate">
-                          {statusBadge.label}
-                        </span>
-                      </div>
-                    </div>
-
-                    {appt.chief_complaint && (
-                      <p className="text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-100 italic truncate">
-                        <strong>Reason:</strong> {appt.chief_complaint}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Actions Bar */}
-                  <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
-                    {/* View Details Button (Always Available) */}
-                    <button
-                      type="button"
-                      onClick={() => setDetailsModalAppt(appt)}
-                      className="flex-1 min-w-[120px] py-2 px-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs text-center transition flex items-center justify-center gap-1.5"
+                  return (
+                    <div
+                      key={appt.id || appt.appointment_id}
+                      className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-md transition flex flex-col justify-between h-full space-y-4"
                     >
-                      <QrCode className="w-3.5 h-3.5 text-blue-600" />
-                      <span>View Details</span>
-                    </button>
+                      <div className="space-y-4">
+                        {/* Card Top Row: Tokens, ID, Status */}
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
+                          <div className="flex items-center gap-2">
+                            {appt.token_number && (
+                              <span className="text-xs font-black px-2.5 py-0.5 rounded-lg bg-blue-600 text-white shadow-2xs">
+                                Token: {appt.token_number}
+                              </span>
+                            )}
+                            <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                              {appt.appointment_id || appt.id}
+                            </span>
+                          </div>
 
-                    {/* Reschedule (shown ONLY for pending/upcoming, NEVER for completed or cancelled) */}
-                    {canModify && (
-                      <button
-                        type="button"
-                        onClick={() => handleOpenReschedule(appt)}
-                        className="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs text-center transition flex items-center justify-center gap-1.5"
-                      >
-                        <RotateCcw className="w-3.5 h-3.5 text-slate-600" />
-                        <span>Reschedule</span>
-                      </button>
-                    )}
+                          <span
+                            className={`text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border ${statusBadge.cls}`}
+                          >
+                            {statusBadge.label}
+                          </span>
+                        </div>
 
-                    {/* Cancel (shown ONLY for pending/upcoming, NEVER for completed or cancelled) */}
-                    {canModify && (
-                      <button
-                        type="button"
-                        onClick={() => handleOpenCancel(appt)}
-                        className="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs text-center transition flex items-center justify-center gap-1.5 border border-rose-200"
-                      >
-                        <XCircle className="w-3.5 h-3.5 text-rose-600" />
-                        <span>Cancel</span>
-                      </button>
-                    )}
+                        {/* Doctor and Hospital Details */}
+                        <div className="flex items-start gap-4">
+                          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-blue-500/20 shrink-0">
+                            {doctorInitials}
+                          </div>
 
-                    {/* View Prescription: ONLY for completed AND ONLY when doctor has actually issued a prescription */}
-                    {isCompleted && hasIssuedRx && (
-                      <button
-                        type="button"
-                        onClick={() => handleOpenPrescription(appt)}
-                        className="flex-1 min-w-[130px] py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs text-center shadow-xs transition flex items-center justify-center gap-1.5"
-                      >
-                        <FileText className="w-3.5 h-3.5" />
-                        <span>View Prescription</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+                          <div className="min-w-0 flex-1 space-y-0.5">
+                            <h3 className="font-extrabold text-base text-slate-900 truncate">
+                              {appt.doctor_name || 'Specialist Consultation'}
+                            </h3>
+                            <p className="text-xs font-bold text-blue-600">
+                              {appt.specialization || appt.department || 'General Medicine'}
+                            </p>
+                            <p className="text-xs text-slate-500 flex items-center gap-1.5 truncate">
+                              <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="truncate">
+                                {appt.hospital_name || appt.organization_name || 'Hospital Facility'}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Schedule & Information Meta Grid */}
+                        <div className="grid grid-cols-2 gap-2.5 p-3.5 bg-slate-50/90 rounded-2xl border border-slate-100 text-xs">
+                          <div>
+                            <span className="text-slate-400 font-medium block text-[10px] uppercase">
+                              Appointment Date
+                            </span>
+                            <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
+                              <Calendar className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                              <span className="truncate">{appt.appointment_date || 'Date TBD'}</span>
+                            </span>
+                          </div>
+
+                          <div>
+                            <span className="text-slate-400 font-medium block text-[10px] uppercase">
+                              Appointment Time
+                            </span>
+                            <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
+                              <Clock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                              <span className="truncate">{appt.appointment_time || 'Time TBD'}</span>
+                            </span>
+                          </div>
+
+                          <div>
+                            <span className="text-slate-400 font-medium block text-[10px] uppercase">
+                              Consultation Mode
+                            </span>
+                            <span className="font-bold text-slate-700 mt-0.5 block truncate">
+                              {appt.appointment_type || 'In-Person Consultation'}
+                            </span>
+                          </div>
+
+                          <div>
+                            <span className="text-slate-400 font-medium block text-[10px] uppercase">
+                              Appointment Status
+                            </span>
+                            <span className="font-extrabold text-slate-900 mt-0.5 block truncate">
+                              {statusBadge.label}
+                            </span>
+                          </div>
+                        </div>
+
+                        {appt.chief_complaint && (
+                          <p className="text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-100 italic truncate">
+                            <strong>Reason:</strong> {appt.chief_complaint}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Actions Bar */}
+                      <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                        {/* View Details Button (Always Available) */}
+                        <button
+                          type="button"
+                          onClick={() => handleOpenDetails(appt)}
+                          className="flex-1 min-w-[120px] py-2 px-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs text-center transition flex items-center justify-center gap-1.5"
+                        >
+                          <QrCode className="w-3.5 h-3.5 text-blue-600" />
+                          <span>View Details</span>
+                        </button>
+
+                        {/* Reschedule (shown ONLY for pending/upcoming, NEVER for completed or cancelled) */}
+                        {canModify && (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenReschedule(appt)}
+                            className="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs text-center transition flex items-center justify-center gap-1.5"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5 text-slate-600" />
+                            <span>Reschedule</span>
+                          </button>
+                        )}
+
+                        {/* Cancel (shown ONLY for pending/upcoming, NEVER for completed or cancelled) */}
+                        {canModify && (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenCancel(appt)}
+                            className="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs text-center transition flex items-center justify-center gap-1.5 border border-rose-200"
+                          >
+                            <XCircle className="w-3.5 h-3.5 text-rose-600" />
+                            <span>Cancel</span>
+                          </button>
+                        )}
+
+                        {/* View Prescription: ONLY for completed AND ONLY when doctor has actually issued a prescription */}
+                        {isCompleted && hasIssuedRx && (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenPrescription(appt)}
+                            className="flex-1 min-w-[130px] py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs text-center shadow-xs transition flex items-center justify-center gap-1.5"
+                          >
+                            <FileText className="w-3.5 h-3.5" />
+                            <span>View Prescription</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+
+            {/* Pagination Controls */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(activeAppointments.length / pageSize) || 1}
+              totalItems={activeAppointments.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={(newSize) => {
+                setPageSize(newSize);
+                setCurrentPage(1);
+              }}
+            />
           </div>
         )}
 
@@ -589,7 +726,7 @@ export const MyAppointmentsPage = () => {
                 </div>
               </div>
               <button
-                onClick={() => setDetailsModalAppt(null)}
+                onClick={handleCloseDetails}
                 className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
               >
                 <X className="w-5 h-5" />
@@ -641,7 +778,7 @@ export const MyAppointmentsPage = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setDetailsModalAppt(null)}
+                onClick={handleCloseDetails}
                 className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs"
               >
                 Close

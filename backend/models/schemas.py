@@ -66,13 +66,17 @@ class MedicineItem(BaseModel):
 
 class PrescriptionCreateRequest(BaseModel):
     appointment_id: Optional[str] = None
+    clinical_id: Optional[str] = None
     patient_id: str
     diagnosis: str
     symptoms: Optional[Union[List[str], str]] = ""
     vitals: Optional[Union[Dict[str, Any], str]] = {}
     medicines: List[MedicineItem]
     advice: Optional[str] = ""
+    recommendations: Optional[str] = ""
     additional_instructions: Optional[str] = ""
+    tests: Optional[Union[List[str], str]] = None
+    additional_tests: Optional[Union[List[str], str]] = None
     follow_up_date: Optional[str] = None
 
 class UploadPrescriptionOCRRequest(BaseModel):

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Pagination } from '../../components/Pagination';
 import {
   FolderHeart,
   Search,
@@ -19,6 +20,10 @@ export const DoctorRecordsTab = ({ data }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [recordFilter, setRecordFilter] = useState('all');
+
+  // Pagination (10, 25, 50, 100)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Diagnostic records
   const sampleRecords = [
@@ -126,52 +131,69 @@ export const DoctorRecordsTab = ({ data }) => {
         </div>
       </div>
 
-      {/* Records Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredRecords.map((rec) => (
-          <div
-            key={rec.id}
-            className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-2xs hover:shadow-md transition flex flex-col justify-between space-y-4"
-          >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
-                  {rec.id}
-                </span>
-                <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  {rec.status}
-                </span>
-              </div>
-
-              <div>
-                <h3 className="font-extrabold text-base text-slate-900">{rec.title}</h3>
-                <p className="text-xs text-blue-600 font-bold mt-0.5">
-                  Patient: {rec.patient_name} <span className="font-mono text-slate-400">({rec.patient_id})</span>
-                </p>
-                <p className="text-xs text-slate-500 flex items-center gap-1.5 mt-1">
-                  <Building2 className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{rec.facility} • {rec.date}</span>
-                </p>
-              </div>
-
-              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs">
-                <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Clinical Findings</span>
-                <p className="font-medium text-slate-700">{rec.summary}</p>
-              </div>
-            </div>
-
-            <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setSelectedRecord(rec)}
-                className="flex-1 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
+      {/* Records Cards & Pagination */}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredRecords
+            .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+            .map((rec) => (
+              <div
+                key={rec.id}
+                className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-2xs hover:shadow-md transition flex flex-col justify-between space-y-4"
               >
-                <Eye className="w-3.5 h-3.5" />
-                <span>View Full Record</span>
-              </button>
-            </div>
-          </div>
-        ))}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+                      {rec.id}
+                    </span>
+                    <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {rec.status}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="font-extrabold text-base text-slate-900">{rec.title}</h3>
+                    <p className="text-xs text-blue-600 font-bold mt-0.5">
+                      Patient: {rec.patient_name} <span className="font-mono text-slate-400">({rec.patient_id})</span>
+                    </p>
+                    <p className="text-xs text-slate-500 flex items-center gap-1.5 mt-1">
+                      <Building2 className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{rec.facility} • {rec.date}</span>
+                    </p>
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Clinical Findings</span>
+                    <p className="font-medium text-slate-700">{rec.summary}</p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRecord(rec)}
+                    className="flex-1 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>View Full Record</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+        </div>
+
+        {/* Pagination */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredRecords.length / pageSize) || 1}
+          totalItems={filteredRecords.length}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(newSize) => {
+            setPageSize(newSize);
+            setCurrentPage(1);
+          }}
+        />
       </div>
 
       {/* Record Detail Modal */}

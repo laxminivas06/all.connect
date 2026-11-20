@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Pagination } from '../../components/Pagination';
 import {
   DollarSign,
   TrendingUp,
@@ -25,6 +26,10 @@ export const BillingTab = ({
   const [dateFilter, setDateFilter] = useState('all'); // all, today, this_month
   const [selectedDoctor, setSelectedDoctor] = useState('all');
   const [searchPatient, setSearchPatient] = useState('');
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Edit Fee Modal
   const [editBillingModalOpen, setEditBillingModalOpen] = useState(false);
@@ -55,6 +60,11 @@ export const BillingTab = ({
     }
     return true;
   });
+
+  const paginatedBilling = billingAppointments.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   // Calculate doctor-wise collections
   const doctorCollections = {};
@@ -262,7 +272,7 @@ export const BillingTab = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {billingAppointments.map(a => (
+              {paginatedBilling.map(a => (
                 <tr key={a.id || a.appointment_id} className="hover:bg-slate-50/60 transition">
                   <td className="py-3 px-4 font-mono font-bold text-slate-800">
                     {a.appointment_id || a.id}
@@ -314,6 +324,16 @@ export const BillingTab = ({
             </tbody>
           </table>
         </div>
+
+        {billingAppointments.length > 0 && (
+          <Pagination
+            totalItems={billingAppointments.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+          />
+        )}
       </div>
 
       {/* Modal: Edit Fee / Payment Status */}

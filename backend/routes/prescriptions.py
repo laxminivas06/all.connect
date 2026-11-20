@@ -61,10 +61,15 @@ def create_digital_prescription(req: PrescriptionCreateRequest, current_user: Di
 
     meds_dict = [m.model_dump() for m in req.medicines]
 
+    appt_id = req.clinical_id or req.appointment_id
+    recs = req.recommendations or req.advice or "Take all medicines as prescribed. Maintain adequate hydration."
+    tests_val = req.additional_tests or req.tests or []
+
     record = {
         "id": prescription_id,
         "prescription_id": prescription_id,
-        "appointment_id": req.appointment_id,
+        "appointment_id": appt_id,
+        "clinical_id": appt_id,
         "patient_id": patient["patient_id"],
         "patient_name": patient["full_name"],
         "health_id": patient["health_id"],
@@ -78,7 +83,10 @@ def create_digital_prescription(req: PrescriptionCreateRequest, current_user: Di
         "symptoms": req.symptoms or "",
         "vitals": req.vitals or {},
         "medicines": meds_dict,
-        "advice": req.advice or "Take all medicines as prescribed. Maintain adequate hydration.",
+        "advice": recs,
+        "recommendations": recs,
+        "tests": tests_val,
+        "additional_tests": tests_val,
         "additional_instructions": req.additional_instructions or "",
         "follow_up_date": req.follow_up_date,
         "status": "Authorized & Published",
@@ -87,9 +95,29 @@ def create_digital_prescription(req: PrescriptionCreateRequest, current_user: Di
     }
     insert("prescriptions", record)
 
+    # Insert medical record entry to ensure seamless EHR availability
+    med_rec = {
+        "id": f"REC-{prescription_id}",
+        "patient_id": patient["patient_id"],
+        "patient_name": patient["full_name"],
+        "record_type": "Prescription",
+        "category": "Prescription",
+        "title": f"Digital Prescription - {req.diagnosis}",
+        "doctor_name": doctor["name"],
+        "organization_name": doctor.get("organization_name", "Medical Centre"),
+        "date": today_str,
+        "prescription_id": prescription_id,
+        "clinical_id": appt_id,
+        "medicines": meds_dict,
+        "tests": tests_val,
+        "recommendations": recs,
+        "created_at": datetime.now().isoformat()
+    }
+    insert("medical_records", med_rec)
+
     # Update appointment status to Completed if linked
-    if req.appointment_id:
-        update("appointments", req.appointment_id, {"status": "Completed"}, id_field="id")
+    if appt_id:
+        update("appointments", appt_id, {"status": "Completed"}, id_field="id")
 
     # In-app notification to patient
     if patient.get("user_id"):

@@ -454,5 +454,17 @@
     "entity_id": "doc-035",
     "is_active": true,
     "created_at": "2026-11-20T07:20:15.560042"
+  },
+  {
+    "id": "usr-doc-036",
+    "username": "dr.aarav.test",
+    "email": "dr.aarav.test@yashoda.org",
+    "role": "doctor",
+    "full_name": "Dr. Aarav Nambiar",
+    "hashed_password": "2695bb020f86eae51e5d0cf43eb16e51$84156c80e3ff342d4855f4597c15c971b754e2e7547b373de2d554b8f5626ab6",
+    "organization_id": "hosp-001",
+    "entity_id": "doc-036",
+    "is_active": true,
+    "created_at": "2026-11-20T08:10:59.770869"
   }
 ]

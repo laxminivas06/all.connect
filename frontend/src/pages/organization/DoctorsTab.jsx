@@ -232,7 +232,7 @@ export const DoctorsTab = ({
 
   return (
     <div className="space-y-6">
-      
+
       {/* Header & Add Doctor Trigger */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -266,7 +266,7 @@ export const DoctorsTab = ({
           return (
             <div key={doc.id} className="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden">
               <div className="p-5 space-y-4">
-                
+
                 {/* Top Badge & Status */}
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-3">
@@ -284,13 +284,12 @@ export const DoctorsTab = ({
                     </div>
                   </div>
 
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                    doc.is_on_leave
-                      ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                      : doc.is_available !== false
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${doc.is_on_leave
+                    ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                    : doc.is_available !== false
                       ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                       : 'bg-amber-50 text-amber-700 border border-amber-200'
-                  }`}>
+                    }`}>
                     {doc.is_on_leave ? 'On Leave' : doc.is_available !== false ? 'Available' : 'Unavailable'}
                   </span>
                 </div>
@@ -622,7 +621,7 @@ export const DoctorsTab = ({
             </div>
 
             <form onSubmit={handleAvailabilitySubmit} className="space-y-4">
-              
+
               {/* Toggles for Availability and Leave */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between">
@@ -656,11 +655,10 @@ export const DoctorsTab = ({
                         type="button"
                         key={day}
                         onClick={() => toggleDay(day)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
-                          active
-                            ? 'bg-blue-600 text-white shadow-sm'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        }`}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${active
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          }`}
                       >
                         {day.slice(0, 3)}
                       </button>
@@ -811,3 +809,4 @@ export const DoctorsTab = ({
     </div>
   );
 };
+export default DoctorsTab;

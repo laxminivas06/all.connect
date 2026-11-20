@@ -74,7 +74,10 @@ export const api = {
   },
   getDoctor: (id) => request(`/doctors/${id}`),
   getDoctorDashboard: () => request('/doctors/dashboard/overview'),
-  discoverySearchDoctors: (query) => request(`/doctors/discovery-search?query=${encodeURIComponent(query)}`),
+  discoverySearchDoctors: (query, facilityType = null) => {
+    const ftypeParam = facilityType ? `&facility_type=${encodeURIComponent(facilityType)}` : '';
+    return request(`/doctors/discovery-search?query=${encodeURIComponent(query)}${ftypeParam}`);
+  },
   enquireProcedure: (data) => request('/doctors/procedures/enquire', { method: 'POST', body: JSON.stringify(data) }),
   createDoctor: (data) => request('/doctors', { method: 'POST', body: JSON.stringify(data) }),
   updateDoctorAvailability: (id, data) => request(`/doctors/${id}/availability`, { method: 'PUT', body: JSON.stringify(data) }),

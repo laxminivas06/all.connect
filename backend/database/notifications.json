@@ -1,38 +1,5 @@
 [
   {
-    "id": "notif-001",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Confirmed",
-    "message": "Your appointment with Dr. Rajesh Sharma at Yashoda Hospital is scheduled for today at 09:30 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-01-18T08:00:00"
-  },
-  {
-    "id": "notif-002",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "New Digital Prescription Issued",
-    "message": "Dr. Rajesh Sharma has published your digital prescription PRE-2026-000101.",
-    "type": "prescription",
-    "link": "/dashboard/patient/prescriptions",
-    "is_read": false,
-    "created_at": "2026-01-18T10:35:00"
-  },
-  {
-    "id": "notif-003",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Medicine Order Ready for Pickup",
-    "message": "Order MED-2026-000141 is packed and ready at Apollo Pharmacy Malkajgiri. Pickup code: PICK-48291.",
-    "type": "order",
-    "link": "/dashboard/patient/orders",
-    "is_read": false,
-    "created_at": "2026-01-18T11:45:00"
-  },
-  {
     "id": "notif-004",
     "user_id": "usr-hospital-01",
     "role": "hospital",
@@ -1331,17 +1298,6 @@
     "created_at": "2026-11-19T17:15:15.651675"
   },
   {
-    "id": "notif-apt-pat-46",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000046 with Dr. Suresh Varma, MD at Medical Centre is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T17:18:20.766797"
-  },
-  {
     "id": "notif-apt-org-46",
     "user_id": null,
     "role": "clinic",
@@ -1351,17 +1307,6 @@
     "link": "/dashboard/clinic/appointments",
     "is_read": false,
     "created_at": "2026-11-19T17:18:20.770022"
-  },
-  {
-    "id": "notif-apt-pat-47",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000047 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T17:20:37.036050"
   },
   {
     "id": "notif-apt-org-47",
@@ -1463,17 +1408,6 @@
     "created_at": "2026-11-19T17:20:45.737113"
   },
   {
-    "id": "notif-apt-pat-49",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000049 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T17:39:53.203509"
-  },
-  {
     "id": "notif-apt-org-49",
     "user_id": null,
     "role": "clinic",
@@ -1573,226 +1507,6 @@
     "created_at": "2026-11-19T17:40:08.952497"
   },
   {
-    "id": "notif-apt-status-1795092980.510983",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:20.510994"
-  },
-  {
-    "id": "notif-apt-status-1795092980.533947",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:20.533957"
-  },
-  {
-    "id": "notif-apt-status-1795092980.564011",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:20.564020"
-  },
-  {
-    "id": "notif-apt-status-1795092980.59348",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:20.593488"
-  },
-  {
-    "id": "notif-apt-status-1795092980.625606",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:20.625613"
-  },
-  {
-    "id": "notif-apt-status-1795093013.378325",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:53.378338"
-  },
-  {
-    "id": "notif-apt-status-1795093013.420452",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:53.420463"
-  },
-  {
-    "id": "notif-apt-status-1795093013.45235",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:53.452360"
-  },
-  {
-    "id": "notif-apt-status-1795093013.486568",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:53.486578"
-  },
-  {
-    "id": "notif-apt-status-1795093013.528914",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:26:53.528923"
-  },
-  {
-    "id": "notif-apt-status-1795093071.490478",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:27:51.490492"
-  },
-  {
-    "id": "notif-apt-status-1795093071.516541",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:27:51.516557"
-  },
-  {
-    "id": "notif-apt-status-1795093071.551194",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:27:51.551206"
-  },
-  {
-    "id": "notif-apt-status-1795093071.58373",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:27:51.583741"
-  },
-  {
-    "id": "notif-apt-status-1795093071.642695",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:27:51.642711"
-  },
-  {
-    "id": "notif-apt-status-1795093137.052494",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:28:57.052507"
-  },
-  {
-    "id": "notif-apt-status-1795093137.145961",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:28:57.145974"
-  },
-  {
-    "id": "notif-apt-status-1795093137.190983",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:28:57.190992"
-  },
-  {
-    "id": "notif-apt-status-1795093137.234283",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:28:57.234293"
-  },
-  {
-    "id": "notif-apt-status-1795093137.280225",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:28:57.280237"
-  },
-  {
     "id": "notif-upgrade-req-1795093137.400245",
     "user_id": "usr-admin-01",
     "role": "super_admin",
@@ -1813,61 +1527,6 @@
     "link": "/dashboard/patient",
     "is_read": false,
     "created_at": "2026-11-19T18:29:07.919972"
-  },
-  {
-    "id": "notif-apt-status-1795093182.735249",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:29:42.735262"
-  },
-  {
-    "id": "notif-apt-status-1795093182.757162",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:29:42.757174"
-  },
-  {
-    "id": "notif-apt-status-1795093182.794747",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:29:42.794756"
-  },
-  {
-    "id": "notif-apt-status-1795093182.833335",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:29:42.833350"
-  },
-  {
-    "id": "notif-apt-status-1795093182.871557",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:29:42.871566"
   },
   {
     "id": "notif-upgrade-req-1795093183.003794",
@@ -2057,17 +1716,6 @@
     "created_at": "2026-11-19T18:30:31.950108"
   },
   {
-    "id": "notif-apt-pat-53",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000053 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T18:30:44.054132"
-  },
-  {
     "id": "notif-apt-org-53",
     "user_id": null,
     "role": "clinic",
@@ -2077,61 +1725,6 @@
     "link": "/dashboard/clinic/appointments",
     "is_read": false,
     "created_at": "2026-11-19T18:30:44.058238"
-  },
-  {
-    "id": "notif-apt-status-1795095756.091069",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:12:36.091081"
-  },
-  {
-    "id": "notif-apt-status-1795095756.121685",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:12:36.121698"
-  },
-  {
-    "id": "notif-apt-status-1795095756.163407",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:12:36.163423"
-  },
-  {
-    "id": "notif-apt-status-1795095756.2025",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:12:36.202509"
-  },
-  {
-    "id": "notif-apt-status-1795095756.24746",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:12:36.247469"
   },
   {
     "id": "notif-upgrade-req-1795095756.371362",
@@ -2145,17 +1738,6 @@
     "created_at": "2026-11-19T19:12:36.371365"
   },
   {
-    "id": "notif-apt-pat-54",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000054 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 09:30 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:16:00.444009"
-  },
-  {
     "id": "notif-apt-org-54",
     "user_id": null,
     "role": "hospital",
@@ -2165,17 +1747,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T19:16:00.460881"
-  },
-  {
-    "id": "notif-apt-pat-55",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000055 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 10:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:17:29.576924"
   },
   {
     "id": "notif-apt-org-55",
@@ -2189,17 +1760,6 @@
     "created_at": "2026-11-19T19:17:29.593328"
   },
   {
-    "id": "notif-apt-pat-56",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000056 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-08 at 11:15 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:17:29.648730"
-  },
-  {
     "id": "notif-apt-org-56",
     "user_id": null,
     "role": "hospital",
@@ -2211,17 +1771,6 @@
     "created_at": "2026-11-19T19:17:29.665145"
   },
   {
-    "id": "notif-apt-pat-57",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000057 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 10:30 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:17:46.023623"
-  },
-  {
     "id": "notif-apt-org-57",
     "user_id": null,
     "role": "hospital",
@@ -2231,17 +1780,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T19:17:46.041488"
-  },
-  {
-    "id": "notif-apt-pat-58",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000058 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-14 at 10:45 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:17:46.104081"
   },
   {
     "id": "notif-apt-org-58",
@@ -2264,17 +1802,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T19:17:46.148624"
-  },
-  {
-    "id": "notif-apt-pat-59",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000059 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:17:55.275903"
   },
   {
     "id": "notif-apt-org-59",
@@ -2376,17 +1903,6 @@
     "created_at": "2026-11-19T19:18:04.746783"
   },
   {
-    "id": "notif-apt-pat-61",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000061 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:31:47.436113"
-  },
-  {
     "id": "notif-apt-org-61",
     "user_id": null,
     "role": "clinic",
@@ -2398,17 +1914,6 @@
     "created_at": "2026-11-19T19:31:47.441309"
   },
   {
-    "id": "notif-apt-pat-62",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000062 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:31:57.448744"
-  },
-  {
     "id": "notif-apt-org-62",
     "user_id": null,
     "role": "hospital",
@@ -2418,17 +1923,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T19:31:57.466932"
-  },
-  {
-    "id": "notif-apt-pat-63",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000063 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-14 at 11:15 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:31:57.524933"
   },
   {
     "id": "notif-apt-org-63",
@@ -2453,17 +1947,6 @@
     "created_at": "2026-11-19T19:31:57.580565"
   },
   {
-    "id": "notif-apt-pat-64",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000064 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 11:30 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:35:56.487121"
-  },
-  {
     "id": "notif-apt-org-64",
     "user_id": null,
     "role": "hospital",
@@ -2473,17 +1956,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T19:35:56.503123"
-  },
-  {
-    "id": "notif-apt-pat-65",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000065 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-18 at 11:45 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:35:56.578726"
   },
   {
     "id": "notif-apt-org-65",
@@ -2508,17 +1980,6 @@
     "created_at": "2026-11-19T19:35:56.639294"
   },
   {
-    "id": "notif-apt-pat-66",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000066 with Dr. Suresh Varma, MD at MaxCure Super Speciality Hospital is confirmed for 2027-02-20 at 11:00 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:36:08.148959"
-  },
-  {
     "id": "notif-apt-org-66",
     "user_id": null,
     "role": "clinic",
@@ -2528,61 +1989,6 @@
     "link": "/dashboard/clinic/appointments",
     "is_read": false,
     "created_at": "2026-11-19T19:36:08.164506"
-  },
-  {
-    "id": "notif-apt-status-1795097170.183568",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: confirmed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'confirmed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:36:10.183580"
-  },
-  {
-    "id": "notif-apt-status-1795097170.222693",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: checked_in",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'checked_in'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:36:10.222704"
-  },
-  {
-    "id": "notif-apt-status-1795097170.268063",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: waiting",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'waiting'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:36:10.268073"
-  },
-  {
-    "id": "notif-apt-status-1795097170.310366",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: in_consultation",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'in_consultation'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:36:10.310376"
-  },
-  {
-    "id": "notif-apt-status-1795097170.351409",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Status Updated: completed",
-    "message": "Your appointment APT-2026-000001 with Dr. Aarav Deshmukh is now 'completed'.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T19:36:10.351418"
   },
   {
     "id": "notif-upgrade-req-1795097170.508319",
@@ -2596,17 +2002,6 @@
     "created_at": "2026-11-19T19:36:10.508322"
   },
   {
-    "id": "notif-apt-pat-67",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000067 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 12:00 PM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:22:49.155279"
-  },
-  {
     "id": "notif-apt-org-67",
     "user_id": null,
     "role": "hospital",
@@ -2616,17 +2011,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T22:22:49.166756"
-  },
-  {
-    "id": "notif-apt-pat-68",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000068 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-24 at 10:15 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:22:49.288936"
   },
   {
     "id": "notif-apt-org-68",
@@ -2651,17 +2035,6 @@
     "created_at": "2026-11-19T22:22:49.391256"
   },
   {
-    "id": "notif-apt-pat-69",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000069 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 04:00 PM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:35:57.730385"
-  },
-  {
     "id": "notif-apt-org-69",
     "user_id": null,
     "role": "hospital",
@@ -2671,17 +2044,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T22:35:57.741334"
-  },
-  {
-    "id": "notif-apt-pat-70",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000070 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-02 at 11:15 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:35:57.857701"
   },
   {
     "id": "notif-apt-org-70",
@@ -2706,17 +2068,6 @@
     "created_at": "2026-11-19T22:35:57.960082"
   },
   {
-    "id": "notif-apt-pat-71",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000071 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-11-19 at 09:30 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:45:35.842497"
-  },
-  {
     "id": "notif-apt-org-71",
     "user_id": null,
     "role": "hospital",
@@ -2728,17 +2079,6 @@
     "created_at": "2026-11-19T22:45:35.865154"
   },
   {
-    "id": "notif-apt-pat-72",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000072 with Dr. Sneha Reddy at Apollo Reach Multi-Speciality Hospital is confirmed for 2026-11-20 at 04:30 PM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:49:19.655718"
-  },
-  {
     "id": "notif-apt-org-72",
     "user_id": null,
     "role": "hospital",
@@ -2748,17 +2088,6 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T22:49:19.691603"
-  },
-  {
-    "id": "notif-apt-pat-73",
-    "user_id": "usr-patient-01",
-    "role": "patient",
-    "title": "Appointment Booked & Confirmed",
-    "message": "Your appointment APT-2026-000073 with Dr. Rajesh Sharma at Yashoda Super Speciality Hospital is confirmed for 2026-12-13 at 11:45 AM.",
-    "type": "appointment",
-    "link": "/dashboard/patient/appointments",
-    "is_read": false,
-    "created_at": "2026-11-19T22:49:19.825733"
   },
   {
     "id": "notif-apt-org-73",
@@ -2781,5 +2110,27 @@
     "link": "/dashboard/hospital/appointments",
     "is_read": false,
     "created_at": "2026-11-19T22:49:20.003417"
+  },
+  {
+    "id": "notif-apt-org-74",
+    "user_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-12-05 at 11:45 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:08:29.707170"
+  },
+  {
+    "id": "notif-apt-org-75",
+    "user_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-12-10 at 12:15 PM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:10:09.979671"
   }
 ]

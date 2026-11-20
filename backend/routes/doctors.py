@@ -184,7 +184,11 @@ PROCEDURE_CATALOG = {
 }
 
 @router.get("/discovery-search")
-def discovery_search(query: Optional[str] = Query(None), q: Optional[str] = Query(None)):
+def discovery_search(
+    query: Optional[str] = Query(None),
+    q: Optional[str] = Query(None),
+    facility_type: Optional[str] = Query(None)
+):
     search_term = query or q or ""
     if len(search_term.strip()) < 2:
         return {
@@ -378,17 +382,73 @@ def discovery_search(query: Optional[str] = Query(None), q: Optional[str] = Quer
         or q in c.get("area", "").lower()
     ]
 
+    # Enrich hospitals with relevant_doctors, consultation_fee, sample_slots, relevant_packages
+    enriched_hospitals = []
+    for h in matched_hospitals:
+        h_docs = [d for d in matched_doctors if d.get("organization_id") == h["id"]]
+        if not h_docs:
+            h_docs = [
+                d for d in all_docs
+                if d.get("organization_id") == h["id"] and d.get("is_active", True)
+                and (not matched_departments or any(dept.lower() in (d.get("department") or "").lower() for dept in matched_departments))
+            ]
+        h_packages = [p for p in matched_packages if p.get("organization_id") == h["id"]]
+        fees = [d.get("consultation_fee") for d in h_docs if d.get("consultation_fee")]
+        min_fee = min(fees) if fees else 600
+
+        enriched_hospitals.append({
+            **h,
+            "relevant_doctors": h_docs[:4],
+            "relevant_doctors_count": len(h_docs),
+            "consultation_fee": min_fee,
+            "sample_slots": ["10:00 AM", "11:30 AM", "02:30 PM", "04:30 PM"],
+            "relevant_packages": h_packages[:2]
+        })
+
+    # Enrich clinics with available_doctors, specialisations, consultation_fee, sample_slots, relevant_packages
+    enriched_clinics = []
+    for c in matched_clinics:
+        c_docs = [d for d in matched_doctors if d.get("organization_id") == c["id"]]
+        if not c_docs:
+            c_docs = [
+                d for d in all_docs
+                if d.get("organization_id") == c["id"] and d.get("is_active", True)
+            ]
+        c_packages = [p for p in matched_packages if p.get("organization_id") == c["id"]]
+        fees = [d.get("consultation_fee") for d in c_docs if d.get("consultation_fee")]
+        min_fee = min(fees) if fees else 450
+        specs = list(set(d.get("specialization") for d in c_docs if d.get("specialization"))) or c.get("departments", [])
+
+        enriched_clinics.append({
+            **c,
+            "available_doctors": c_docs[:4],
+            "available_doctors_count": len(c_docs),
+            "specialisations": specs,
+            "consultation_fee": min_fee,
+            "sample_slots": ["09:30 AM", "11:00 AM", "05:00 PM", "06:30 PM"],
+            "relevant_packages": c_packages[:2]
+        })
+
+    # Enforce facility_type filter on backend if specified
+    if facility_type:
+        ftype = facility_type.lower().strip()
+        if ftype in ["hospital", "hospitals"]:
+            enriched_clinics = []
+        elif ftype in ["clinic", "clinics"]:
+            enriched_hospitals = []
+
     return {
         "query": query,
         "query_type": query_type,
+        "facility_type": facility_type,
         "matched_specializations": list(matched_specs),
         "matched_departments": list(matched_departments),
         "is_procedure": procedure_info is not None,
         "procedure_info": procedure_info,
         "disclaimer": "Healthcare discovery suggestions, not a medical diagnosis. Actual clinical diagnosis, surgical candidacy, and treatment suitability must be determined by a qualified medical professional.",
         "doctors": matched_doctors,
-        "hospitals": matched_hospitals,
-        "clinics": matched_clinics,
+        "hospitals": enriched_hospitals,
+        "clinics": enriched_clinics,
         "services": matched_services,
         "packages": matched_packages,
         "total_matches": len(matched_doctors) + len(matched_hospitals) + len(matched_clinics) + len(matched_packages)

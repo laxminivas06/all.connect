@@ -12,7 +12,8 @@ import {
   Calendar,
   Building2,
   Navigation,
-  Loader2
+  Loader2,
+  ChevronRight
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 
@@ -36,6 +37,7 @@ export const ClinicsListPage = () => {
   const [clinics, setClinics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedArea, setSelectedArea] = useState('All');
+  const [selectedSpeciality, setSelectedSpeciality] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [userCoords, setUserCoords] = useState(null);
   const [detectingLocation, setDetectingLocation] = useState(false);
@@ -72,6 +74,9 @@ export const ClinicsListPage = () => {
 
   const dynamicAreas = ['All', ...Array.from(new Set(clinics.map(c => c.area).filter(Boolean)))];
 
+  // Dynamic specialities
+  const allSpecialities = ['All', ...Array.from(new Set(clinics.flatMap(c => c.departments || []).filter(Boolean)))];
+
   const getDistanceStr = (clinic) => {
     if (!userCoords || !clinic.coordinates) return null;
     const dist = calculateDistance(
@@ -85,10 +90,11 @@ export const ClinicsListPage = () => {
 
   const filteredClinics = clinics.filter(c => {
     const areaMatch = selectedArea === 'All' || (c.area || '').toLowerCase() === selectedArea.toLowerCase();
+    const specMatch = selectedSpeciality === 'All' || (c.departments || []).some(d => d.toLowerCase() === selectedSpeciality.toLowerCase());
     const searchMatch = !searchQuery || (c.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (c.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
       (c.area || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return areaMatch && searchMatch;
+    return areaMatch && specMatch && searchMatch;
   });
 
   const sortedClinics = [...filteredClinics].sort((a, b) => {
@@ -97,11 +103,6 @@ export const ClinicsListPage = () => {
     const distB = calculateDistance(userCoords.lat, userCoords.lng, b.coordinates?.lat || b.latitude, b.coordinates?.lng || b.longitude) ?? 9999;
     return distA - distB;
   });
-
-  const handleBookOpd = (clinic) => {
-    setSelectedClinicForBooking(clinic);
-    navigate(`/book-opd?clinic_id=${clinic.id}`);
-  };
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
@@ -126,7 +127,7 @@ export const ClinicsListPage = () => {
           </span>
         </div>
 
-        {/* Search & Area Filter Bar */}
+        {/* Search & Filter Bar: Location & Speciality */}
         <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center gap-3">
           <div className="flex-1 relative w-full">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -139,14 +140,24 @@ export const ClinicsListPage = () => {
             />
           </div>
 
-          <div className="w-full sm:w-auto">
+          <div className="w-full sm:w-auto flex items-center gap-2">
             <select
               value={selectedArea}
               onChange={(e) => setSelectedArea(e.target.value)}
               className="w-full sm:w-auto text-xs sm:text-sm px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 bg-white font-medium text-slate-700 cursor-pointer"
             >
               {dynamicAreas.map(a => (
-                <option key={a} value={a}>{a === 'All' ? 'All Hyderabad Localities' : a}</option>
+                <option key={a} value={a}>{a === 'All' ? 'All Localities' : a}</option>
+              ))}
+            </select>
+
+            <select
+              value={selectedSpeciality}
+              onChange={(e) => setSelectedSpeciality(e.target.value)}
+              className="w-full sm:w-auto text-xs sm:text-sm px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 bg-white font-medium text-slate-700 cursor-pointer"
+            >
+              {allSpecialities.map(s => (
+                <option key={s} value={s}>{s === 'All' ? 'All Specialities' : s}</option>
               ))}
             </select>
           </div>
@@ -162,7 +173,7 @@ export const ClinicsListPage = () => {
           <div className="py-16 text-center bg-white rounded-3xl border border-slate-200 p-8">
             <Stethoscope className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <h3 className="text-base font-bold text-slate-800">No clinics matched your criteria</h3>
-            <p className="text-xs text-slate-400 mt-1">Try searching another locality or department</p>
+            <p className="text-xs text-slate-400 mt-1">Try selecting another locality or speciality</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -229,15 +240,21 @@ export const ClinicsListPage = () => {
                     </div>
                   </div>
 
-                  {/* ONLY SINGLE PRIMARY CTA: "BOOK OPD" (No View Doctors / Open Profile) */}
-                  <div className="mt-6 pt-4 border-t border-slate-100">
-                    <button
-                      onClick={() => handleBookOpd(c)}
-                      className="w-full py-3 px-4 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs sm:text-sm shadow-md shadow-teal-600/20 hover:shadow-teal-600/30 transition-all flex items-center justify-center gap-2 uppercase tracking-wider"
+                  {/* Actions: View Clinic Profile & Book Appointment */}
+                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <Link
+                      to={`/clinics/${c.id}`}
+                      className="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs transition"
                     >
-                      <Calendar className="w-4 h-4" />
-                      <span>BOOK OPD</span>
-                    </button>
+                      View Profile
+                    </Link>
+                    <Link
+                      to={`/clinics/${c.id}`}
+                      className="flex-1 py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition flex items-center justify-center gap-1.5"
+                    >
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>Book Appointment</span>
+                    </Link>
                   </div>
                 </div>
               );

@@ -184,39 +184,12 @@ export const Navbar = ({ onToggleSidebar }) => {
                   <Tag className="w-3.5 h-3.5 text-rose-500" />
                   Offers
                 </Link>
-
-                <button
-                  onClick={() => scrollToSection('about-trust-section')}
-                  className="px-3 py-2 rounded-xl hover:text-blue-600 hover:bg-slate-50 transition flex items-center gap-1.5"
-                >
-                  <Info className="w-3.5 h-3.5" />
-                  About
-                </button>
-
-                {/* Clear Action Button: Book OPD */}
-                <Link
-                  to="/book-opd"
-                  className="ml-2 px-3.5 py-2 rounded-xl font-bold text-xs bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition-all"
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Book OPD</span>
-                </Link>
               </>
             )}
           </nav>
 
           {/* Right Action Bar */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Quick Mobile Book OPD */}
-            {!isSuperAdmin && (
-              <Link
-                to="/book-opd"
-                className="md:hidden px-3 py-1.5 rounded-xl font-bold text-xs bg-blue-600 text-white shadow flex items-center gap-1"
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>Book OPD</span>
-              </Link>
-            )}
 
             {/* Notifications Dropdown */}
             {user && (
@@ -456,13 +429,6 @@ export const Navbar = ({ onToggleSidebar }) => {
               <Tag className="w-4 h-4 text-rose-500" />
               Offers
             </Link>
-            <button
-              onClick={() => { setShowMobileMenu(false); scrollToSection('about-trust-section'); }}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
-            >
-              <Info className="w-4 h-4 text-slate-500" />
-              About
-            </button>
             <Link
               to="/profile"
               onClick={() => setShowMobileMenu(false)}
@@ -470,14 +436,6 @@ export const Navbar = ({ onToggleSidebar }) => {
             >
               <User className="w-4 h-4 text-blue-600" />
               Profile
-            </Link>
-            <Link
-              to="/book-opd"
-              onClick={() => setShowMobileMenu(false)}
-              className="block px-3 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 flex items-center gap-2"
-            >
-              <Calendar className="w-4 h-4" />
-              Book OPD Appointment
             </Link>
           </div>
         )}

@@ -5,7 +5,6 @@ import {
   Activity,
   Building2,
   Stethoscope,
-  Pill,
   Search,
   MapPin,
   Star,
@@ -15,25 +14,19 @@ import {
   ShieldCheck,
   QrCode,
   Clock,
-  HeartPulse,
   Sparkles,
   AlertCircle,
   Calendar,
   X,
-  UserCheck,
-  Phone,
-  ChevronLeft,
-  ChevronRight,
   Navigation,
-  Check,
-  Users,
-  Info,
   Shield,
-  Loader2
+  Loader2,
+  Users,
+  CheckCircle2,
+  ChevronRight
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 import { ProcedureEnquiryModal } from '../components/ProcedureEnquiryModal';
-import { ErrorBoundary } from '../components/ErrorBoundary';
 
 // Haversine formula to compute distance in km
 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -60,49 +53,52 @@ export const LandingPage = () => {
   // Search & Discovery State
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedArea, setSelectedArea] = useState('All');
-  const [userCoords, setUserCoords] = useState(null); // { lat, lng, label }
+  const [userCoords, setUserCoords] = useState(null);
   const [detectingLocation, setDetectingLocation] = useState(false);
-  const [locationError, setLocationError] = useState(null);
+
+  // Discovery results state
+  const [discoveryResult, setDiscoveryResult] = useState(null);
+  const [searchingDiscovery, setSearchingDiscovery] = useState(false);
+  // Post-search facility selection: null | 'hospital' | 'clinic'
+  const [selectedSearchOption, setSelectedSearchOption] = useState(null);
+
+  // Compact Advertisement notification state
+  const [adTopVisible, setAdTopVisible] = useState(() => {
+    return sessionStorage.getItem('dismissed_promo_completely') !== 'true' &&
+      sessionStorage.getItem('closed_top_ad') !== 'true';
+  });
+  const [adBelowSearchVisible, setAdBelowSearchVisible] = useState(() => {
+    return sessionStorage.getItem('dismissed_promo_completely') !== 'true' &&
+      sessionStorage.getItem('closed_top_ad') === 'true';
+  });
 
   // Modals
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedHospitalForBooking, setSelectedHospitalForBooking] = useState(null);
-
-  // Symptom-to-Specialty Discovery State
-  const [discoveryResult, setDiscoveryResult] = useState(null);
-  const [searchingDiscovery, setSearchingDiscovery] = useState(false);
   const [enquiryModalOpen, setEnquiryModalOpen] = useState(false);
   const [selectedProcedure, setSelectedProcedure] = useState(null);
   const [selectedOrgForProcedure, setSelectedOrgForProcedure] = useState(null);
 
-  // Large Advertisement Banner Slider state
-  const [offerSlideIndex, setOfferSlideIndex] = useState(0);
-  const [isBannerHovered, setIsBannerHovered] = useState(false);
+  const searchResultsRef = useRef(null);
 
-  // Hospital Carousel ref
-  const hospitalCarouselRef = useRef(null);
-
-  const popularSymptoms = [
-    { label: 'Fever & Infection', query: 'fever' },
-    { label: 'Cough & Cold', query: 'cough' },
-    { label: 'Headache & Migraine', query: 'headache' },
-    { label: 'Skin & Acne', query: 'skin' },
-    { label: 'Joint & Bone Pain', query: 'bone' },
-    { label: 'Heart & Chest Pain', query: 'heart' },
-    { label: 'Eye Checkup', query: 'eye' },
-    { label: 'Stomach & Acidity', query: 'stomach' },
-    { label: 'Pediatrics / Child', query: 'child' }
+  const popularConcerns = [
+    { label: 'Fever', query: 'fever' },
+    { label: 'Cough', query: 'cough' },
+    { label: 'Cold', query: 'cold' },
+    { label: 'Headache', query: 'headache' },
+    { label: 'Skin problems', query: 'skin problems' },
+    { label: 'Dental problems', query: 'dental problems' },
+    { label: 'Eye problems', query: 'eye problems' },
+    { label: 'General consultation', query: 'general consultation' },
+    { label: 'Cardiology', query: 'cardiology' },
+    { label: 'Orthopaedics', query: 'orthopedics' }
   ];
 
-  // Automatic Geolocation detection on mount
+  // Geolocation detection
   const handleDetectLocation = () => {
-    if (!navigator.geolocation) {
-      setLocationError('Geolocation is not supported by your browser.');
-      return;
-    }
+    if (!navigator.geolocation) return;
     setDetectingLocation(true);
-    setLocationError(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setUserCoords({
@@ -112,58 +108,20 @@ export const LandingPage = () => {
         });
         setDetectingLocation(false);
       },
-      (err) => {
-        console.warn('Geolocation denied or unavailable:', err);
-        setLocationError('Location permission denied. Please select your area manually.');
-        // Fallback default coordinates (Central Hyderabad)
+      () => {
         setUserCoords({
           lat: 17.4399,
           lng: 78.4983,
-          label: 'Hyderabad Central'
+          label: 'Hyderabad'
         });
         setDetectingLocation(false);
       },
-      { timeout: 7000, enableHighAccuracy: false }
+      { timeout: 6000 }
     );
   };
 
   useEffect(() => {
-    // Automatically attempt geolocation detection on load
     handleDetectLocation();
-  }, []);
-
-  const handleDiscoverySearch = async (searchTerm) => {
-    const term = (searchTerm !== undefined ? searchTerm : searchQuery).trim();
-    if (!term || term.length < 2) {
-      setDiscoveryResult(null);
-      return;
-    }
-    setSearchingDiscovery(true);
-    try {
-      const res = await api.discoverySearchDoctors(term);
-      setDiscoveryResult(res);
-      setTimeout(() => {
-        const el = document.getElementById('discovery-results-section');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } catch (err) {
-      console.error('Discovery search failed:', err);
-    } finally {
-      setSearchingDiscovery(false);
-    }
-  };
-
-  const handleSymptomClick = (query) => {
-    setSearchQuery(query);
-    handleDiscoverySearch(query);
-  };
-
-  const clearDiscoverySearch = () => {
-    setSearchQuery('');
-    setDiscoveryResult(null);
-  };
-
-  useEffect(() => {
     Promise.all([
       api.getHospitals(),
       api.getClinics(),
@@ -172,149 +130,155 @@ export const LandingPage = () => {
       setHospitals(hList || []);
       setClinics(cList || []);
       setOffers(oList || []);
-    }).catch(err => console.error(err))
+    }).catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
-  // Compute dynamic areas from facilities
-  const dynamicAreas = ['All', ...Array.from(new Set([
-    ...hospitals.map(h => h.area).filter(Boolean),
-    ...clinics.map(c => c.area).filter(Boolean)
-  ]))];
+  const handleCloseTopAd = () => {
+    setAdTopVisible(false);
+    setAdBelowSearchVisible(true);
+    sessionStorage.setItem('closed_top_ad', 'true');
+  };
 
-  // Helper to compute distance string for a facility
-  const getFacilityDistance = (facility) => {
-    if (!userCoords || !facility.coordinates) return null;
+  const handleDismissAdCompletely = () => {
+    setAdTopVisible(false);
+    setAdBelowSearchVisible(false);
+    sessionStorage.setItem('dismissed_promo_completely', 'true');
+  };
+
+  // Execute Main Search
+  const handleExecuteSearch = async (term) => {
+    const q = (term !== undefined ? term : searchQuery).trim();
+    if (!q || q.length < 2) {
+      setDiscoveryResult(null);
+      setSelectedSearchOption(null);
+      return;
+    }
+
+    setSearchingDiscovery(true);
+    try {
+      const res = await api.discoverySearchDoctors(q);
+      setDiscoveryResult(res);
+      // Requirement: Do not immediately display hospitals and clinics together.
+      // Reset selected option so customer is presented with the 2 clear choices.
+      setSelectedSearchOption(null);
+
+      setTimeout(() => {
+        if (searchResultsRef.current) {
+          searchResultsRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } catch (err) {
+      console.error('Discovery search error:', err);
+    } finally {
+      setSearchingDiscovery(false);
+    }
+  };
+
+  const handleSelectConcern = (query) => {
+    setSearchQuery(query);
+    handleExecuteSearch(query);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setDiscoveryResult(null);
+    setSelectedSearchOption(null);
+  };
+
+  // Facility distance helper
+  const getFacilityDistance = (fac) => {
+    if (!userCoords || !fac.coordinates) return null;
     const dist = calculateDistance(
       userCoords.lat,
       userCoords.lng,
-      facility.coordinates.lat || facility.latitude,
-      facility.coordinates.lng || facility.longitude
+      fac.coordinates.lat || fac.latitude,
+      fac.coordinates.lng || fac.longitude
     );
     return dist !== null ? `${dist} km away` : null;
   };
 
-  // Filtered & Distance-sorted Facilities
-  const filteredHospitals = hospitals.filter(h => {
-    const areaMatch = selectedArea === 'All' || (h.area || '').toLowerCase() === selectedArea.toLowerCase();
-    const queryMatch = !searchQuery || (h.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (h.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (h.area || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return areaMatch && queryMatch;
-  });
-
-  const sortedHospitals = [...filteredHospitals].sort((a, b) => {
-    if (!userCoords) return 0;
-    const distA = calculateDistance(userCoords.lat, userCoords.lng, a.coordinates?.lat || a.latitude, a.coordinates?.lng || a.longitude) ?? 9999;
-    const distB = calculateDistance(userCoords.lat, userCoords.lng, b.coordinates?.lat || b.latitude, b.coordinates?.lng || b.longitude) ?? 9999;
-    return distA - distB;
-  });
-
-  const filteredClinics = clinics.filter(c => {
-    const areaMatch = selectedArea === 'All' || (c.area || '').toLowerCase() === selectedArea.toLowerCase();
-    const queryMatch = !searchQuery || (c.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (c.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (c.area || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return areaMatch && queryMatch;
-  });
-
-  const sortedClinics = [...filteredClinics].sort((a, b) => {
-    if (!userCoords) return 0;
-    const distA = calculateDistance(userCoords.lat, userCoords.lng, a.coordinates?.lat || a.latitude, a.coordinates?.lng || a.longitude) ?? 9999;
-    const distB = calculateDistance(userCoords.lat, userCoords.lng, b.coordinates?.lat || b.latitude, b.coordinates?.lng || b.longitude) ?? 9999;
-    return distA - distB;
-  });
-
-  // Automatic Banner Slider timer (5s interval) with pause on hover
-  useEffect(() => {
-    if (offers.length <= 1 || isBannerHovered) return;
-    const interval = setInterval(() => {
-      setOfferSlideIndex(prev => (prev + 1) % offers.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [offers.length, isBannerHovered]);
-
-  const nextOfferSlide = () => {
-    if (offers.length === 0) return;
-    setOfferSlideIndex((prev) => (prev + 1) % offers.length);
-  };
-  const prevOfferSlide = () => {
-    if (offers.length === 0) return;
-    setOfferSlideIndex((prev) => (prev - 1 + offers.length) % offers.length);
-  };
-
-  // Hospital Carousel Scroll Handlers
-  const scrollHospitalCarousel = (direction) => {
-    if (hospitalCarouselRef.current) {
-      const scrollAmount = direction === 'left' ? -380 : 380;
-      hospitalCarouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
+  // Primary active offer
+  const activePromo = offers && offers.length > 0 ? offers[0] : null;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      
-      {/* 1. FIRST INTERFACE – LOCATION & SEARCH */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-900 via-slate-900 to-slate-950 text-white pt-16 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-800">
+
+      {/* 7. ADVERTISEMENT PANEL – COMPACT NOTIFICATION STYLE (ABOVE SEARCH BAR) */}
+      {activePromo && adTopVisible && (
+        <aside aria-label="Special healthcare promotion" className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white border-b border-indigo-800/60 shadow-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+            <div className="flex items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="shrink-0 px-2 py-0.5 rounded-full bg-rose-500 text-white font-extrabold text-[10px] uppercase tracking-wider">
+                  {activePromo.discount_percentage || 25}% OFF
+                </span>
+                <p className="truncate text-slate-200">
+                  <strong className="text-white font-bold mr-1">{activePromo.title}</strong>
+                  <span className="hidden sm:inline text-slate-300">• {activePromo.organization_name}</span>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <Link
+                  to="/offers"
+                  className="px-3 py-1 rounded-lg bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-[11px] shadow-xs transition"
+                >
+                  View Offer
+                </Link>
+                <button
+                  onClick={handleCloseTopAd}
+                  className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition"
+                  title="Close advertisement"
+                  aria-label="Close promotion banner"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      )}
+
+      {/* 2. MAIN SEARCH – FIRST STEP OF HEALTHCARE DISCOVERY */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-900 via-slate-900 to-slate-950 text-white pt-14 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]" />
-        
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
+
+        <div className="max-w-4xl mx-auto text-center relative z-10 space-y-6">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-teal-300" />
             <span>Hyderabad Centralized Healthcare Mesh & EHR Federation</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
             Find the Right Healthcare <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400">Near You</span>
           </h1>
 
-          <p className="text-xs sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Search multi-speciality hospitals, neighborhood clinics, symptoms, or surgical procedures across Hyderabad. Book instant verified OPD slots with transparent locked fees.
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            Explain what healthcare you need. We'll connect you directly with verified hospitals, clinics, and specialists across Hyderabad.
           </p>
 
-          {/* Location Status & Indicator */}
-          <div className="flex items-center justify-center gap-2 text-xs">
-            {detectingLocation ? (
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 animate-pulse">
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-400" />
-                <span>Detecting nearby location...</span>
-              </div>
-            ) : userCoords ? (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Showing healthcare facilities near {userCoords.label}</span>
-              </div>
-            ) : locationError ? (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300">
-                <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
-                <span>{locationError}</span>
-              </div>
-            ) : null}
-          </div>
-
-          {/* Main Intelligent Search Bar */}
-          <div className="max-w-4xl mx-auto bg-white p-2.5 sm:p-3 rounded-2xl shadow-2xl border border-slate-200/80 text-slate-800 flex flex-col md:flex-row items-center gap-2.5">
-            
-            {/* Search Input */}
-            <div className="flex-1 flex items-center px-3 w-full border-b md:border-b-0 md:border-r border-slate-200 pb-2 md:pb-0">
-              <Search className="w-5 h-5 text-slate-400 shrink-0" />
+          {/* PRIMARY SEARCH BAR */}
+          <div className="bg-white p-2 sm:p-2.5 rounded-2xl shadow-2xl border border-slate-200 text-slate-800 flex items-center gap-2">
+            <div className="flex-1 flex items-center px-3 min-w-0">
+              <Search className="w-5 h-5 text-slate-400 shrink-0 mr-2.5" />
               <input
                 type="text"
-                placeholder="Search health concern, hospital, doctor, or condition..."
+                placeholder="Search what healthcare you need..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
-                    handleDiscoverySearch();
+                    handleExecuteSearch();
                   }
                 }}
-                className="w-full px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none"
+                className="w-full py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none"
               />
               {searchQuery && (
                 <button
                   type="button"
-                  onClick={clearDiscoverySearch}
+                  onClick={handleClearSearch}
                   className="p-1 rounded-full text-slate-400 hover:text-slate-600 transition"
                   aria-label="Clear search"
                 >
@@ -323,581 +287,685 @@ export const LandingPage = () => {
               )}
             </div>
 
-            {/* Area Dropdown & Location Retry Button */}
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto px-2">
-              <div className="relative flex-1 sm:flex-initial">
-                <select
-                  value={selectedArea}
-                  onChange={(e) => setSelectedArea(e.target.value)}
-                  className="w-full text-xs px-3 py-2.5 bg-slate-100 rounded-xl font-medium text-slate-700 border-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                  title="Select locality"
-                >
-                  {dynamicAreas.map(a => (
-                    <option key={a} value={a}>{a === 'All' ? 'All Areas (Hyderabad)' : a}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Automatic Location Re-trigger Button */}
-              <button
-                type="button"
-                onClick={handleDetectLocation}
-                disabled={detectingLocation}
-                title="Detect current location for accurate distances"
-                className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition ${
-                  detectingLocation
-                    ? 'bg-blue-50 border-blue-300 text-blue-700 opacity-80'
-                    : userCoords
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100'
-                    : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
-                }`}
-              >
-                <Navigation className={`w-3.5 h-3.5 ${detectingLocation ? 'animate-spin text-blue-600' : ''}`} />
-                <span className="hidden sm:inline">{detectingLocation ? 'Detecting...' : userCoords ? 'Nearby' : 'Locate'}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDiscoverySearch()}
-                disabled={searchingDiscovery}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition shrink-0 disabled:opacity-50"
-              >
-                {searchingDiscovery ? 'Searching...' : 'Search'}
-              </button>
-
-              <Link
-                to="/book-opd"
-                className="px-4 py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-md transition shrink-0 hidden sm:flex items-center gap-1.5"
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>Book OPD</span>
-              </Link>
-            </div>
+            <button
+              type="button"
+              onClick={() => handleExecuteSearch()}
+              disabled={searchingDiscovery}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition shrink-0 disabled:opacity-50"
+            >
+              {searchingDiscovery ? 'Searching...' : 'Search'}
+            </button>
           </div>
 
-          {/* Common Health Concerns Chips */}
-          <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-2 pt-1 text-xs">
-            <span className="text-slate-400 font-medium text-[11px] mr-1">Common Health Concerns:</span>
-            {popularSymptoms.map((sym, idx) => (
+          {/* Quick Health Concerns Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs">
+            <span className="text-slate-400 font-medium text-[11px] mr-1">Common Needs:</span>
+            {popularConcerns.map((c, idx) => (
               <button
                 key={idx}
                 type="button"
-                onClick={() => handleSymptomClick(sym.query)}
+                onClick={() => handleSelectConcern(c.query)}
                 className="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 text-[11px] font-medium backdrop-blur-xs transition shadow-xs"
               >
-                {sym.label}
+                {c.label}
               </button>
             ))}
+          </div>
+
+          {/* Location status */}
+          <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
+            <MapPin className="w-3.5 h-3.5 text-teal-400" />
+            <span>Serving Hyderabad • Automatic Location Distance Active</span>
           </div>
         </div>
       </section>
 
-      {/* Main Body Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        
-        {/* Symptom & Discovery Results (Intelligent Medical Search Engine) */}
-        {discoveryResult && (
-          <section id="discovery-results-section" className="bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 rounded-3xl p-6 md:p-8 border border-indigo-500/30 shadow-2xl text-white space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-indigo-900/50 pb-5">
-              <div>
-                <div className="flex items-center gap-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
-                  <Sparkles className="w-4 h-4 text-teal-400" />
-                  <span>Intelligent Medical Discovery Results</span>
+      {/* COMPACT ADVERTISEMENT CARD (BELOW SEARCH BAR IF TOP WAS CLOSED) */}
+      {activePromo && adBelowSearchVisible && (
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
+          <div className="bg-white rounded-2xl p-4 border border-indigo-100 shadow-md flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-indigo-600 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
+                <Tag className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 font-extrabold text-[10px]">
+                    {activePromo.discount_percentage || 25}% OFF
+                  </span>
+                  <h4 className="font-bold text-xs sm:text-sm text-slate-900 truncate">
+                    {activePromo.title}
+                  </h4>
                 </div>
-                <h2 className="text-2xl font-black text-white mt-1">
-                  Healthcare Matches for &ldquo;{discoveryResult.query}&rdquo;
+                <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                  {activePromo.description} • {activePromo.organization_name}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                to="/offers"
+                className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition"
+              >
+                View Offer
+              </Link>
+              <button
+                onClick={handleDismissAdCompletely}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition"
+                title="Dismiss completely"
+                aria-label="Dismiss promotion"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3. POST-SEARCH SECTION: TWO SEPARATE OPTIONS */}
+      {discoveryResult && (
+        <section ref={searchResultsRef} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 animate-in fade-in">
+          
+          {/* Search Result Overview */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+              <div>
+                <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider">
+                  Healthcare Discovery Result
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
+                  Care options for &ldquo;{discoveryResult.query}&rdquo;
                 </h2>
-                <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <span className="text-xs text-slate-400">Matched Departments & Specialities:</span>
-                  {(discoveryResult.matched_departments || discoveryResult.matched_specializations || []).map((spec, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
-                    >
-                      {spec}
+                <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                  <span className="text-xs text-slate-500">Relevant Specialities:</span>
+                  {(discoveryResult.matched_departments || discoveryResult.matched_specializations || []).map((s, idx) => (
+                    <span key={idx} className="px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs font-semibold">
+                      {s}
                     </span>
                   ))}
                 </div>
               </div>
 
               <button
-                type="button"
-                onClick={clearDiscoverySearch}
-                className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 flex items-center gap-1.5 transition"
+                onClick={handleClearSearch}
+                className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5"
               >
-                <X className="w-4 h-4 text-slate-400" />
-                Clear Results
+                <X className="w-3.5 h-3.5" />
+                Clear Search
               </button>
             </div>
 
-            {/* Non-Diagnostic Disclaimer */}
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-center gap-2.5">
-              <Shield className="w-4 h-4 text-amber-400 shrink-0" />
+            {/* Non-diagnostic disclaimer */}
+            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 text-xs flex items-center gap-2">
+              <Shield className="w-4 h-4 text-amber-600 shrink-0" />
               <span>
-                {discoveryResult.disclaimer || 'Healthcare discovery suggestions, not a medical diagnosis. Actual clinical diagnosis, surgical candidacy, and treatment suitability must be determined by a qualified medical professional.'}
+                {discoveryResult.disclaimer || 'Healthcare discovery suggestions, not a medical diagnosis. Clinical evaluation must be performed by a qualified medical professional.'}
               </span>
             </div>
 
-            {/* Matched Available Doctors (With fee revealed ONLY in Book Slot step) */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-bold text-slate-300 flex items-center gap-2">
-                <Users className="w-4 h-4 text-indigo-400" />
-                <span>Recommended Doctors for this Health Concern ({discoveryResult.doctors?.length || 0})</span>
+            {/* TWO CLEAR OPTIONS AFTER SEARCH */}
+            <div className="pt-2">
+              <h3 className="text-sm font-extrabold text-slate-900 mb-3">
+                Where would you prefer to receive care? Select an option:
               </h3>
 
-              {discoveryResult.doctors && discoveryResult.doctors.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {discoveryResult.doctors.map((doc) => (
-                    <div
-                      key={doc.id}
-                      className="bg-slate-900/90 border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition group"
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h4 className="text-base font-bold text-white group-hover:text-indigo-300 transition">
-                              {doc.name}
-                            </h4>
-                            <p className="text-xs font-medium text-teal-400">{doc.specialization}</p>
-                            <p className="text-[11px] text-slate-400">{doc.qualifications || doc.qualification} &bull; {doc.experience_years || 5} yrs exp</p>
-                          </div>
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-400/10 text-amber-300 text-xs font-semibold border border-amber-400/20">
-                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                            {doc.rating || 4.9}
-                          </span>
-                        </div>
-
-                        {doc.organization_details && (
-                          <div className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 text-xs space-y-1">
-                            <div className="flex items-center justify-between">
-                              <span className="font-semibold text-slate-300 truncate">
-                                {doc.organization_details.name}
-                              </span>
-                              <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400">
-                                {doc.organization_details.type}
-                              </span>
-                            </div>
-                            <div className="text-[11px] text-slate-400 flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-slate-500" />
-                              <span>{doc.organization_details.area || 'Hyderabad'}</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Doctor card action: NO upfront fee, clean BOOK SLOT CTA */}
-                      <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold">
-                          <CheckCircle className="w-3.5 h-3.5" />
-                          <span>OPD Available Today</span>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedDoctor(doc);
-                            setBookingModalOpen(true);
-                          }}
-                          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5"
-                        >
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span>Book Slot</span>
-                        </button>
-                      </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                {/* OPTION 1: FIND A HOSPITAL */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedSearchOption('hospital')}
+                  className={`p-6 rounded-2xl border text-left transition-all flex items-start gap-4 cursor-pointer ${
+                    selectedSearchOption === 'hospital'
+                      ? 'bg-blue-50/80 border-blue-500 shadow-md ring-2 ring-blue-500'
+                      : 'bg-white hover:bg-slate-50 border-slate-200 shadow-xs hover:border-blue-300'
+                  }`}
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                    selectedSearchOption === 'hospital' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-700'
+                  }`}>
+                    <Building2 className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-base text-slate-900">Option 1: Find a Hospital</span>
+                      <span className="text-xs font-bold text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded-full">
+                        {discoveryResult.hospitals?.length || 0} Available
+                      </span>
                     </div>
-                  ))}
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      Multi-speciality hospital campuses with 24x7 emergency care, inpatient beds, and surgical departments.
+                    </p>
+                    <div className="pt-2 text-xs font-bold text-blue-600 flex items-center gap-1">
+                      <span>View Relevant Hospitals</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </button>
+
+                {/* OPTION 2: FIND A CLINIC */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedSearchOption('clinic')}
+                  className={`p-6 rounded-2xl border text-left transition-all flex items-start gap-4 cursor-pointer ${
+                    selectedSearchOption === 'clinic'
+                      ? 'bg-teal-50/80 border-teal-500 shadow-md ring-2 ring-teal-500'
+                      : 'bg-white hover:bg-slate-50 border-slate-200 shadow-xs hover:border-teal-300'
+                  }`}
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                    selectedSearchOption === 'clinic' ? 'bg-teal-600 text-white' : 'bg-teal-100 text-teal-700'
+                  }`}>
+                    <Stethoscope className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-base text-slate-900">Option 2: Find a Clinic</span>
+                      <span className="text-xs font-bold text-teal-700 bg-teal-100/70 px-2 py-0.5 rounded-full">
+                        {discoveryResult.clinics?.length || 0} Available
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      Accessible neighborhood polyclinics with minimal waiting times and direct outpatient consultations.
+                    </p>
+                    <div className="pt-2 text-xs font-bold text-teal-600 flex items-center gap-1">
+                      <span>View Relevant Clinics</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* IF CUSTOMER SELECTS HOSPITAL */}
+          {selectedSearchOption === 'hospital' && (
+            <div className="space-y-4 animate-in fade-in">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                    <Building2 className="w-5 h-5 text-blue-600" />
+                    <span>Hospitals Offering Care for &ldquo;{discoveryResult.query}&rdquo;</span>
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Displaying verified multi-speciality hospitals only. Click to open hospital profile and book.
+                  </p>
+                </div>
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                  {discoveryResult.hospitals?.length || 0} Hospitals Found
+                </span>
+              </div>
+
+              {discoveryResult.hospitals && discoveryResult.hospitals.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {discoveryResult.hospitals.map((h) => {
+                    const distStr = getFacilityDistance(h);
+                    return (
+                      <div
+                        key={h.id}
+                        className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between"
+                      >
+                        <div className="space-y-3">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase">
+                                  {h.area || 'Hyderabad'}
+                                </span>
+                                {distStr && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                                    {distStr}
+                                  </span>
+                                )}
+                              </div>
+                              <h4 className="font-extrabold text-base text-slate-900 mt-1.5">
+                                {h.name}
+                              </h4>
+                              <p className="text-xs text-slate-500 italic mt-0.5">{h.tagline}</p>
+                            </div>
+
+                            <span className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold shrink-0">
+                              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                              {h.rating || 4.8}
+                            </span>
+                          </div>
+
+                          <div className="space-y-1 text-xs text-slate-600">
+                            <p className="flex items-center gap-1.5 text-slate-500">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="truncate">{h.address || h.area}</span>
+                            </p>
+                            <p className="flex items-center gap-1.5 text-emerald-600 font-semibold">
+                              <CheckCircle className="w-3.5 h-3.5 shrink-0" />
+                              <span>{h.emergency_24x7 ? '24x7 Emergency Active' : 'OPD Scheduled'}</span>
+                            </p>
+                          </div>
+
+                          {/* Relevant Departments */}
+                          <div>
+                            <span className="text-[10px] text-slate-400 font-bold uppercase block mb-1">
+                              Relevant Departments:
+                            </span>
+                            <div className="flex flex-wrap gap-1">
+                              {(h.departments || []).slice(0, 3).map((dept) => (
+                                <span key={dept} className="px-2 py-0.5 bg-slate-100 rounded text-[10px] text-slate-700 font-medium">
+                                  {dept}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Consultation fee & Sample slots */}
+                          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
+                            <div>
+                              <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Fee</span>
+                              <span className="font-black text-slate-900 text-sm">₹{h.consultation_fee || 600}</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-[10px] text-slate-400 uppercase font-bold block">Next Available</span>
+                              <span className="text-xs font-bold text-emerald-600">
+                                {h.sample_slots ? h.sample_slots[0] : '10:00 AM Today'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Relevant Packages if available */}
+                          {h.relevant_packages && h.relevant_packages.length > 0 && (
+                            <div className="p-2.5 rounded-xl bg-rose-50/70 border border-rose-200 text-xs">
+                              <span className="text-[10px] font-bold text-rose-700 uppercase block">Special Package Available:</span>
+                              <p className="font-semibold text-slate-800 text-[11px] truncate">{h.relevant_packages[0].title}</p>
+                              <span className="text-xs font-black text-rose-600">₹{h.relevant_packages[0].discounted_price}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Hospital Profile & Booking Action */}
+                        <div className="mt-4 pt-3 border-t border-slate-100">
+                          <Link
+                            to={`/hospitals/${h.id}`}
+                            className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
+                          >
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>Open Hospital Profile & Book</span>
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               ) : (
-                <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-center text-xs text-slate-400">
-                  No individual doctors on duty for this query. You can book directly with participating hospitals or clinics below.
+                <div className="p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 text-xs">
+                  No hospitals specifically matched this search. Try selecting Option 2 (Find a Clinic) above.
                 </div>
               )}
             </div>
-          </section>
-        )}
+          )}
 
-        {/* 2. LARGE PREMIUM SLIDING ADVERTISEMENT BANNER */}
-        {offers.length > 0 && (
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="inline-flex items-center gap-1.5 text-rose-600 text-xs font-bold uppercase tracking-wide">
-                <Tag className="w-4 h-4" />
-                FEATURED HEALTHCARE CAMPAIGNS & ACCREDITED PACKAGES
+          {/* IF CUSTOMER SELECTS CLINIC */}
+          {selectedSearchOption === 'clinic' && (
+            <div className="space-y-4 animate-in fade-in">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                    <Stethoscope className="w-5 h-5 text-teal-600" />
+                    <span>Clinics Offering Care for &ldquo;{discoveryResult.query}&rdquo;</span>
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Displaying verified outpatient clinics only. Click to open clinic profile and book.
+                  </p>
+                </div>
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                  {discoveryResult.clinics?.length || 0} Clinics Found
+                </span>
               </div>
-              <Link
-                to="/offers"
-                className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-              >
-                View All Offers ({offers.length}) <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
 
-            {/* Single Large Interactive Banner */}
-            <div
-              className="relative w-full rounded-3xl overflow-hidden shadow-xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 text-white border border-slate-800 transition-all"
-              onMouseEnter={() => setIsBannerHovered(true)}
-              onMouseLeave={() => setIsBannerHovered(false)}
-            >
-              {(() => {
-                const currentOffer = offers[offerSlideIndex] || offers[0];
-                return (
-                  <div className="p-6 sm:p-10 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 min-h-[300px]">
-                    {/* Left Details */}
-                    <div className="max-w-2xl space-y-4">
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        <span className="px-3 py-1 rounded-full text-xs font-black bg-rose-500 text-white uppercase tracking-wider shadow-sm">
-                          {currentOffer.discount_percentage || 25}% OFF SPECIAL
-                        </span>
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-teal-300 border border-white/20 capitalize">
-                          {currentOffer.category || 'Preventive Healthcare'}
-                        </span>
-                        <span className="text-xs text-slate-300 font-semibold">
-                          {currentOffer.organization_name}
-                        </span>
-                      </div>
+              {discoveryResult.clinics && discoveryResult.clinics.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {discoveryResult.clinics.map((c) => {
+                    const distStr = getFacilityDistance(c);
+                    return (
+                      <div
+                        key={c.id}
+                        className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between"
+                      >
+                        <div className="space-y-3">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 uppercase">
+                                  {c.area || 'Hyderabad'}
+                                </span>
+                                {distStr && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                                    {distStr}
+                                  </span>
+                                )}
+                              </div>
+                              <h4 className="font-extrabold text-base text-slate-900 mt-1.5">
+                                {c.name}
+                              </h4>
+                              <p className="text-xs text-slate-500 italic mt-0.5">{c.tagline || 'Neighborhood Polyclinic'}</p>
+                            </div>
 
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
-                        {currentOffer.title}
-                      </h2>
-
-                      <p className="text-xs sm:text-sm text-slate-300 line-clamp-3 leading-relaxed">
-                        {currentOffer.description}
-                      </p>
-
-                      <div className="flex flex-wrap items-center gap-4 pt-2">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-2xl sm:text-3xl font-black text-white">
-                            ₹{currentOffer.discounted_price}
-                          </span>
-                          <span className="text-sm sm:text-base text-slate-400 line-through">
-                            ₹{currentOffer.original_price}
-                          </span>
-                        </div>
-
-                        <button
-                          onClick={() => setBookingModalOpen(true)}
-                          className="px-6 py-3 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-teal-500/25 transition flex items-center gap-2"
-                        >
-                          <Calendar className="w-4 h-4" />
-                          <span>Book This Package</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Right Visual Highlights Card */}
-                    <div className="w-full md:w-auto p-5 sm:p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 shrink-0">
-                      <div className="flex items-center gap-2 text-teal-300 font-bold text-xs uppercase tracking-wider">
-                        <ShieldCheck className="w-4 h-4" />
-                        <span>Federated Hospital Package</span>
-                      </div>
-                      <div className="space-y-2 text-xs text-slate-200">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>Full Clinical Evaluation Included</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>Federated EHR Digital Records Sync</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>Guaranteed Priority OPD Slot</span>
-                        </div>
-                      </div>
-                      <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
-                        <span>Valid across Hyderabad</span>
-                        <span className="text-emerald-400 font-bold">Instant Confirmation</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevOfferSlide}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-white flex items-center justify-center backdrop-blur-md border border-white/10 transition shadow-md"
-                aria-label="Previous Offer Slide"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={nextOfferSlide}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-white flex items-center justify-center backdrop-blur-md border border-white/10 transition shadow-md"
-                aria-label="Next Offer Slide"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-
-              {/* Dots Pagination */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-                {offers.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setOfferSlideIndex(idx)}
-                    className={`h-2 rounded-full transition-all ${
-                      offerSlideIndex === idx ? 'w-6 bg-teal-400' : 'w-2 bg-white/40 hover:bg-white/70'
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* 3. MULTI-SPECIALITY HOSPITALS – HORIZONTAL SLIDING CAROUSEL */}
-        <section id="hospitals-carousel-section" className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <div className="inline-flex items-center gap-1.5 text-blue-600 text-xs font-bold uppercase tracking-wide">
-                <Building2 className="w-4 h-4" />
-                ACCREDITED MULTI-SPECIALITY HOSPITALS
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                Top Hospitals in Hyderabad
-              </h2>
-              <p className="text-xs text-slate-500">Swipe or navigate through certified hospitals with 24x7 emergency and federated OPD</p>
-            </div>
-
-            <div className="flex items-center gap-2 self-end sm:self-auto">
-              <button
-                onClick={() => scrollHospitalCarousel('left')}
-                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition shadow-xs"
-                aria-label="Slide Left"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => scrollHospitalCarousel('right')}
-                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition shadow-xs"
-                aria-label="Slide Right"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-              <Link
-                to="/hospitals"
-                className="ml-2 text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-              >
-                View All ({hospitals.length}) <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Horizontal Scrolling Track with Touch Swiping */}
-          <div
-            ref={hospitalCarouselRef}
-            className="flex overflow-x-auto gap-5 snap-x snap-mandatory scroll-smooth pb-4 pt-1 no-scrollbar"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {sortedHospitals.map((h) => {
-              const distStr = getFacilityDistance(h);
-              return (
-                <div
-                  key={h.id}
-                  className="min-w-[300px] sm:min-w-[340px] md:min-w-[380px] snap-start bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group shrink-0"
-                >
-                  <div className="p-5 space-y-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">
-                            {h.area || 'Hyderabad'}
-                          </span>
-                          {distStr && (
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
-                              {distStr}
+                            <span className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold shrink-0">
+                              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                              {c.rating || 4.8}
                             </span>
+                          </div>
+
+                          <div className="space-y-1 text-xs text-slate-600">
+                            <p className="flex items-center gap-1.5 text-slate-500">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="truncate">{c.address || c.area}</span>
+                            </p>
+                            <p className="flex items-center gap-1.5 text-slate-500">
+                              <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                              <span className="truncate">{c.operating_hours || '09:00 AM - 09:00 PM'}</span>
+                            </p>
+                          </div>
+
+                          {/* Clinic Specialisations */}
+                          <div>
+                            <span className="text-[10px] text-slate-400 font-bold uppercase block mb-1">
+                              Specialisations & Services:
+                            </span>
+                            <div className="flex flex-wrap gap-1">
+                              {(c.specialisations || c.departments || []).slice(0, 3).map((spec) => (
+                                <span key={spec} className="px-2 py-0.5 bg-teal-50 text-teal-800 border border-teal-200 rounded text-[10px] font-medium">
+                                  {spec}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Consultation fee & Sample slots */}
+                          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
+                            <div>
+                              <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Fee</span>
+                              <span className="font-black text-slate-900 text-sm">₹{c.consultation_fee || 450}</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-[10px] text-slate-400 uppercase font-bold block">Next Available</span>
+                              <span className="text-xs font-bold text-teal-700">
+                                {c.sample_slots ? c.sample_slots[0] : '10:00 AM Today'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Relevant Packages if available */}
+                          {c.relevant_packages && c.relevant_packages.length > 0 && (
+                            <div className="p-2.5 rounded-xl bg-teal-50/70 border border-teal-200 text-xs">
+                              <span className="text-[10px] font-bold text-teal-800 uppercase block">Clinic Checkup Package:</span>
+                              <p className="font-semibold text-slate-800 text-[11px] truncate">{c.relevant_packages[0].title}</p>
+                              <span className="text-xs font-black text-teal-700">₹{c.relevant_packages[0].discounted_price}</span>
+                            </div>
                           )}
                         </div>
-                        <h3 className="font-extrabold text-base text-slate-900 mt-2 group-hover:text-blue-600 transition">
-                          {h.name}
-                        </h3>
-                        <p className="text-xs text-slate-500 italic mt-0.5">{h.tagline || 'Leading Multi-Speciality Facility'}</p>
+
+                        {/* Clinic Profile & Booking Action */}
+                        <div className="mt-4 pt-3 border-t border-slate-100">
+                          <Link
+                            to={`/clinics/${c.id}`}
+                            className="w-full py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
+                          >
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>Open Clinic Profile & Book</span>
+                          </Link>
+                        </div>
                       </div>
-
-                      <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold shrink-0">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span>{h.rating || 4.8}</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1 text-xs text-slate-600">
-                      <p className="flex items-center gap-1.5 text-slate-500">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="truncate">{h.address || h.area}</span>
-                      </p>
-                      <p className="flex items-center gap-1.5 text-emerald-600 font-semibold">
-                        <CheckCircle className="w-3.5 h-3.5 shrink-0" />
-                        <span>{h.emergency_24x7 ? '24x7 Emergency Care Active' : 'OPD Consultations Active'}</span>
-                      </p>
-                    </div>
-
-                    {/* Departments */}
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {(h.departments || []).slice(0, 3).map((d) => (
-                        <span key={d} className="px-2 py-0.5 bg-slate-100 rounded-md text-[10px] text-slate-600 font-medium">
-                          {d}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Actions: Direct Book Appointment button */}
-                  <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-                    <Link
-                      to={`/hospitals/${h.id}`}
-                      className="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition"
-                    >
-                      Facility Profile
-                    </Link>
-                    <Link
-                      to={`/book-opd?hospital_id=${h.id}`}
-                      className="flex-1 text-center px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5"
-                    >
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>Book Appointment</span>
-                    </Link>
-                  </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* 4. NEIGHBORHOOD CLINICS SECTION WITH DIRECT "BOOK OPD" CTA */}
-        <section id="clinics-section" className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <div className="inline-flex items-center gap-1.5 text-teal-600 text-xs font-bold uppercase tracking-wide">
-                <Stethoscope className="w-4 h-4" />
-                PRIMARY & NEIGHBORHOOD CLINICS
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                Local Polyclinics with Minimal Waiting Time
-              </h2>
-              <p className="text-xs text-slate-500">Accessible outpatient clinics in your neighborhood with direct appointment booking</p>
+              ) : (
+                <div className="p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 text-xs">
+                  No clinics specifically matched this search. Try selecting Option 1 (Find a Hospital) above.
+                </div>
+              )}
             </div>
+          )}
+        </section>
+      )}
+
+      {/* BEFORE SEARCH: INITIAL HEALTHCARE DIRECTORY SHORTCUTS */}
+      {!discoveryResult && (
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+          
+          {/* Two Fast Path Direct Cards: Hospital vs Clinic */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link
+              to="/hospitals"
+              className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs hover:shadow-lg transition-all flex items-start gap-4 group"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <Building2 className="w-7 h-7" />
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition">
+                    Browse Hospitals
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold">
+                    {hospitals.length} Campuses
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Certified multi-speciality tertiary care hospitals across Hyderabad with 24x7 emergency and consultant specialists.
+                </p>
+                <span className="text-xs font-bold text-blue-600 flex items-center gap-1 pt-1">
+                  Explore Hospital Directory <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </Link>
 
             <Link
               to="/clinics"
-              className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1 self-start sm:self-auto"
+              className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs hover:shadow-lg transition-all flex items-start gap-4 group"
             >
-              Explore All Clinics ({clinics.length}) <ArrowRight className="w-3.5 h-3.5" />
+              <div className="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <Stethoscope className="w-7 h-7" />
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-black text-slate-900 group-hover:text-teal-600 transition">
+                    Browse Neighborhood Clinics
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 text-[10px] font-bold">
+                    {clinics.length} Polyclinics
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Accessible local clinics and polyclinics with minimal waiting times and direct doctor appointments.
+                </p>
+                <span className="text-xs font-bold text-teal-600 flex items-center gap-1 pt-1">
+                  Explore Clinic Directory <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {sortedClinics.slice(0, 4).map((c) => {
-              const distStr = getFacilityDistance(c);
-              return (
-                <div
-                  key={c.id}
-                  className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-                >
-                  <div className="space-y-2.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
-                          {c.area}
+          {/* Featured Multi-Speciality Hospitals Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider">
+                  Accredited Hospital Network
+                </span>
+                <h3 className="text-xl font-black text-slate-900">
+                  Top Multi-Speciality Hospitals
+                </h3>
+              </div>
+              <Link to="/hospitals" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                View All Hospitals <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {hospitals.slice(0, 3).map((h) => {
+                const distStr = getFacilityDistance(h);
+                return (
+                  <div
+                    key={h.id}
+                    className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase">
+                          {h.area || 'Hyderabad'}
+                        </span>
+                        {distStr && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                            {distStr}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1 text-xs font-bold text-amber-600">
+                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                          {h.rating || 4.8}
+                        </span>
+                      </div>
+
+                      <h4 className="font-extrabold text-base text-slate-900">{h.name}</h4>
+                      <p className="text-xs text-slate-500 italic line-clamp-1">{h.tagline}</p>
+
+                      <div className="text-xs text-slate-600 space-y-1 pt-1">
+                        <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
+                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <span className="truncate">{h.address}</span>
+                        </p>
+                        <p className="flex items-center gap-1.5 text-emerald-600 text-[11px] font-semibold">
+                          <CheckCircle className="w-3.5 h-3.5 shrink-0" />
+                          <span>{h.emergency_24x7 ? '24x7 Emergency Care Active' : 'OPD Consultations'}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                      <Link
+                        to={`/hospitals/${h.id}`}
+                        className="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>Book Appointment</span>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Featured Neighborhood Clinics Section */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-extrabold text-teal-600 uppercase tracking-wider">
+                  Community Outpatient Care
+                </span>
+                <h3 className="text-xl font-black text-slate-900">
+                  Featured Neighborhood Clinics
+                </h3>
+              </div>
+              <Link to="/clinics" className="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1">
+                View All Clinics <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {clinics.slice(0, 3).map((c) => {
+                const distStr = getFacilityDistance(c);
+                return (
+                  <div
+                    key={c.id}
+                    className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 uppercase">
+                          {c.area || 'Hyderabad'}
                         </span>
                         {distStr && (
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                             {distStr}
                           </span>
                         )}
-                      </div>
-                      <div className="flex items-center space-x-1 text-xs font-bold text-amber-600">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span>{c.rating || 4.8}</span>
-                      </div>
-                    </div>
-
-                    <h3 className="font-extrabold text-sm text-slate-900 leading-snug group-hover:text-teal-600 transition">
-                      {c.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 italic line-clamp-1">{c.tagline || 'Neighborhood Polyclinic'}</p>
-
-                    <div className="space-y-1 text-xs text-slate-600 pt-1">
-                      <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="truncate">{c.address || c.area}</span>
-                      </p>
-                      <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
-                        <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                        <span className="truncate">{c.operating_hours || '09:00 AM - 09:00 PM'}</span>
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1 pt-1">
-                      {(c.departments || []).slice(0, 3).map(d => (
-                        <span key={d} className="px-2 py-0.5 rounded bg-slate-100 text-[10px] font-medium text-slate-600">
-                          {d}
+                        <span className="flex items-center gap-1 text-xs font-bold text-amber-600">
+                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                          {c.rating || 4.8}
                         </span>
-                      ))}
+                      </div>
+
+                      <h4 className="font-extrabold text-base text-slate-900">{c.name}</h4>
+                      <p className="text-xs text-slate-500 italic line-clamp-1">{c.tagline || 'Community Polyclinic'}</p>
+
+                      <div className="text-xs text-slate-600 space-y-1 pt-1">
+                        <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
+                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <span className="truncate">{c.address}</span>
+                        </p>
+                        <p className="flex items-center gap-1.5 text-slate-500 text-[11px]">
+                          <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                          <span className="truncate">{c.operating_hours || '09:00 AM - 09:00 PM'}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                      <Link
+                        to={`/clinics/${c.id}`}
+                        className="w-full py-2 px-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5"
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>Book Appointment</span>
+                      </Link>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </section>
 
-                  {/* Single Primary Action: BOOK OPD */}
-                  <div className="mt-4 pt-3 border-t border-slate-100">
-                    <Link
-                      to={`/book-opd?clinic_id=${c.id}`}
-                      className="w-full py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow-xs transition flex items-center justify-center gap-1.5 tracking-wide"
-                    >
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>BOOK OPD</span>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* 5. ABOUT ALLCONNECT & TRUST SECTION */}
-        <section id="about-trust-section" className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 space-y-8">
-          <div className="max-w-3xl space-y-3">
-            <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30">
-              TRUST & ACCREDITATION STANDARDS
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              About AllConnect Healthcare Ecosystem
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              AllConnect is Hyderabad&apos;s centralized healthcare mesh uniting multi-speciality hospitals, independent clinics, diagnostic labs, and pharmacies on a single federated SaaS platform.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-2">
-              <ShieldCheck className="w-6 h-6 text-emerald-400" />
-              <h3 className="font-bold text-sm text-white">Verified Provider Credentials</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Every participating hospital, clinic, and doctor is verified by platform administrators using clinical registration permits before publishing.
-              </p>
+          {/* Trust & Verified Standards */}
+          <section className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 space-y-6">
+            <div>
+              <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 uppercase tracking-wider">
+                TRUST & ACCREDITATION STANDARDS
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-white mt-2">
+                Why Patients Trust AllConnect in Hyderabad
+              </h3>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-2">
-              <QrCode className="w-6 h-6 text-blue-400" />
-              <h3 className="font-bold text-sm text-white">Universal Patient Health ID</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                One digital health ID (HC-2026-XXXX) stores your medical history, prescriptions, and lab reports with patient consent controls.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-2">
+                <ShieldCheck className="w-6 h-6 text-emerald-400" />
+                <h4 className="font-bold text-sm text-white">Verified Clinical Credentials</h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Every hospital, clinic, and doctor is verified by medical registration permits before publishing.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-2">
+                <QrCode className="w-6 h-6 text-blue-400" />
+                <h4 className="font-bold text-sm text-white">Universal Patient Health ID</h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  One federated health ID stores prescriptions and records securely with full patient consent controls.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-2">
+                <Activity className="w-6 h-6 text-amber-400" />
+                <h4 className="font-bold text-sm text-white">Zero Fake Ratings & Transparent Fees</h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Locked consultation fees with verified reviews strictly from real, completed OPD visits.
+                </p>
+              </div>
             </div>
+          </section>
 
-            <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-2">
-              <Activity className="w-6 h-6 text-amber-400" />
-              <h3 className="font-bold text-sm text-white">Zero Fake Ratings & Locked Fees</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Consultation fees and health packages are transparently disclosed upfront with verified reviews from real completed appointments.
-              </p>
-            </div>
-          </div>
-        </section>
+        </main>
+      )}
 
-      </div>
-
-      {/* Appointment Booking Modal */}
+      {/* Booking Modal */}
       <AppointmentBookingModal
         isOpen={bookingModalOpen}
         onClose={() => setBookingModalOpen(false)}

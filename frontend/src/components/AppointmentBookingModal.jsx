@@ -24,7 +24,8 @@ import {
   Edit,
   Phone,
   Mail,
-  FileText
+  FileText,
+  Sparkles
 } from 'lucide-react';
 
 export const getDoctorDisplayName = (doc) => {

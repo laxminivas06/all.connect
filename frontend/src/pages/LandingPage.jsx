@@ -221,7 +221,7 @@ export const LandingPage = () => {
 
               <div className="flex items-center gap-2 shrink-0">
                 <Link
-                  to="/offers"
+                  to={activePromo.organization_id ? `/offers?organization_id=${activePromo.organization_id}` : '/offers'}
                   className="px-3 py-1 rounded-lg bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-[11px] shadow-xs transition"
                 >
                   View Offer
@@ -345,7 +345,7 @@ export const LandingPage = () => {
 
             <div className="flex items-center gap-2 shrink-0">
               <Link
-                to="/offers"
+                to={activePromo.organization_id ? `/offers?organization_id=${activePromo.organization_id}` : '/offers'}
                 className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition"
               >
                 View Offer
@@ -415,21 +415,18 @@ export const LandingPage = () => {
                 {/* OPTION 1: FIND A HOSPITAL */}
                 <button
                   type="button"
-                  onClick={() => setSelectedSearchOption('hospital')}
-                  className={`p-6 rounded-2xl border text-left transition-all flex items-start gap-4 cursor-pointer ${
-                    selectedSearchOption === 'hospital'
-                      ? 'bg-blue-50/80 border-blue-500 shadow-md ring-2 ring-blue-500'
-                      : 'bg-white hover:bg-slate-50 border-slate-200 shadow-xs hover:border-blue-300'
-                  }`}
+                  onClick={() => {
+                    const q = discoveryResult?.query || searchQuery;
+                    navigate(`/hospitals?search=${encodeURIComponent(q)}`);
+                  }}
+                  className="p-6 rounded-2xl border text-left transition-all flex items-start gap-4 cursor-pointer bg-white hover:bg-blue-50/50 border-slate-200 shadow-xs hover:border-blue-400 group"
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                    selectedSearchOption === 'hospital' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-700'
-                  }`}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-blue-100 text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition">
                     <Building2 className="w-6 h-6" />
                   </div>
-                  <div className="space-y-1 min-w-0">
+                  <div className="space-y-1 min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-black text-base text-slate-900">Option 1: Find a Hospital</span>
+                      <span className="font-black text-base text-slate-900 group-hover:text-blue-700 transition">Option 1: Find a Hospital</span>
                       <span className="text-xs font-bold text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded-full">
                         {discoveryResult.hospitals?.length || 0} Available
                       </span>
@@ -437,7 +434,7 @@ export const LandingPage = () => {
                     <p className="text-xs text-slate-500 leading-relaxed">
                       Multi-speciality hospital campuses with 24x7 emergency care, inpatient beds, and surgical departments.
                     </p>
-                    <div className="pt-2 text-xs font-bold text-blue-600 flex items-center gap-1">
+                    <div className="pt-2 text-xs font-bold text-blue-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                       <span>View Relevant Hospitals</span>
                       <ChevronRight className="w-4 h-4" />
                     </div>
@@ -447,21 +444,18 @@ export const LandingPage = () => {
                 {/* OPTION 2: FIND A CLINIC */}
                 <button
                   type="button"
-                  onClick={() => setSelectedSearchOption('clinic')}
-                  className={`p-6 rounded-2xl border text-left transition-all flex items-start gap-4 cursor-pointer ${
-                    selectedSearchOption === 'clinic'
-                      ? 'bg-teal-50/80 border-teal-500 shadow-md ring-2 ring-teal-500'
-                      : 'bg-white hover:bg-slate-50 border-slate-200 shadow-xs hover:border-teal-300'
-                  }`}
+                  onClick={() => {
+                    const q = discoveryResult?.query || searchQuery;
+                    navigate(`/clinics?search=${encodeURIComponent(q)}`);
+                  }}
+                  className="p-6 rounded-2xl border text-left transition-all flex items-start gap-4 cursor-pointer bg-white hover:bg-teal-50/50 border-slate-200 shadow-xs hover:border-teal-400 group"
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                    selectedSearchOption === 'clinic' ? 'bg-teal-600 text-white' : 'bg-teal-100 text-teal-700'
-                  }`}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-teal-100 text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition">
                     <Stethoscope className="w-6 h-6" />
                   </div>
-                  <div className="space-y-1 min-w-0">
+                  <div className="space-y-1 min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-black text-base text-slate-900">Option 2: Find a Clinic</span>
+                      <span className="font-black text-base text-slate-900 group-hover:text-teal-700 transition">Option 2: Find a Clinic</span>
                       <span className="text-xs font-bold text-teal-700 bg-teal-100/70 px-2 py-0.5 rounded-full">
                         {discoveryResult.clinics?.length || 0} Available
                       </span>
@@ -469,7 +463,7 @@ export const LandingPage = () => {
                     <p className="text-xs text-slate-500 leading-relaxed">
                       Accessible neighborhood polyclinics with minimal waiting times and direct outpatient consultations.
                     </p>
-                    <div className="pt-2 text-xs font-bold text-teal-600 flex items-center gap-1">
+                    <div className="pt-2 text-xs font-bold text-teal-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                       <span>View Relevant Clinics</span>
                       <ChevronRight className="w-4 h-4" />
                     </div>

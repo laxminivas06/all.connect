@@ -17,6 +17,7 @@ import { ClinicsListPage } from './pages/ClinicsListPage';
 import { ClinicDetailPage } from './pages/ClinicDetailPage';
 import { PharmacySearchPage } from './pages/PharmacySearchPage';
 import { OffersPage } from './pages/OffersPage';
+import { VerifyPatientPage } from './pages/patient/VerifyPatientPage';
 
 // Dashboards
 import { PatientDashboard } from './pages/patient/PatientDashboard';
@@ -119,6 +120,7 @@ export default function App() {
             <Route path="/clinics/:id" element={<PublicLayout><ClinicDetailPage /></PublicLayout>} />
             <Route path="/pharmacy-search" element={<PublicLayout><PharmacySearchPage /></PublicLayout>} />
             <Route path="/offers" element={<PublicLayout><OffersPage /></PublicLayout>} />
+            <Route path="/verify-patient" element={<PublicLayout><VerifyPatientPage /></PublicLayout>} />
 
             {/* Patient Consumer Portal (Simple, Modern, Public-Style Web Experience) */}
             <Route

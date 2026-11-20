@@ -92,6 +92,12 @@ class TestCustomerRedesignWorkflows(unittest.TestCase):
         self.assertGreater(len(doctors), 0)
         target_doc = doctors[0]
 
+        # Clean up any leftover test appointment from prior test runs
+        from database.db import find_all, save_table
+        all_appts = find_all("appointments")
+        cleaned = [a for a in all_appts if not (a.get("doctor_id") == target_doc["id"] and a.get("appointment_date") == "2026-12-10" and a.get("appointment_time") == "12:15 PM")]
+        save_table("appointments", cleaned)
+
         booking_payload = {
             "doctor_id": target_doc["id"],
             "organization_id": "clinic-001",
@@ -116,6 +122,11 @@ class TestCustomerRedesignWorkflows(unittest.TestCase):
         fetched_list = get_res.json()
         appt_ids = [a["id"] for a in fetched_list]
         self.assertIn(appt["id"], appt_ids)
+
+        # Cleanup created test appointment
+        all_appts_after = find_all("appointments")
+        cleaned_after = [a for a in all_appts_after if not (a.get("doctor_id") == target_doc["id"] and a.get("appointment_date") == "2026-12-10" and a.get("appointment_time") == "12:15 PM")]
+        save_table("appointments", cleaned_after)
 
     def test_06_pharmacy_excluded_from_customer_discovery(self):
         """Workflow 6: Verify discovery search response does not contain pharmacy / medical shop endpoints or models."""

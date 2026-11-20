@@ -15,7 +15,10 @@ import {
   Calendar,
   ShieldCheck,
   X,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  Video,
+  CheckCircle2
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 
@@ -64,6 +67,8 @@ export const ClinicDetailPage = () => {
   }
 
   const { clinic, doctors = [], offers = [] } = data;
+  const clinicOffers = (offers || []).filter(o => o.organization_id === clinic?.id);
+  const featuredOffer = clinicOffers[0] || null;
   const isSingleDoctor = doctors.length === 1 || clinic.is_single_doctor;
 
   // Available specialities in this clinic
@@ -164,36 +169,103 @@ export const ClinicDetailPage = () => {
           </div>
         </div>
 
-        {/* Clinic Offers if any */}
-        {offers && offers.length > 0 && (
-          <div className="p-6 rounded-3xl bg-teal-50/70 border border-teal-200 space-y-3">
-            <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-              <Tag className="w-4 h-4 text-teal-600" />
-              <span>Clinic Health Packages & Checkups</span>
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {offers.map(off => (
-                <div key={off.id} className="bg-white p-4 rounded-2xl border border-teal-100 shadow-sm flex justify-between items-center">
-                  <div>
-                    <h4 className="font-bold text-xs text-slate-800">{off.title}</h4>
-                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{off.description}</p>
-                    <div className="mt-2">
-                      <span className="text-[10px] text-slate-400 line-through mr-1">₹{off.original_price}</span>
-                      <span className="font-bold text-sm text-slate-900">₹{off.discounted_price}</span>
+        {/* PROVIDER-SPECIFIC OFFERS: FEATURED ADVERTISEMENT PANEL & PACKAGES */}
+        {clinicOffers.length > 0 && (
+          <div className="space-y-4">
+            {featuredOffer && (
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-900 via-slate-900 to-emerald-950 text-white p-6 sm:p-7 shadow-xl border border-teal-500/20">
+                <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                  <div className="space-y-2 max-w-xl">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-500 text-white uppercase tracking-wider shadow-xs">
+                        FEATURED OFFER • {featuredOffer.discount_percentage || 25}% OFF
+                      </span>
+                      <span className="text-[11px] text-teal-200 font-semibold flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Exclusive {clinic.name} Clinic Promotion</span>
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-black text-white leading-snug">
+                      {featuredOffer.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-2">
+                      {featuredOffer.description}
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-300">
+                      <span className="flex items-center gap-1.5 text-amber-300 font-semibold">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>Valid until: {featuredOffer.end_date || '2027-12-31'}</span>
+                      </span>
+                      {featuredOffer.terms && (
+                        <span className="text-[11px] text-slate-400 italic">
+                          Terms: {featuredOffer.terms}
+                        </span>
+                      )}
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      setSelectedDoctor(doctors[0] || null);
-                      setBookingModalOpen(true);
-                    }}
-                    className="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition shadow-xs"
-                  >
-                    Book
-                  </button>
+
+                  <div className="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto shrink-0 gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-white/10">
+                    <div className="text-left md:text-right">
+                      {featuredOffer.original_price && (
+                        <span className="text-xs text-slate-400 line-through mr-1 block">₹{featuredOffer.original_price}</span>
+                      )}
+                      <span className="text-2xl font-black text-white">₹{featuredOffer.discounted_price}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={`/offers?organization_id=${clinic.id}`}
+                        className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition"
+                      >
+                        View Details
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctor(doctors[0] || null);
+                          setBookingModalOpen(true);
+                        }}
+                        className="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-xs shadow-md transition"
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {clinicOffers.length > 1 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {clinicOffers.slice(1).map(off => (
+                  <div key={off.id} className="bg-white p-4 rounded-2xl border border-teal-100 shadow-xs flex justify-between items-center hover:shadow-sm transition">
+                    <div>
+                      <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
+                        {off.discount_percentage}% OFF
+                      </span>
+                      <h4 className="font-bold text-xs text-slate-800 mt-1">{off.title}</h4>
+                      <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{off.description}</p>
+                      <div className="mt-2">
+                        <span className="text-[10px] text-slate-400 line-through mr-1">₹{off.original_price}</span>
+                        <span className="font-bold text-sm text-slate-900">₹{off.discounted_price}</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedDoctor(doctors[0] || null);
+                        setBookingModalOpen(true);
+                      }}
+                      className="px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition shadow-xs"
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -241,8 +313,11 @@ export const ClinicDetailPage = () => {
                     </div>
 
                     <div className="sm:text-right bg-white p-3 rounded-2xl border border-teal-100">
-                      <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Fee</span>
-                      <span className="text-lg font-black text-slate-900">₹{doc.consultation_fee || 450}</span>
+                      <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Modes</span>
+                      <span className="text-xs font-bold text-teal-700 flex items-center gap-1 justify-end mt-0.5">
+                        <Video className="w-3.5 h-3.5" />
+                        <span>In-Person & Video</span>
+                      </span>
                     </div>
                   </div>
 
@@ -327,13 +402,16 @@ export const ClinicDetailPage = () => {
 
                         <div className="p-2.5 bg-white rounded-xl border border-slate-100 flex items-center justify-between text-xs">
                           <div>
-                            <span className="text-[10px] text-slate-400 uppercase font-bold block">Fee</span>
-                            <span className="font-black text-slate-900">₹{doc.consultation_fee || 450}</span>
+                            <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Modes</span>
+                            <span className="font-bold text-slate-800 text-xs flex items-center gap-1 mt-0.5">
+                              <Video className="w-3 h-3 text-teal-600" />
+                              <span>In-Person & Video</span>
+                            </span>
                           </div>
                           <div className="text-right">
-                            <span className="text-[10px] text-slate-400 uppercase font-bold block">Available Slot</span>
-                            <span className="text-xs font-bold text-teal-700">
-                              {doc.available_slots ? doc.available_slots[0] : '10:00 AM Today'}
+                            <span className="text-[10px] text-slate-400 uppercase font-bold block">Availability Status</span>
+                            <span className="text-xs font-bold text-emerald-600">
+                              {doc.is_available !== false ? 'Accepting Patients' : 'Unavailable'}
                             </span>
                           </div>
                         </div>
@@ -373,7 +451,7 @@ export const ClinicDetailPage = () => {
         isOpen={bookingModalOpen}
         onClose={() => setBookingModalOpen(false)}
         initialDoctor={selectedDoctor}
-        initialHospital={clinic}
+        initialClinic={clinic}
       />
     </div>
   );

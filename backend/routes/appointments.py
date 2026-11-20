@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends
-from models.schemas import AppointmentCreateRequest, AppointmentStatusUpdateRequest
+from models.schemas import AppointmentCreateRequest, AppointmentStatusUpdateRequest, AppointmentPricingQuoteRequest
 from database.db import find_all, find_one, insert, update
 from services.auth_utils import get_current_user_payload
 from routes.admin import log_audit_event
@@ -36,6 +36,52 @@ def get_appointments(
 
     return sorted(appts, key=lambda x: x.get("created_at", ""), reverse=True)
 
+@router.post("/pricing-quote")
+def get_appointment_pricing_quote(req: AppointmentPricingQuoteRequest):
+    """
+    Step 5: Official Consultation Price Quote from backend.
+    Calculates applicable fee based on Doctor, Consultation Mode, and additional charges.
+    """
+    doctor = find_one("doctors", lambda d: d.get("id") == req.doctor_id)
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+
+    target_org_id = req.organization_id or doctor.get("organization_id")
+    org_table = "hospitals" if str(target_org_id).startswith("hosp") else "clinics"
+    org = find_one(org_table, lambda o: o.get("id") == target_org_id)
+    org_name = org.get("name") if org else doctor.get("organization_name", "Medical Centre")
+
+    # Base consultation fee
+    base_fee = float(doctor.get("consultation_fee") or 500)
+    mode = req.consultation_mode.strip()
+    
+    # Mode-based adjustments: Video consultation can have discounted or dedicated rate
+    if mode.lower() in ["video", "teleconsultation", "video consultation"]:
+        mode_label = "Video Consultation"
+        fee = float(doctor.get("video_consultation_fee") or (base_fee * 0.9))
+    else:
+        mode_label = "In-Person Consultation"
+        fee = base_fee
+
+    fee = round(fee, 2)
+    additional_charges = 0.0  # Optional facility service charge
+    total_payable = round(fee + additional_charges, 2)
+
+    return {
+        "doctor_id": doctor.get("id"),
+        "doctor_name": doctor.get("name") or doctor.get("full_name") or "Doctor",
+        "specialization": doctor.get("specialization", "General Medicine"),
+        "organization_id": target_org_id,
+        "organization_name": org_name,
+        "consultation_mode": mode_label,
+        "appointment_date": req.appointment_date,
+        "appointment_time": req.appointment_time,
+        "consultation_fee": fee,
+        "additional_charges": additional_charges,
+        "total_payable": total_payable,
+        "currency": "INR"
+    }
+
 @router.post("/book")
 def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any] = Depends(get_current_user_payload)):
     # 1. Fetch doctor & organization
@@ -44,8 +90,45 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
         raise HTTPException(status_code=404, detail="Doctor not found")
     
     doc_display_name = doctor.get("name") or doctor.get("full_name") or "Doctor"
+
+    # 2. Date validation: Prevent booking in the past
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    if req.appointment_date < today_str:
+        raise HTTPException(status_code=400, detail="Cannot book an appointment on a past date.")
+
+    # 3. Doctor availability by weekday
+    try:
+        appt_date_obj = datetime.strptime(req.appointment_date, "%Y-%m-%d")
+        day_name = appt_date_obj.strftime("%A")
+        avail_days = doctor.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+        if day_name not in avail_days:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Dr. {doc_display_name} is not available on {day_name}s. Available days: {', '.join(avail_days)}"
+            )
+        if doctor.get("is_on_leave"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Dr. {doc_display_name} is currently on leave on {req.appointment_date}."
+            )
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
+
+    # 4. Maximum Daily Appointment Capacity Enforcement
+    max_capacity = int(doctor.get("slot_limits") or doctor.get("max_daily_patients") or 20)
+    existing_day_appts = find_all(
+        "appointments",
+        lambda a: a.get("doctor_id") == req.doctor_id 
+        and a.get("appointment_date") == req.appointment_date 
+        and a.get("status") not in ["Cancelled", "Refunded"]
+    )
+    if len(existing_day_appts) >= max_capacity:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Maximum daily appointment capacity ({max_capacity}) reached for Dr. {doc_display_name} on {req.appointment_date}. Please choose another date."
+        )
     
-    # 2. Prevent DOUBLE BOOKING on the same doctor, date, and slot
+    # 5. Prevent DOUBLE BOOKING on the same doctor, date, and slot
     existing_slot = find_one("appointments", lambda a: (
         a.get("doctor_id") == req.doctor_id and
         a.get("appointment_date") == req.appointment_date and
@@ -122,7 +205,7 @@ def book_appointment(req: AppointmentCreateRequest, current_user: Dict[str, Any]
         "appointment_date": req.appointment_date,
         "appointment_time": req.appointment_time,
         "appointment_type": req.appointment_type,
-        "consultation_fee": doctor.get("consultation_fee", 500),
+        "consultation_fee": int(doctor.get("video_consultation_fee") or (doctor.get("consultation_fee", 500) * 0.9)) if ("video" in req.appointment_type.lower() or "tele" in req.appointment_type.lower()) else int(doctor.get("consultation_fee", 500)),
         "payment_status": "Confirmed (Online)",
         "payment_mode": "Online UPI Gateway",
         "status": "Confirmed",

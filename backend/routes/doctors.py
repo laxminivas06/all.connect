@@ -584,6 +584,223 @@ def get_doctor_profile(doctor_id: str):
         "slot_calendar": slot_calendar
     }
 
+@router.get("/{doctor_id}/schedule")
+def get_doctor_schedule_info(doctor_id: str):
+    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    
+    org_id = doc.get("organization_id")
+    org = None
+    if org_id:
+        tbl = "hospitals" if org_id.startswith("hosp") else "clinics"
+        org = find_one(tbl, lambda o: o.get("id") == org_id)
+
+    raw_type = doc.get("consultation_type", "Both")
+    if isinstance(raw_type, list):
+        modes = raw_type
+    elif "both" in str(raw_type).lower():
+        modes = ["In-Person Consultation", "Video Consultation"]
+    elif "video" in str(raw_type).lower() or "tele" in str(raw_type).lower():
+        modes = ["Video Consultation"]
+    else:
+        modes = ["In-Person Consultation"]
+
+    return {
+        "doctor_id": doc["id"],
+        "name": doc.get("name") or doc.get("full_name"),
+        "specialization": doc.get("specialization"),
+        "qualifications": doc.get("qualifications"),
+        "experience_years": doc.get("experience_years"),
+        "organization_id": org_id,
+        "organization_name": org.get("name") if org else doc.get("organization_name"),
+        "available_days": doc.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]),
+        "consultation_modes": modes,
+        "consultation_hours": doc.get("consultation_hours", "09:00 AM - 01:00 PM"),
+        "break_time": {"start": "11:00 AM", "end": "11:30 AM"},
+        "slot_duration_minutes": int(doc.get("slot_duration_minutes") or 15),
+        "max_daily_capacity": int(doc.get("slot_limits") or doc.get("max_daily_patients") or 20),
+        "in_person_fee": float(doc.get("consultation_fee") or 500),
+        "video_fee": float(doc.get("video_consultation_fee") or round(float(doc.get("consultation_fee") or 500) * 0.9, 2)),
+        "is_on_leave": doc.get("is_on_leave", False),
+        "is_active": doc.get("is_active", True)
+    }
+
+@router.get("/{doctor_id}/daily-slots")
+def get_doctor_daily_slots(
+    doctor_id: str,
+    date: str = Query(..., description="Date in YYYY-MM-DD format"),
+    mode: Optional[str] = Query("In-Person", description="Consultation mode")
+):
+    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+
+    try:
+        req_date = datetime.strptime(date, "%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
+
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    is_past = date < today_str
+    day_name = req_date.strftime("%A")
+    avail_days = doc.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+    is_working_day = (day_name in avail_days) and not doc.get("is_on_leave", False)
+
+    max_capacity = int(doc.get("slot_limits") or doc.get("max_daily_patients") or 20)
+
+    # Existing active bookings on this date
+    appts = find_all(
+        "appointments",
+        lambda a: a.get("doctor_id") == doctor_id 
+        and a.get("appointment_date") == date 
+        and a.get("status") not in ["Cancelled", "Refunded"]
+    )
+    booked_slots = set(a.get("appointment_time") for a in appts)
+    booked_count = len(appts)
+    is_fully_booked = (booked_count >= max_capacity) or not is_working_day or is_past
+
+    configured_slots = doc.get("available_slots")
+    if not configured_slots:
+        configured_slots = [
+            "09:00 AM", "09:15 AM", "09:30 AM", "09:45 AM",
+            "10:00 AM", "10:15 AM", "10:30 AM", "10:45 AM",
+            "11:30 AM", "11:45 AM", "12:00 PM", "12:15 PM",
+            "12:30 PM", "12:45 PM", "04:00 PM", "04:30 PM",
+            "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM"
+        ]
+
+    slots_output = []
+    available_count = max(0, max_capacity - booked_count)
+
+    for slot_time in configured_slots:
+        is_booked = slot_time in booked_slots
+        if is_past:
+            status = "Past"
+            avail = False
+        elif not is_working_day:
+            status = "Doctor Off"
+            avail = False
+        elif is_booked:
+            status = "Booked"
+            avail = False
+        elif is_fully_booked:
+            status = "Fully Booked"
+            avail = False
+        elif available_count <= 3:
+            status = "Limited"
+            avail = True
+        else:
+            status = "Available"
+            avail = True
+
+        slots_output.append({
+            "time": slot_time,
+            "status": status,
+            "available": avail
+        })
+
+    day_status = "Unavailable"
+    if is_past:
+        day_status = "Past Date"
+    elif not is_working_day:
+        day_status = "Doctor Off"
+    elif booked_count >= max_capacity:
+        day_status = "Fully Booked"
+    elif available_count <= 3:
+        day_status = "Limited Slots"
+    else:
+        day_status = "Available"
+
+    return {
+        "doctor_id": doctor_id,
+        "date": date,
+        "day_name": day_name,
+        "total_capacity": max_capacity,
+        "booked_count": booked_count,
+        "available_count": available_count,
+        "day_status": day_status,
+        "is_available": is_working_day and not is_past and booked_count < max_capacity,
+        "slots": slots_output
+    }
+
+@router.get("/{doctor_id}/month-availability")
+def get_doctor_month_availability(
+    doctor_id: str,
+    year: int = Query(...),
+    month: int = Query(...)
+):
+    doc = find_one("doctors", lambda d: d.get("id") == doctor_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+
+    import calendar
+    _, num_days = calendar.monthrange(year, month)
+    today_str = datetime.now().strftime("%Y-%m-%d")
+
+    avail_days = doc.get("available_days", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+    max_capacity = int(doc.get("slot_limits") or doc.get("max_daily_patients") or 20)
+    is_on_leave = doc.get("is_on_leave", False)
+
+    start_date = f"{year:04d}-{month:02d}-01"
+    end_date = f"{year:04d}-{month:02d}-{num_days:02d}"
+    appts = find_all(
+        "appointments",
+        lambda a: a.get("doctor_id") == doctor_id 
+        and start_date <= a.get("appointment_date", "") <= end_date 
+        and a.get("status") not in ["Cancelled", "Refunded"]
+    )
+    
+    appts_by_date = {}
+    for a in appts:
+        d = a.get("appointment_date")
+        appts_by_date[d] = appts_by_date.get(d, 0) + 1
+
+    days_map = {}
+    for day in range(1, num_days + 1):
+        dt_str = f"{year:04d}-{month:02d}-{day:02d}"
+        dt_obj = datetime(year, month, day)
+        day_name = dt_obj.strftime("%A")
+
+        is_past = dt_str < today_str
+        is_working_day = (day_name in avail_days) and not is_on_leave
+        booked_count = appts_by_date.get(dt_str, 0)
+        remaining = max(0, max_capacity - booked_count)
+
+        if is_past:
+            status = "past"
+            avail = False
+        elif not is_working_day:
+            status = "off"
+            avail = False
+        elif booked_count >= max_capacity:
+            status = "fully_booked"
+            avail = False
+        elif remaining <= 3:
+            status = "limited"
+            avail = True
+        else:
+            status = "available"
+            avail = True
+
+        days_map[dt_str] = {
+            "date": dt_str,
+            "day": day,
+            "day_name": day_name,
+            "status": status,
+            "available": avail,
+            "booked_count": booked_count,
+            "remaining": remaining,
+            "capacity": max_capacity
+        }
+
+    return {
+        "doctor_id": doctor_id,
+        "year": year,
+        "month": month,
+        "days": days_map
+    }
+
 @router.get("/dashboard/overview")
 def get_doctor_dashboard_overview(current_user: Dict[str, Any] = Depends(get_current_user_payload)):
     if current_user["role"] not in ["doctor", "super_admin"]:

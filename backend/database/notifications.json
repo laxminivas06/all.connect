@@ -2132,5 +2132,93 @@
     "link": "/dashboard/clinic/appointments",
     "is_read": false,
     "created_at": "2026-11-20T08:10:09.979671"
+  },
+  {
+    "id": "notif-apt-pat-76",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000076 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-11-26 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:42:18.470650"
+  },
+  {
+    "id": "notif-apt-org-76",
+    "user_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-11-26 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:42:18.497376"
+  },
+  {
+    "id": "notif-apt-pat-76",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000076 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-11-26 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:46:42.233008"
+  },
+  {
+    "id": "notif-apt-org-76",
+    "user_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-11-26 at 11:15 AM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:46:42.255182"
+  },
+  {
+    "id": "notif-apt-pat-75",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000075 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-12-10 at 12:15 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:48:12.328267"
+  },
+  {
+    "id": "notif-apt-org-75",
+    "user_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-12-10 at 12:15 PM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:48:12.347239"
+  },
+  {
+    "id": "notif-apt-pat-75",
+    "user_id": "usr-patient-01",
+    "role": "patient",
+    "title": "Appointment Booked & Confirmed",
+    "message": "Your appointment APT-2026-000075 with Dr. P. Venkat Rao at MedPlus Care Family Clinic is confirmed for 2026-12-10 at 12:15 PM.",
+    "type": "appointment",
+    "link": "/dashboard/patient/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:49:01.992063"
+  },
+  {
+    "id": "notif-apt-org-75",
+    "user_id": null,
+    "role": "clinic",
+    "title": "New Appointment Booked",
+    "message": "Laxmi Narayana Sharma booked with Dr. P. Venkat Rao for 2026-12-10 at 12:15 PM.",
+    "type": "appointment",
+    "link": "/dashboard/clinic/appointments",
+    "is_read": false,
+    "created_at": "2026-11-20T08:49:02.011820"
   }
 ]

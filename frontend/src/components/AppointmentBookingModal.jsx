@@ -1,82 +1,280 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { X, Calendar, Clock, User, CheckCircle2, AlertCircle, Building2, Stethoscope, CreditCard } from 'lucide-react';
+import {
+  X,
+  Calendar,
+  Clock,
+  User,
+  CheckCircle2,
+  AlertCircle,
+  Building2,
+  Stethoscope,
+  CreditCard,
+  Video,
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck,
+  ArrowRight,
+  Loader2,
+  Check,
+  Receipt,
+  Download
+} from 'lucide-react';
 
 export const AppointmentBookingModal = ({
   isOpen,
   onClose,
   initialDoctor = null,
   initialHospital = null,
+  initialClinic = null,
   initialDate = null,
   initialTime = null,
   onSuccess,
   onBookingSuccess
 }) => {
   const { user } = useAuth();
+
+  // 7-step booking state
+  // Step 1: Doctor Selection
+  // Step 2: Consultation Mode Selection
+  // Step 3: Calendar-Based Date Selection
+  // Step 4: Time Slot & Capacity Selection
+  // Step 5: Official Price Quote & Summary
+  // Step 6: Patient Details & Booking Confirmation
+  // Step 7: Payment Page & Digital Receipt
   const [step, setStep] = useState(1);
+
   const [loading, setLoading] = useState(false);
-  const [fetchingDoctorDetails, setFetchingDoctorDetails] = useState(false);
   const [error, setError] = useState('');
   const [successData, setSuccessData] = useState(null);
 
-  const [doctorsList, setDoctorsList] = useState([]);
-  const [selectedDoctor, setSelectedDoctor] = useState(initialDoctor);
-  const [selectedDate, setSelectedDate] = useState(initialDate || new Date().toISOString().split('T')[0]);
-  const [selectedSlot, setSelectedSlot] = useState(initialTime || '');
-  const [appointmentType, setAppointmentType] = useState('In-Person');
-  const [complaint, setComplaint] = useState('');
+  // Target organization
+  const targetOrg = initialHospital || initialClinic || (typeof initialDoctor === 'object' ? initialDoctor?.organization : null);
+  const targetOrgId = targetOrg?.id || (typeof initialDoctor === 'object' ? initialDoctor?.organization_id : null);
 
+  // Step 1 State: Doctors
+  const [doctorsList, setDoctorsList] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [loadingDoctors, setLoadingDoctors] = useState(false);
+
+  // Step 2 State: Mode Selection
+  const [consultationMode, setConsultationMode] = useState('In-Person Consultation');
+  const [enabledModes, setEnabledModes] = useState(['In-Person Consultation', 'Video Consultation']);
+
+  // Step 3 State: Calendar
+  const today = new Date();
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1); // 1-12
+  const [monthAvailability, setMonthAvailability] = useState({});
+  const [loadingCalendar, setLoadingCalendar] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
+
+  // Step 4 State: Daily Slots & Capacity
+  const [dailySlotsData, setDailySlotsData] = useState(null);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState('');
+
+  // Step 5 State: Backend Price Quote
+  const [priceQuote, setPriceQuote] = useState(null);
+  const [loadingQuote, setLoadingQuote] = useState(false);
+
+  // Step 6 State: Patient Details
+  const [patientName, setPatientName] = useState('');
+  const [patientMobile, setPatientMobile] = useState('');
+  const [patientEmail, setPatientEmail] = useState('');
+  const [chiefComplaint, setChiefComplaint] = useState('');
+
+  // Step 7 State: Payment
+  const [paymentMethod, setPaymentMethod] = useState('Online UPI / QR Payment');
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [paymentComplete, setPaymentComplete] = useState(false);
+
+  // Initialize Modal
   useEffect(() => {
     if (isOpen) {
       setError('');
       setSuccessData(null);
-      setStep(1);
-      if (initialDate) setSelectedDate(initialDate);
-      if (initialTime) setSelectedSlot(initialTime);
+      setPaymentComplete(false);
+      setSelectedSlot('');
+      setPriceQuote(null);
+      setSelectedDate('');
+      
+      // Pre-fill patient details if logged in
+      if (user) {
+        setPatientName(user.name || user.full_name || '');
+        setPatientMobile(user.mobile || user.phone || '');
+        setPatientEmail(user.email || '');
+      }
 
-      const targetDocId = typeof initialDoctor === 'string' ? initialDoctor : initialDoctor?.id;
-      if (targetDocId) {
-        setFetchingDoctorDetails(true);
-        api.getDoctor(targetDocId)
-          .then(data => {
-            const docObj = data.doctor || data;
-            setSelectedDoctor(docObj);
-            if (!initialTime) {
-              setSelectedSlot(docObj.available_slots ? docObj.available_slots[0] : '10:00 AM');
-            }
-          })
-          .catch(() => {
-            if (typeof initialDoctor === 'object') setSelectedDoctor(initialDoctor);
-          })
-          .finally(() => setFetchingDoctorDetails(false));
+      // Initialize Doctor
+      if (initialDoctor) {
+        const docObj = typeof initialDoctor === 'object' ? initialDoctor : null;
+        if (docObj) {
+          setSelectedDoctor(docObj);
+          configureDoctorModes(docObj);
+          // If organization is known and doc is provided, proceed directly to Step 2
+          setStep(2);
+        } else {
+          fetchDoctorById(initialDoctor);
+        }
       } else {
-        setFetchingDoctorDetails(true);
-        api.getDoctors()
-          .then(docs => {
-            setDoctorsList(docs || []);
-            if (docs && docs.length > 0) {
-              setSelectedDoctor(docs[0]);
-              if (!initialTime) {
-                setSelectedSlot(docs[0].available_slots ? docs[0].available_slots[0] : '10:00 AM');
-              }
-            }
-          })
-          .finally(() => setFetchingDoctorDetails(false));
+        // Fetch doctors belonging strictly to this organization
+        fetchOrgDoctors();
+        setStep(1);
       }
     }
-  }, [isOpen, initialDoctor, initialDate, initialTime]);
+  }, [isOpen, initialDoctor, initialHospital, initialClinic]);
 
-  if (!isOpen) return null;
+  const configureDoctorModes = (doc) => {
+    const rawType = doc.consultation_type || doc.consultation_modes || 'Both';
+    let modes = ['In-Person Consultation', 'Video Consultation'];
+    if (typeof rawType === 'string') {
+      if (rawType.toLowerCase().includes('in-person') && !rawType.toLowerCase().includes('video') && !rawType.toLowerCase().includes('both')) {
+        modes = ['In-Person Consultation'];
+      } else if (rawType.toLowerCase().includes('video') && !rawType.toLowerCase().includes('in-person') && !rawType.toLowerCase().includes('both')) {
+        modes = ['Video Consultation'];
+      }
+    }
+    setEnabledModes(modes);
+    if (!modes.includes(consultationMode)) {
+      setConsultationMode(modes[0]);
+    }
+  };
 
-  const handleBook = async (e) => {
-    e.preventDefault();
-    if (!selectedDoctor) {
-      setError('Please select a doctor');
+  const fetchDoctorById = async (docId) => {
+    setLoadingDoctors(true);
+    try {
+      const res = await api.getDoctor(docId);
+      const doc = res.doctor || res;
+      setSelectedDoctor(doc);
+      configureDoctorModes(doc);
+      setStep(2);
+    } catch (err) {
+      setError('Failed to load doctor profile');
+    } finally {
+      setLoadingDoctors(false);
+    }
+  };
+
+  const fetchOrgDoctors = async () => {
+    setLoadingDoctors(true);
+    try {
+      const params = {};
+      if (targetOrgId) params.organization_id = targetOrgId;
+      const docs = await api.getDoctors(params);
+      
+      // Strict organization isolation: filter only doctors belonging to targetOrgId if specified
+      const filtered = targetOrgId ? (docs || []).filter(d => d.organization_id === targetOrgId) : (docs || []);
+      setDoctorsList(filtered);
+
+      // Single-Doctor Clinic Requirement: If only 1 doctor, select directly without extra steps
+      if (filtered.length === 1) {
+        setSelectedDoctor(filtered[0]);
+        configureDoctorModes(filtered[0]);
+        setStep(2);
+      } else if (filtered.length > 1) {
+        setSelectedDoctor(filtered[0]);
+        configureDoctorModes(filtered[0]);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingDoctors(false);
+    }
+  };
+
+  // Fetch Month Availability when Month, Year, or Doctor changes
+  useEffect(() => {
+    if (selectedDoctor && step >= 3) {
+      loadMonthAvailability(currentYear, currentMonth);
+    }
+  }, [selectedDoctor, currentYear, currentMonth, step]);
+
+  const loadMonthAvailability = async (year, month) => {
+    if (!selectedDoctor?.id) return;
+    setLoadingCalendar(true);
+    try {
+      const res = await api.getDoctorMonthAvailability(selectedDoctor.id, year, month);
+      setMonthAvailability(res.days || {});
+    } catch (err) {
+      // Fallback local availability generation based on doctor's available days
+      const daysCount = new Date(year, month, 0).getDate();
+      const availDays = selectedDoctor.available_days || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const todayStr = new Date().toISOString().split('T')[0];
+      const fallbackMap = {};
+      for (let d = 1; d <= daysCount; d++) {
+        const dtStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const dtObj = new Date(year, month - 1, d);
+        const dayName = dtObj.toLocaleDateString('en-US', { weekday: 'long' });
+        const isPast = dtStr < todayStr;
+        const isWorking = availDays.includes(dayName);
+        fallbackMap[dtStr] = {
+          date: dtStr,
+          day: d,
+          day_name: dayName,
+          status: isPast ? 'past' : (isWorking ? 'available' : 'off'),
+          available: !isPast && isWorking
+        };
+      }
+      setMonthAvailability(fallbackMap);
+    } finally {
+      setLoadingCalendar(false);
+    }
+  };
+
+  // Fetch Daily Slots & Capacity when Date is selected
+  const handleDateSelect = async (dateStr) => {
+    setSelectedDate(dateStr);
+    setSelectedSlot('');
+    setPriceQuote(null);
+    setLoadingSlots(true);
+    setError('');
+
+    try {
+      const res = await api.getDoctorDailySlots(selectedDoctor.id, dateStr, consultationMode);
+      setDailySlotsData(res);
+      setStep(4);
+    } catch (err) {
+      setError(err.message || 'Failed to load real-time slot availability for this date.');
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
+  // Fetch Price Quote from Backend when Slot is selected (Step 5)
+  const handleSlotSelect = async (slotTime) => {
+    setSelectedSlot(slotTime);
+    setLoadingQuote(true);
+    setError('');
+
+    try {
+      const quotePayload = {
+        doctor_id: selectedDoctor.id,
+        organization_id: selectedDoctor.organization_id,
+        consultation_mode: consultationMode,
+        appointment_date: selectedDate,
+        appointment_time: slotTime
+      };
+      const quote = await api.getAppointmentPricingQuote(quotePayload);
+      setPriceQuote(quote);
+      setStep(5);
+    } catch (err) {
+      setError(err.message || 'Failed to calculate consultation quote from backend.');
+    } finally {
+      setLoadingQuote(false);
+    }
+  };
+
+  // Step 6: Confirm Booking
+  const handleConfirmBooking = async (e) => {
+    if (e) e.preventDefault();
+    if (!patientName.trim()) {
+      setError('Please provide patient name.');
       return;
     }
-    if (!selectedSlot) {
-      setError('Please select an available time slot');
+    if (!patientMobile.trim()) {
+      setError('Please provide patient contact phone number.');
       return;
     }
 
@@ -89,210 +287,742 @@ export const AppointmentBookingModal = ({
         organization_id: selectedDoctor.organization_id,
         appointment_date: selectedDate,
         appointment_time: selectedSlot,
-        appointment_type: appointmentType,
-        chief_complaint: complaint || 'General Consultation'
+        appointment_type: consultationMode,
+        chief_complaint: chiefComplaint || `OPD consultation with ${selectedDoctor.name}`,
+        patient_name: patientName,
+        patient_phone: patientMobile
       };
 
       const res = await api.bookAppointment(payload);
-      setSuccessData(res.appointment);
-      setStep(2);
-      if (onSuccess) onSuccess(res.appointment);
-      if (onBookingSuccess) onBookingSuccess(res.appointment);
+      setSuccessData(res.appointment || res);
+      // Proceed to Step 7: Payment Page
+      setStep(7);
+      if (onSuccess) onSuccess(res.appointment || res);
+      if (onBookingSuccess) onBookingSuccess(res.appointment || res);
     } catch (err) {
-      setError(err.message || 'Failed to book appointment. Double booking detected.');
+      setError(err.message || 'Slot collision or capacity limit reached. Please select another slot.');
     } finally {
       setLoading(false);
     }
   };
 
+  // Step 7: Complete Payment
+  const handleProcessPayment = () => {
+    setPaymentProcessing(true);
+    setTimeout(() => {
+      setPaymentProcessing(false);
+      setPaymentComplete(true);
+    }, 900);
+  };
+
+  if (!isOpen) return null;
+
+  // Calendar Helpers
+  const handlePrevMonth = () => {
+    if (currentMonth === 1) {
+      setCurrentMonth(12);
+      setCurrentYear(currentYear - 1);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonth === 12) {
+      setCurrentMonth(1);
+      setCurrentYear(currentYear + 1);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 my-auto">
         
         {/* Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-blue-700 to-blue-600 text-white flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Calendar className="w-5 h-5 text-blue-200" />
-            <h3 className="font-bold text-base">Book Doctor Appointment</h3>
+        <div className="px-6 py-4 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center font-bold">
+              {step < 7 ? <Calendar className="w-4 h-4 text-blue-200" /> : <Receipt className="w-4 h-4 text-emerald-300" />}
+            </div>
+            <div>
+              <h3 className="font-extrabold text-sm sm:text-base leading-tight">
+                {step === 7 ? (paymentComplete ? 'Booking Confirmed' : 'Payment & Checkout') : 'Schedule Appointment'}
+              </h3>
+              <p className="text-[11px] text-blue-100">
+                {selectedDoctor ? `${selectedDoctor.name} • ${selectedDoctor.specialization}` : (targetOrg?.name || 'Healthcare Facility')}
+              </p>
+            </div>
           </div>
-          <button onClick={onClose} className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+          <button
+            onClick={onClose}
+            className="text-white/80 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {step === 1 ? (
-          <form onSubmit={handleBook} className="p-6 space-y-4">
-            {error && (
-              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
+        {/* 7-Step Progress Indicator Bar */}
+        <div className="bg-slate-100 px-6 py-2.5 border-b border-slate-200 flex items-center justify-between text-[11px] font-bold text-slate-500 overflow-x-auto gap-2">
+          {[
+            { num: 1, label: 'Doctor' },
+            { num: 2, label: 'Mode' },
+            { num: 3, label: 'Date' },
+            { num: 4, label: 'Slot' },
+            { num: 5, label: 'Price' },
+            { num: 6, label: 'Confirm' },
+            { num: 7, label: 'Payment' }
+          ].map(s => (
+            <div
+              key={s.num}
+              className={`flex items-center gap-1 shrink-0 ${
+                step === s.num
+                  ? 'text-blue-600 font-extrabold'
+                  : (step > s.num ? 'text-emerald-600' : 'text-slate-400')
+              }`}
+            >
+              <span
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
+                  step === s.num
+                    ? 'bg-blue-600 text-white'
+                    : (step > s.num ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600')
+                }`}
+              >
+                {step > s.num ? '✓' : s.num}
+              </span>
+              <span className="hidden sm:inline">{s.label}</span>
+            </div>
+          ))}
+        </div>
 
-            {/* Doctor Selection */}
-            {!initialDoctor && doctorsList.length > 0 && (
+        {/* Content Body */}
+        <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+          
+          {error && (
+            <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {/* STEP 1: SELECT DOCTOR */}
+          {step === 1 && (
+            <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Select Doctor & Department</label>
-                <select
-                  value={selectedDoctor?.id || ''}
-                  onChange={(e) => {
-                    const doc = doctorsList.find(d => d.id === e.target.value);
-                    setSelectedDoctor(doc);
-                    if (doc?.available_slots) setSelectedSlot(doc.available_slots[0]);
-                  }}
-                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
-                >
+                <h4 className="text-sm font-extrabold text-slate-900">Step 1: Select Doctor</h4>
+                <p className="text-xs text-slate-500">Choose a verified healthcare practitioner from this organization.</p>
+              </div>
+
+              {loadingDoctors ? (
+                <div className="py-12 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                  <span>Loading available doctors...</span>
+                </div>
+              ) : doctorsList.length === 0 ? (
+                <div className="p-6 text-center bg-slate-50 rounded-2xl border text-xs text-slate-500">
+                  No doctors currently registered under this facility.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-3">
                   {doctorsList.map(doc => (
-                    <option key={doc.id} value={doc.id}>
-                      {doc.name} - {doc.specialization} ({doc.organization_name})
-                    </option>
+                    <button
+                      key={doc.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedDoctor(doc);
+                        configureDoctorModes(doc);
+                      }}
+                      className={`p-4 rounded-2xl border text-left transition flex items-center justify-between ${
+                        selectedDoctor?.id === doc.id
+                          ? 'bg-blue-50/70 border-blue-500 shadow-sm ring-2 ring-blue-500'
+                          : 'bg-white hover:bg-slate-50 border-slate-200'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black text-sm">
+                          {doc.name.replace('Dr. ', '').charAt(0)}
+                        </div>
+                        <div>
+                          <h5 className="font-extrabold text-sm text-slate-900">{doc.name}</h5>
+                          <p className="text-xs text-blue-600 font-semibold">{doc.specialization} • {doc.qualifications}</p>
+                          <p className="text-[11px] text-slate-400 mt-0.5">{doc.experience_years || 5}+ Years Experience</p>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                        {doc.is_active !== false ? 'Available' : 'Unavailable'}
+                      </span>
+                    </button>
                   ))}
-                </select>
-              </div>
-            )}
-
-            {/* Selected Doctor Summary Card with Skeleton Loader */}
-            {fetchingDoctorDetails ? (
-              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 animate-pulse space-y-2">
-                <div className="h-4 bg-slate-200 rounded w-1/3" />
-                <div className="h-3 bg-slate-200 rounded w-2/3" />
-                <div className="h-2.5 bg-slate-200 rounded w-1/4" />
-              </div>
-            ) : selectedDoctor ? (
-              <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-200 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-slate-800">{selectedDoctor.name}</p>
-                  <p className="text-[11px] text-blue-700 font-medium">{selectedDoctor.specialization} • {selectedDoctor.organization_name}</p>
-                  <p className="text-[10px] text-slate-500">{selectedDoctor.qualifications}</p>
                 </div>
-                <div className="text-right">
-                  <span className="text-sm font-black text-slate-900 block">₹{selectedDoctor.consultation_fee}</span>
-                  <span className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Locked Fee</span>
-                </div>
-              </div>
-            ) : null}
+              )}
 
-            {/* Date Selection */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Appointment Date</label>
-                <input
-                  type="date"
-                  min={new Date().toISOString().split('T')[0]}
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Appointment Type</label>
-                <select
-                  value={appointmentType}
-                  onChange={(e) => setAppointmentType(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+              <div className="flex justify-end pt-3">
+                <button
+                  type="button"
+                  disabled={!selectedDoctor}
+                  onClick={() => setStep(2)}
+                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs disabled:opacity-40 transition flex items-center gap-2"
                 >
-                  <option value="In-Person">In-Person OPD</option>
-                  <option value="Teleconsultation">Video Consultation</option>
-                  <option value="Follow-Up">Follow-Up Review</option>
-                </select>
+                  <span>Continue to Mode Selection</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
+          )}
 
-            {/* Time Slots */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
-                <span>Select Available Time Slot</span>
-                <span className="text-[10px] text-slate-400 font-normal">Real-time availability</span>
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {(selectedDoctor?.available_slots || ['09:30 AM', '10:30 AM', '11:30 AM', '02:30 PM', '04:00 PM', '05:30 PM']).map(slot => (
+          {/* STEP 2: SELECT CONSULTATION MODE */}
+          {step === 2 && selectedDoctor && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-extrabold text-slate-900">Step 2: Select Consultation Mode</h4>
+                  <p className="text-xs text-slate-500">Select whether you prefer an in-person hospital OPD visit or online video consultation.</p>
+                </div>
+                {doctorsList.length > 1 && (
                   <button
                     type="button"
-                    key={slot}
-                    onClick={() => setSelectedSlot(slot)}
-                    className={`py-2 px-2 text-xs rounded-xl border text-center font-medium transition ${
-                      selectedSlot === slot
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-500/30'
-                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    onClick={() => setStep(1)}
+                    className="text-xs font-bold text-blue-600 hover:underline"
+                  >
+                    Change Doctor
+                  </button>
+                )}
+              </div>
+
+              {/* Doctor Quick Badge */}
+              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
+                  {selectedDoctor.name.replace('Dr. ', '').charAt(0)}
+                </div>
+                <div>
+                  <p className="text-xs font-extrabold text-slate-900">{selectedDoctor.name}</p>
+                  <p className="text-[11px] text-slate-500">{selectedDoctor.specialization} • {selectedDoctor.organization_name}</p>
+                </div>
+              </div>
+
+              {/* Mode Options */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                {enabledModes.includes('In-Person Consultation') && (
+                  <button
+                    type="button"
+                    onClick={() => setConsultationMode('In-Person Consultation')}
+                    className={`p-4 rounded-2xl border text-left transition flex items-start gap-3.5 ${
+                      consultationMode === 'In-Person Consultation'
+                        ? 'bg-blue-50/80 border-blue-600 shadow-sm ring-2 ring-blue-500'
+                        : 'bg-white hover:bg-slate-50 border-slate-200'
                     }`}
                   >
-                    {slot}
+                    <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                      <Building2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h5 className="font-extrabold text-xs text-slate-900">In-Person Consultation</h5>
+                      <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                        Physical consultation at {selectedDoctor.organization_name || 'facility OPD clinic'}.
+                      </p>
+                    </div>
                   </button>
-                ))}
-              </div>
-            </div>
+                )}
 
-            {/* Complaint */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Chief Health Concern / Symptoms</label>
-              <input
-                type="text"
-                placeholder="e.g. Chest discomfort, routine checkup, diabetes review"
-                value={complaint}
-                onChange={(e) => setComplaint(e.target.value)}
-                className="w-full text-xs px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+                {enabledModes.includes('Video Consultation') && (
+                  <button
+                    type="button"
+                    onClick={() => setConsultationMode('Video Consultation')}
+                    className={`p-4 rounded-2xl border text-left transition flex items-start gap-3.5 ${
+                      consultationMode === 'Video Consultation'
+                        ? 'bg-teal-50/80 border-teal-600 shadow-sm ring-2 ring-teal-500'
+                        : 'bg-white hover:bg-slate-50 border-slate-200'
+                    }`}
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0">
+                      <Video className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h5 className="font-extrabold text-xs text-slate-900">Video Consultation</h5>
+                      <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                        Encrypted high-definition teleconsultation from home with digital prescription.
+                      </p>
+                    </div>
+                  </button>
+                )}
+              </div>
 
-            {/* Submit Button */}
-            <div className="pt-2">
-              <button
-                type="submit"
-                disabled={loading || fetchingDoctorDetails}
-                className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-black text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 disabled:opacity-50 transition flex items-center justify-center gap-2"
-              >
-                {loading ? 'Processing Slot Reservation...' : fetchingDoctorDetails ? 'Loading Doctor Details...' : `Confirm & Pay ₹${selectedDoctor?.consultation_fee || 500}`}
-              </button>
-              <p className="text-center text-[10px] text-slate-400 mt-2">
-                🔒 Prevents double-booking automatically across the centralized mesh.
-              </p>
+              <div className="flex justify-between pt-3">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-100 text-xs font-bold transition"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStep(3)}
+                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-2"
+                >
+                  <span>Select Date</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-          </form>
-        ) : (
-          /* Confirmation Step */
-          <div className="p-6 text-center space-y-4">
-            <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
-              <CheckCircle2 className="w-8 h-8" />
-            </div>
+          )}
 
-            <div>
-              <h4 className="text-lg font-bold text-slate-900">Appointment Confirmed!</h4>
-              <p className="text-xs text-slate-500 mt-0.5">Your booking ID is <span className="font-mono font-bold text-blue-700">{successData?.appointment_id}</span></p>
-            </div>
+          {/* STEP 3: MONTHLY CALENDAR DATE SELECTION */}
+          {step === 3 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-extrabold text-slate-900">Step 3: Calendar-Based Appointment Selection</h4>
+                  <p className="text-xs text-slate-500">Select an available date for {selectedDoctor.name}.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="text-xs font-bold text-blue-600 hover:underline"
+                >
+                  Change Mode
+                </button>
+              </div>
 
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-left text-xs space-y-1.5">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Doctor:</span>
-                <span className="font-semibold text-slate-800">{successData?.doctor_name}</span>
+              {/* Month Navigation */}
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h5 className="font-extrabold text-sm text-slate-900">
+                    {monthNames[currentMonth - 1]} {currentYear}
+                  </h5>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={handlePrevMonth}
+                      className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 transition"
+                      aria-label="Previous Month"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleNextMonth}
+                      className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 transition"
+                      aria-label="Next Month"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Weekday Headers */}
+                <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400">
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                    <div key={d} className="py-1">{d}</div>
+                  ))}
+                </div>
+
+                {/* Calendar Days Grid */}
+                <div className="grid grid-cols-7 gap-1.5">
+                  {/* Empty offset padding cells */}
+                  {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+                    <div key={`empty-${i}`} className="h-10" />
+                  ))}
+
+                  {/* Month Days */}
+                  {Array.from({ length: daysInMonth }).map((_, idx) => {
+                    const dayNum = idx + 1;
+                    const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+                    const dayInfo = monthAvailability[dateStr] || {};
+                    const isAvailable = dayInfo.available !== false && dayInfo.status !== 'past' && dayInfo.status !== 'off' && dayInfo.status !== 'fully_booked';
+                    const isSelected = selectedDate === dateStr;
+                    const isPast = dayInfo.status === 'past';
+                    const isFullyBooked = dayInfo.status === 'fully_booked';
+
+                    return (
+                      <button
+                        key={dateStr}
+                        type="button"
+                        disabled={!isAvailable}
+                        onClick={() => handleDateSelect(dateStr)}
+                        className={`h-11 rounded-xl text-xs font-extrabold flex flex-col items-center justify-center transition border ${
+                          isSelected
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                            : (isFullyBooked
+                                ? 'bg-rose-50 text-rose-300 border-rose-100 cursor-not-allowed'
+                                : (isAvailable
+                                    ? 'bg-white hover:bg-blue-50 text-slate-800 border-slate-200 hover:border-blue-300 cursor-pointer'
+                                    : 'bg-slate-100 text-slate-300 border-transparent cursor-not-allowed'))
+                        }`}
+                      >
+                        <span>{dayNum}</span>
+                        {isFullyBooked ? (
+                          <span className="text-[8px] font-black text-rose-500 uppercase leading-none">Full</span>
+                        ) : (isAvailable ? (
+                          <span className="text-[7px] text-emerald-600 font-bold leading-none">• Open</span>
+                        ) : null)}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Hospital / Clinic:</span>
-                <span className="font-semibold text-slate-800">{successData?.organization_name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Date & Slot:</span>
-                <span className="font-semibold text-slate-800">{successData?.appointment_date} at {successData?.appointment_time}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Patient Health ID:</span>
-                <span className="font-mono font-semibold text-blue-600">{successData?.patient_health_id}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Status:</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Confirmed</span>
+
+              {/* Calendar Legend */}
+              <div className="flex flex-wrap items-center gap-4 text-[10px] text-slate-500 px-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                  <span>Available Date</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+                  <span>Fully Booked</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                  <span>Doctor Off / Past</span>
+                </div>
               </div>
             </div>
+          )}
 
-            <button
-              onClick={onClose}
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md transition"
-            >
-              Done & View Appointments
-            </button>
-          </div>
-        )}
+          {/* STEP 4: TIME SLOT & CAPACITY SELECTION */}
+          {step === 4 && dailySlotsData && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-extrabold text-slate-900">Step 4: Select Time Slot</h4>
+                  <p className="text-xs text-slate-500">
+                    {dailySlotsData.day_name}, {dailySlotsData.date} • {consultationMode}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStep(3)}
+                  className="text-xs font-bold text-blue-600 hover:underline"
+                >
+                  Change Date
+                </button>
+              </div>
+
+              {/* Capacity Banner */}
+              <div className="p-3.5 bg-blue-50/70 rounded-2xl border border-blue-200 flex items-center justify-between text-xs">
+                <div>
+                  <span className="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider block">Daily OPD Capacity</span>
+                  <p className="font-extrabold text-slate-900">
+                    {dailySlotsData.booked_count} of {dailySlotsData.total_capacity} Slots Booked
+                  </p>
+                </div>
+                <span className={`px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
+                  dailySlotsData.day_status === 'Available' ? 'bg-emerald-100 text-emerald-800' :
+                  (dailySlotsData.day_status === 'Limited Slots' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800')
+                }`}>
+                  {dailySlotsData.day_status}
+                </span>
+              </div>
+
+              {/* Slot Grid with Availability Status */}
+              <div>
+                <label className="block text-xs font-extrabold text-slate-700 mb-2">Available Consultation Time Slots</label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {dailySlotsData.slots.map(s => {
+                    const isSelected = selectedSlot === s.time;
+                    return (
+                      <button
+                        key={s.time}
+                        type="button"
+                        disabled={!s.available}
+                        onClick={() => handleSlotSelect(s.time)}
+                        className={`p-2.5 rounded-xl border text-center transition flex flex-col items-center justify-center ${
+                          isSelected
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                            : (s.available
+                                ? 'bg-white hover:bg-blue-50 text-slate-800 border-slate-200 hover:border-blue-400 cursor-pointer'
+                                : 'bg-slate-100 text-slate-400 border-slate-100 cursor-not-allowed opacity-60')
+                        }`}
+                      >
+                        <span className="font-black text-xs">{s.time}</span>
+                        <span className={`text-[9px] font-bold mt-0.5 ${
+                          isSelected ? 'text-blue-100' : (
+                            s.status === 'Available' ? 'text-emerald-600' :
+                            (s.status === 'Limited' ? 'text-amber-600' : 'text-slate-400')
+                          )
+                        }`}>
+                          {s.status}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 5: OFFICIAL PRICE QUOTE & APPOINTMENT SUMMARY */}
+          {step === 5 && priceQuote && (
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-sm font-extrabold text-slate-900">Step 5: Verified Appointment Summary & Fee</h4>
+                <p className="text-xs text-slate-500">Official consultation quotation calculated directly from backend doctor configuration.</p>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 text-xs">
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Organisation:</span>
+                  <span className="font-extrabold text-slate-900">{priceQuote.organization_name}</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Doctor:</span>
+                  <span className="font-extrabold text-slate-900">{priceQuote.doctor_name} ({priceQuote.specialization})</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Consultation Mode:</span>
+                  <span className="font-extrabold text-blue-700">{priceQuote.consultation_mode}</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Date & Slot:</span>
+                  <span className="font-extrabold text-slate-900">{priceQuote.appointment_date} at {priceQuote.appointment_time}</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Consultation Fee:</span>
+                  <span className="font-extrabold text-slate-900">₹{priceQuote.consultation_fee}</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-200 pb-2">
+                  <span className="text-slate-500">Additional Service Charges:</span>
+                  <span className="font-semibold text-emerald-600">₹{priceQuote.additional_charges}</span>
+                </div>
+                <div className="flex justify-between pt-1 text-sm font-black text-slate-900">
+                  <span>Total Payable Amount:</span>
+                  <span className="text-blue-700 text-base">₹{priceQuote.total_payable}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between pt-2">
+                <button
+                  type="button"
+                  onClick={() => setStep(4)}
+                  className="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-100 text-xs font-bold transition"
+                >
+                  Change Slot
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStep(6)}
+                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-2"
+                >
+                  <span>Continue to Confirmation</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 6: PATIENT DETAILS & CONFIRMATION */}
+          {step === 6 && (
+            <form onSubmit={handleConfirmBooking} className="space-y-4">
+              <div>
+                <h4 className="text-sm font-extrabold text-slate-900">Step 6: Patient Details & Review</h4>
+                <p className="text-xs text-slate-500">Confirm the patient details for this clinical visit.</p>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Patient Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    placeholder="Enter patient full name"
+                    className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Mobile Phone *</label>
+                    <input
+                      type="tel"
+                      required
+                      value={patientMobile}
+                      onChange={(e) => setPatientMobile(e.target.value)}
+                      placeholder="e.g. +91 98480 11001"
+                      className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      value={patientEmail}
+                      onChange={(e) => setPatientEmail(e.target.value)}
+                      placeholder="patient@example.com"
+                      className="w-full text-xs px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Chief Medical Complaint / Symptoms</label>
+                  <textarea
+                    rows={2}
+                    value={chiefComplaint}
+                    onChange={(e) => setChiefComplaint(e.target.value)}
+                    placeholder="Describe main symptom (e.g. persistent dry cough, fever for 3 days)..."
+                    className="w-full text-xs px-3.5 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-between pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setStep(5)}
+                  className="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-100 text-xs font-bold transition"
+                >
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2"
+                >
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                  <span>Confirm Appointment</span>
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* STEP 7: PAYMENT PAGE & DIGITAL RECEIPT */}
+          {step === 7 && successData && (
+            <div className="space-y-4">
+              {!paymentComplete ? (
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-extrabold text-slate-900">Step 7: Appointment Checkout</h4>
+                    <p className="text-xs text-slate-500">Your appointment has been registered. Complete payment to finalize.</p>
+                  </div>
+
+                  {/* Summary Card */}
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs">
+                    <div className="flex justify-between font-mono text-[11px] text-blue-700">
+                      <span>Appointment ID:</span>
+                      <span className="font-extrabold">{successData.id || successData.appointment_id}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Doctor:</span>
+                      <span className="font-bold text-slate-800">{successData.doctor_name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Schedule:</span>
+                      <span className="font-bold text-slate-800">{successData.appointment_date} at {successData.appointment_time}</span>
+                    </div>
+                    <div className="flex justify-between pt-2 border-t border-slate-200 font-black text-slate-900 text-sm">
+                      <span>Total Payable:</span>
+                      <span className="text-blue-700 text-base">₹{successData.consultation_fee}</span>
+                    </div>
+                  </div>
+
+                  {/* Payment Methods */}
+                  <div className="space-y-2 pt-1">
+                    <label className="block text-xs font-extrabold text-slate-700">Select Payment Option</label>
+                    <div className="space-y-2">
+                      {[
+                        { id: 'Online UPI / QR Payment', desc: 'Instant UPI (Google Pay, PhonePe, Paytm)' },
+                        { id: 'Credit / Debit Card', desc: 'Visa, MasterCard, RuPay' },
+                        { id: 'Pay at Facility Reception', desc: 'Pay at hospital/clinic reception desk on appointment day' }
+                      ].map(m => (
+                        <label
+                          key={m.id}
+                          className={`p-3.5 rounded-xl border flex items-center gap-3 cursor-pointer transition ${
+                            paymentMethod === m.id
+                              ? 'bg-blue-50/70 border-blue-500 ring-1 ring-blue-500'
+                              : 'bg-white border-slate-200 hover:bg-slate-50'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="payment_method"
+                            checked={paymentMethod === m.id}
+                            onChange={() => setPaymentMethod(m.id)}
+                            className="text-blue-600 focus:ring-blue-500"
+                          />
+                          <div>
+                            <p className="text-xs font-bold text-slate-900">{m.id}</p>
+                            <p className="text-[11px] text-slate-500">{m.desc}</p>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    disabled={paymentProcessing}
+                    onClick={handleProcessPayment}
+                    className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition flex items-center justify-center gap-2"
+                  >
+                    {paymentProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
+                    <span>Complete Payment & Generate Slip</span>
+                  </button>
+                </div>
+              ) : (
+                /* Confirmed Digital Receipt */
+                <div className="text-center py-4 space-y-4 animate-in zoom-in-95">
+                  <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600">Booking & Payment Verified</span>
+                    <h4 className="text-xl font-black text-slate-900 mt-0.5">Appointment Confirmed!</h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Your clinical slot has been secured. Appointment ID has been registered in the hospital and patient dashboards.
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-left text-xs space-y-2 max-w-md mx-auto">
+                    <div className="flex justify-between font-mono text-blue-700 font-bold border-b pb-2">
+                      <span>Appointment ID:</span>
+                      <span className="text-sm font-black">{successData.id || successData.appointment_id}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Patient:</span>
+                      <span className="font-bold text-slate-800">{successData.patient_name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Doctor:</span>
+                      <span className="font-bold text-slate-800">{successData.doctor_name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Schedule:</span>
+                      <span className="font-bold text-slate-800">{successData.appointment_date} at {successData.appointment_time}</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="text-slate-500">Payment Status:</span>
+                      <span className="font-extrabold text-emerald-600">Paid & Verified</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition"
+                    >
+                      Done & Close
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+        </div>
       </div>
     </div>
   );

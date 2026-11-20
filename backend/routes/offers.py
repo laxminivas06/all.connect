@@ -13,9 +13,14 @@ def list_published_offers(
     organization_id: Optional[str] = None,
     organization_type: Optional[str] = None
 ):
+    today_str = datetime.now().strftime("%Y-%m-%d")
     offers = find_all("offers", lambda o: o.get("workflow_status") == "published")
     results = []
     for o in offers:
+        # Only return non-expired offers
+        end_d = o.get("end_date") or o.get("valid_to") or o.get("valid_until")
+        if end_d and end_d < today_str:
+            continue
         if category and category.lower() != "all" and o.get("category", "").lower() != category.lower():
             continue
         if organization_id and o.get("organization_id") != organization_id:

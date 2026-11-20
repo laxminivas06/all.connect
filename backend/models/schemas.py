@@ -33,6 +33,13 @@ class OrgRegisterRequest(BaseModel):
     password: str
 
 # APPOINTMENT
+class AppointmentPricingQuoteRequest(BaseModel):
+    doctor_id: str
+    organization_id: Optional[str] = None
+    consultation_mode: str = "In-Person"  # In-Person or Video
+    appointment_date: str
+    appointment_time: str
+
 class AppointmentCreateRequest(BaseModel):
     doctor_id: str
     organization_id: str

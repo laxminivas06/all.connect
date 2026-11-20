@@ -44,6 +44,9 @@ export const api = {
   updateMyPatientProfile: (data) => request('/patients/me', { method: 'PUT', body: JSON.stringify(data) }),
   updateConsent: (data) => request('/patients/consent', { method: 'PUT', body: JSON.stringify(data) }),
   getPatientProfile: (patientId) => request(`/patients/${patientId}`),
+  getMyPatientQrToken: () => request('/patients/me/qr-token'),
+  refreshMyPatientQrToken: () => request('/patients/me/qr-token/refresh', { method: 'POST' }),
+  verifyPatientCard: (token) => request(`/patients/verify-card?token=${encodeURIComponent(token)}`),
 
   // Hospitals
   getHospitals: (params = {}) => {
@@ -82,9 +85,13 @@ export const api = {
   createDoctor: (data) => request('/doctors', { method: 'POST', body: JSON.stringify(data) }),
   updateDoctorAvailability: (id, data) => request(`/doctors/${id}/availability`, { method: 'PUT', body: JSON.stringify(data) }),
   updateDoctorProfile: (id, data) => request(`/doctors/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  getDoctorSchedule: (doctorId) => request(`/doctors/${doctorId}/schedule`),
+  getDoctorDailySlots: (doctorId, date, mode = 'In-Person') => request(`/doctors/${doctorId}/daily-slots?date=${encodeURIComponent(date)}&mode=${encodeURIComponent(mode)}`),
+  getDoctorMonthAvailability: (doctorId, year, month) => request(`/doctors/${doctorId}/month-availability?year=${year}&month=${month}`),
 
   // Appointments
   getAppointments: (status) => request(`/appointments${status ? `?status=${status}` : ''}`),
+  getAppointmentPricingQuote: (data) => request('/appointments/pricing-quote', { method: 'POST', body: JSON.stringify(data) }),
   bookAppointment: (data) => request('/appointments/book', { method: 'POST', body: JSON.stringify(data) }),
   updateAppointmentStatus: (id, data) => request(`/appointments/${id}/status`, { method: 'PUT', body: JSON.stringify(data) }),
   assignAppointmentDoctor: (id, data) => request(`/appointments/${id}/assign`, { method: 'PUT', body: JSON.stringify(data) }),

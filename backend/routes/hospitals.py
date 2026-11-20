@@ -48,8 +48,14 @@ def get_hospital_public_profile(hospital_id: str):
     if not hospital:
         raise HTTPException(status_code=404, detail="Hospital not found")
 
+    today_str = datetime.now().strftime("%Y-%m-%d")
     doctors = find_all("doctors", lambda d: d.get("organization_id") == hospital_id and d.get("is_active", True))
-    offers = find_all("offers", lambda o: o.get("organization_id") == hospital_id and o.get("workflow_status") == "published")
+    offers = find_all(
+        "offers",
+        lambda o: o.get("organization_id") == hospital_id 
+        and o.get("workflow_status") == "published"
+        and (not (o.get("end_date") or o.get("valid_to") or o.get("valid_until")) or (o.get("end_date") or o.get("valid_to") or o.get("valid_until")) >= today_str)
+    )
     services = find_all("services", lambda s: s.get("organization_id") == hospital_id and s.get("is_active", True))
 
     return {

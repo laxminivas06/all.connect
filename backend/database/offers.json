@@ -11,7 +11,7 @@
     "discounted_price": 2300,
     "discount_percentage": 48,
     "start_date": "2026-01-01",
-    "end_date": "2026-06-30",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "General Medicine",
       "Cardiology",
@@ -34,7 +34,7 @@
     "discounted_price": 1299,
     "discount_percentage": 53,
     "start_date": "2026-01-10",
-    "end_date": "2026-05-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology"
     ],
@@ -55,7 +55,7 @@
     "discounted_price": 1899,
     "discount_percentage": 55,
     "start_date": "2026-01-15",
-    "end_date": "2026-07-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "General Medicine",
       "Orthopedics"
@@ -77,7 +77,7 @@
     "discounted_price": 499,
     "discount_percentage": 55,
     "start_date": "2026-01-12",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "General Medicine"
     ],
@@ -98,7 +98,7 @@
     "discounted_price": 2199,
     "discount_percentage": 54,
     "start_date": "2026-01-14",
-    "end_date": "2026-06-30",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Gynecology",
       "Oncology"
@@ -120,7 +120,7 @@
     "discounted_price": 1099,
     "discount_percentage": 54,
     "start_date": "2026-01-18",
-    "end_date": "2026-07-15",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Endocrinology"
     ],
@@ -141,7 +141,7 @@
     "discounted_price": 999,
     "discount_percentage": 55,
     "start_date": "2026-01-20",
-    "end_date": "2026-09-30",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Orthopedics"
     ],
@@ -162,7 +162,7 @@
     "discounted_price": 399,
     "discount_percentage": 58,
     "start_date": "2026-01-22",
-    "end_date": "2026-08-15",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Pediatrics"
     ],
@@ -225,7 +225,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -247,7 +247,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -269,7 +269,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -291,7 +291,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -313,7 +313,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -335,7 +335,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -357,7 +357,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -379,7 +379,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -401,7 +401,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -423,7 +423,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -445,7 +445,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -467,7 +467,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -489,7 +489,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -511,7 +511,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -533,7 +533,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -555,7 +555,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -577,7 +577,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -599,7 +599,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"
@@ -621,7 +621,7 @@
     "discounted_price": 1199.0,
     "discount_percentage": 62,
     "start_date": "2026-02-01",
-    "end_date": "2026-08-31",
+    "end_date": "2027-12-31",
     "applicable_departments": [
       "Cardiology",
       "Pathology"

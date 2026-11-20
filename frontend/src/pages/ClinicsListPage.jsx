@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import {
   Stethoscope,
@@ -13,9 +13,35 @@ import {
   Building2,
   Navigation,
   Loader2,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
+
+const SYMPTOM_CLINIC_SYNONYMS = {
+  fever: ['general medicine', 'pediatrics', 'family medicine', 'internal medicine'],
+  cough: ['general medicine', 'pulmonology', 'ent', 'family medicine', 'respiratory'],
+  cold: ['general medicine', 'ent', 'family medicine', 'pulmonology'],
+  headache: ['general medicine', 'neurology', 'family medicine'],
+  skin: ['dermatology', 'cosmetology'],
+  acne: ['dermatology'],
+  dental: ['dentistry'],
+  teeth: ['dentistry'],
+  eye: ['ophthalmology'],
+  vision: ['ophthalmology'],
+  heart: ['cardiology', 'general medicine', 'diabetology'],
+  cardiac: ['cardiology'],
+  bp: ['general medicine', 'cardiology'],
+  bone: ['orthopedics'],
+  joint: ['orthopedics'],
+  child: ['pediatrics'],
+  baby: ['pediatrics'],
+  pediatric: ['pediatrics'],
+  women: ['gynecology', 'obstetrics'],
+  pregnancy: ['gynecology'],
+  diabetes: ['endocrinology', 'general medicine', 'diabetology'],
+  sugar: ['diabetology', 'general medicine', 'endocrinology']
+};
 
 // Haversine formula to compute distance in km
 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -34,17 +60,27 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 export const ClinicsListPage = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
+
   const [clinics, setClinics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedArea, setSelectedArea] = useState('All');
   const [selectedSpeciality, setSelectedSpeciality] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [userCoords, setUserCoords] = useState(null);
   const [detectingLocation, setDetectingLocation] = useState(false);
 
   // Booking Modal
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedClinicForBooking, setSelectedClinicForBooking] = useState(null);
+
+  useEffect(() => {
+    const qParam = searchParams.get('search') || searchParams.get('q');
+    if (qParam !== null && qParam !== undefined) {
+      setSearchQuery(qParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     // Detect location automatically
@@ -67,7 +103,9 @@ export const ClinicsListPage = () => {
 
     api.getClinics()
       .then(data => {
-        setClinics(data || []);
+        // Enforce strict clinic isolation: only clinics, never hospitals
+        const onlyClinics = (data || []).filter(c => !c.id?.startsWith('hosp-') && (c.organization_type === 'clinic' || !c.organization_type));
+        setClinics(onlyClinics);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -88,14 +126,36 @@ export const ClinicsListPage = () => {
     return dist !== null ? `${dist} km away` : null;
   };
 
+  const matchesClinicSearch = (c, query) => {
+    if (!query) return true;
+    const q = query.toLowerCase().trim();
+    const nameMatch = (c.name || '').toLowerCase().includes(q);
+    const areaMatch = (c.area || '').toLowerCase().includes(q);
+    const deptMatch = (c.departments || []).some(d => (d || '').toLowerCase().includes(q));
+
+    let synonymMatch = false;
+    for (const [symptom, depts] of Object.entries(SYMPTOM_CLINIC_SYNONYMS)) {
+      if (q.includes(symptom)) {
+        if ((c.departments || []).some(d => depts.some(target => (d || '').toLowerCase().includes(target)))) {
+          synonymMatch = true;
+          break;
+        }
+      }
+    }
+    return nameMatch || areaMatch || deptMatch || synonymMatch;
+  };
+
   const filteredClinics = clinics.filter(c => {
     const areaMatch = selectedArea === 'All' || (c.area || '').toLowerCase() === selectedArea.toLowerCase();
     const specMatch = selectedSpeciality === 'All' || (c.departments || []).some(d => d.toLowerCase() === selectedSpeciality.toLowerCase());
-    const searchMatch = !searchQuery || (c.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (c.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (c.area || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const searchMatch = matchesClinicSearch(c, searchQuery);
     return areaMatch && specMatch && searchMatch;
   });
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchParams({});
+  };
 
   const sortedClinics = [...filteredClinics].sort((a, b) => {
     if (!userCoords) return 0;
@@ -126,6 +186,25 @@ export const ClinicsListPage = () => {
             {sortedClinics.length} Clinics Available
           </span>
         </div>
+
+        {/* Active Search / Symptom Filter Banner */}
+        {searchQuery && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-teal-50/80 border border-teal-200 rounded-2xl text-xs text-teal-900 animate-in fade-in">
+            <div className="flex items-center gap-2">
+              <Stethoscope className="w-4 h-4 text-teal-600 shrink-0" />
+              <span>
+                Care search for <strong>&ldquo;{searchQuery}&rdquo;</strong> — Showing only clinics with relevant outpatient specialities and verified general physicians.
+              </span>
+            </div>
+            <button
+              onClick={handleClearSearch}
+              className="self-start sm:self-auto px-2.5 py-1 bg-white border border-teal-200 hover:bg-teal-100 rounded-lg text-teal-700 font-bold text-[11px] flex items-center gap-1 transition"
+            >
+              <X className="w-3 h-3" />
+              Clear Search
+            </button>
+          </div>
+        )}
 
         {/* Search & Filter Bar: Location & Speciality */}
         <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center gap-3">

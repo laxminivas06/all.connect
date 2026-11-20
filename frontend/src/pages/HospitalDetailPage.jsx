@@ -16,7 +16,11 @@ import {
   ChevronLeft,
   Search,
   User,
-  X
+  X,
+  Video,
+  Sparkles,
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 
@@ -65,6 +69,8 @@ export const HospitalDetailPage = () => {
   }
 
   const { hospital, doctors = [], offers = [] } = data;
+  const hospitalOffers = (offers || []).filter(o => o.organization_id === hospital?.id);
+  const featuredOffer = hospitalOffers[0] || null;
 
   // Compute available speciality categories in this hospital
   const hospitalSpecialities = Array.from(new Set([
@@ -172,41 +178,111 @@ export const HospitalDetailPage = () => {
           </div>
         </div>
 
-        {/* Hospital Packages if any */}
-        {offers && offers.length > 0 && (
-          <div className="bg-gradient-to-r from-rose-50/70 to-orange-50/70 p-6 rounded-3xl border border-rose-200/80 shadow-sm space-y-3">
-            <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-              <Tag className="w-4 h-4 text-rose-600" />
-              <span>Hospital Health Packages & Promotions</span>
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {offers.map(off => (
-                <div key={off.id} className="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm flex flex-col justify-between">
-                  <div>
-                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
-                      {off.discount_percentage}% OFF
-                    </span>
-                    <h4 className="font-bold text-xs text-slate-900 mt-2">{off.title}</h4>
-                    <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">{off.description}</p>
-                  </div>
-                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-slate-400 line-through text-[10px] mr-1">₹{off.original_price}</span>
-                      <span className="text-base font-black text-slate-900">₹{off.discounted_price}</span>
+        {/* PROVIDER-SPECIFIC OFFERS: FEATURED ADVERTISEMENT PANEL & PACKAGES */}
+        {hospitalOffers.length > 0 && (
+          <div className="space-y-4">
+            {/* Featured Healthcare Advertisement Panel */}
+            {featuredOffer && (
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-6 sm:p-7 shadow-xl border border-blue-500/20">
+                <div className="absolute right-0 top-0 w-80 h-full opacity-10 bg-radial from-blue-400 to-transparent pointer-events-none" />
+                <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                  <div className="space-y-2 max-w-xl">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-500 text-white uppercase tracking-wider shadow-xs">
+                        FEATURED OFFER • {featuredOffer.discount_percentage || 30}% OFF
+                      </span>
+                      <span className="text-[11px] text-blue-200 font-semibold flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Official {hospital.name} Promotion</span>
+                      </span>
                     </div>
-                    <button
-                      onClick={() => {
-                        setSelectedDoctor(doctors[0] || null);
-                        setBookingModalOpen(true);
-                      }}
-                      className="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-[11px] shadow-sm transition"
-                    >
-                      Book Package
-                    </button>
+
+                    <h3 className="text-xl sm:text-2xl font-black text-white leading-snug">
+                      {featuredOffer.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-2">
+                      {featuredOffer.description}
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-300">
+                      <span className="flex items-center gap-1.5 text-amber-300 font-semibold">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>Valid until: {featuredOffer.end_date || '2027-12-31'}</span>
+                      </span>
+                      {featuredOffer.terms && (
+                        <span className="text-[11px] text-slate-400 italic">
+                          Terms: {featuredOffer.terms}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto shrink-0 gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-white/10">
+                    <div className="text-left md:text-right">
+                      {featuredOffer.original_price && (
+                        <span className="text-xs text-slate-400 line-through mr-1 block">₹{featuredOffer.original_price}</span>
+                      )}
+                      <span className="text-2xl font-black text-white">₹{featuredOffer.discounted_price}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={`/offers?organization_id=${hospital.id}`}
+                        className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition"
+                      >
+                        View Details
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctor(doctors[0] || null);
+                          setBookingModalOpen(true);
+                        }}
+                        className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs shadow-md transition"
+                      >
+                        Book Now
+                      </button>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {/* Additional Hospital Packages */}
+            {hospitalOffers.length > 1 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {hospitalOffers.slice(1).map(off => (
+                  <div key={off.id} className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between hover:shadow-sm transition">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
+                          {off.discount_percentage}% OFF
+                        </span>
+                        <span className="text-[10px] text-slate-400 font-semibold">{hospital.name}</span>
+                      </div>
+                      <h4 className="font-extrabold text-xs text-slate-900">{off.title}</h4>
+                      <p className="text-[11px] text-slate-500 line-clamp-2">{off.description}</p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div>
+                        <span className="text-slate-400 line-through text-[10px] mr-1">₹{off.original_price}</span>
+                        <span className="text-base font-black text-slate-900">₹{off.discounted_price}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctor(doctors[0] || null);
+                          setBookingModalOpen(true);
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition"
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -326,16 +402,20 @@ export const HospitalDetailPage = () => {
                       </div>
                     )}
 
-                    {/* Availability and Fee details */}
+                    {/* Consultation Modes and Availability Status (Price retrieved in Step 5 after scheduling selections) */}
                     <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-center justify-between text-xs">
                       <div>
-                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Fee</span>
-                        <span className="text-sm font-black text-slate-900">₹{doc.consultation_fee || 600}</span>
+                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Consultation Modes</span>
+                        <span className="text-xs font-bold text-slate-800 flex items-center gap-1 mt-0.5">
+                          <Video className="w-3.5 h-3.5 text-blue-500" />
+                          <span>In-Person & Video OPD</span>
+                        </span>
                       </div>
                       <div className="text-right">
-                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Next Available Slot</span>
-                        <span className="text-xs font-bold text-emerald-600">
-                          {doc.available_slots ? doc.available_slots[0] : '10:00 AM Today'}
+                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Availability Status</span>
+                        <span className="text-xs font-bold text-emerald-600 flex items-center gap-1 justify-end mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>{doc.is_active !== false ? 'Accepting Patients' : 'Unavailable'}</span>
                         </span>
                       </div>
                     </div>

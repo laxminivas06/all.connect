@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import {
   Building2,
@@ -10,16 +10,44 @@ import {
   Filter,
   Phone,
   Clock,
-  Sparkles
+  Sparkles,
+  X,
+  Stethoscope
 } from 'lucide-react';
 import { AppointmentBookingModal } from '../components/AppointmentBookingModal';
 
+const SYMPTOM_DEPT_SYNONYMS = {
+  fever: ['general medicine', 'pediatrics', 'internal medicine', 'infectious disease'],
+  cough: ['general medicine', 'pulmonology', 'respiratory medicine', 'ent'],
+  cold: ['general medicine', 'ent', 'pulmonology'],
+  headache: ['general medicine', 'neurology'],
+  heart: ['cardiology', 'cardiac sciences', 'cardiothoracic'],
+  cardiac: ['cardiology', 'cardiac sciences'],
+  chest: ['cardiology', 'pulmonology'],
+  bone: ['orthopedics', 'joint replacement', 'spine care'],
+  joint: ['orthopedics', 'rheumatology'],
+  knee: ['orthopedics'],
+  back: ['orthopedics', 'neurology'],
+  skin: ['dermatology', 'cosmetology'],
+  eye: ['ophthalmology'],
+  dental: ['dentistry'],
+  teeth: ['dentistry'],
+  child: ['pediatrics', 'neonatology'],
+  women: ['gynecology', 'obstetrics'],
+  pregnancy: ['gynecology', 'obstetrics'],
+  stomach: ['gastroenterology', 'general surgery'],
+  diabetes: ['endocrinology', 'general medicine']
+};
+
 export const HospitalsListPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
+
   const [hospitals, setHospitals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedArea, setSelectedArea] = useState('All');
   const [selectedDept, setSelectedDept] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [emergencyOnly, setEmergencyOnly] = useState(false);
 
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -29,20 +57,51 @@ export const HospitalsListPage = () => {
   const departments = ['All', 'Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'General Medicine', 'Pulmonology', 'Oncology'];
 
   useEffect(() => {
+    const qParam = searchParams.get('search') || searchParams.get('q');
+    if (qParam !== null && qParam !== undefined) {
+      setSearchQuery(qParam);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     api.getHospitals().then(data => {
-      setHospitals(data);
+      // Ensure only hospitals are stored and displayed
+      const onlyHospitals = (data || []).filter(h => !h.id?.startsWith('clinic-') && (h.organization_type === 'hospital' || !h.organization_type));
+      setHospitals(onlyHospitals);
     }).finally(() => setLoading(false));
   }, []);
+
+  const matchesHospitalSearch = (h, query) => {
+    if (!query) return true;
+    const q = query.toLowerCase().trim();
+    const nameMatch = (h.name || '').toLowerCase().includes(q);
+    const areaMatch = (h.area || '').toLowerCase().includes(q);
+    const deptMatch = (h.departments || []).some(d => (d || '').toLowerCase().includes(q));
+
+    let synonymMatch = false;
+    for (const [symptom, depts] of Object.entries(SYMPTOM_DEPT_SYNONYMS)) {
+      if (q.includes(symptom)) {
+        if ((h.departments || []).some(d => depts.some(target => (d || '').toLowerCase().includes(target)))) {
+          synonymMatch = true;
+          break;
+        }
+      }
+    }
+    return nameMatch || areaMatch || deptMatch || synonymMatch;
+  };
 
   const filteredHospitals = hospitals.filter(h => {
     const areaMatch = selectedArea === 'All' || (h.area || '').toLowerCase() === selectedArea.toLowerCase();
     const deptMatch = selectedDept === 'All' || (h.departments || []).includes(selectedDept);
     const emergencyMatch = !emergencyOnly || h.emergency_24x7;
-    const searchMatch = !searchQuery || (h.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (h.departments || []).some(d => (d || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (h.area || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const searchMatch = matchesHospitalSearch(h, searchQuery);
     return areaMatch && deptMatch && emergencyMatch && searchMatch;
   });
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchParams({});
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -65,6 +124,25 @@ export const HospitalsListPage = () => {
             </span>
           </div>
         </div>
+
+        {/* Active Search / Symptom Filter Banner */}
+        {searchQuery && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-blue-50/80 border border-blue-200 rounded-2xl text-xs text-blue-900 animate-in fade-in">
+            <div className="flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-blue-600 shrink-0" />
+              <span>
+                Care search for <strong>&ldquo;{searchQuery}&rdquo;</strong> — Showing only hospitals with relevant departments and specialists.
+              </span>
+            </div>
+            <button
+              onClick={handleClearSearch}
+              className="self-start sm:self-auto px-2.5 py-1 bg-white border border-blue-200 hover:bg-blue-100 rounded-lg text-blue-700 font-bold text-[11px] flex items-center gap-1 transition"
+            >
+              <X className="w-3 h-3" />
+              Clear Search
+            </button>
+          </div>
+        )}
 
         {/* Filter Controls Bar */}
         <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
